@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/BusinessCard/.vs
+/BusinessCard/BusinessCard.Domain/obj
+/BusinessCard/BusinessCard.Domain/bin/Debug/net6.0
