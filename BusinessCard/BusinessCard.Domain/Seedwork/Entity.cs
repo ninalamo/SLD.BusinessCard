@@ -3,7 +3,7 @@
 
     private int? _requestedHashCode;
 
-    public virtual int Id { get; protected set; }
+    public virtual Guid Id { get; protected set; }
 
 
     public bool IsTransient() => Id == default;
