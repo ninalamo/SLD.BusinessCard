@@ -6,3 +6,5 @@
 /BusinessCard/.vs
 /BusinessCard/BusinessCard.Domain/obj
 /BusinessCard/BusinessCard.Domain/bin/Debug/net6.0
+/BusinessCard/BusinessCard.Domain.Tests/obj/Debug/net6.0
+/BusinessCard/BusinessCard.Domain.Tests/obj
