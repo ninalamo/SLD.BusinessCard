@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/BusinessCard/.vs
+/BusinessCard/BusinessCard.Domain/obj
+/BusinessCard/BusinessCard.Domain/bin/Debug/net6.0
+/BusinessCard/BusinessCard.Domain.Tests/obj/Debug/net6.0
+/BusinessCard/BusinessCard.Domain.Tests/obj
+/BusinessCard/BusinessCard.Domain.Tests/bin/Debug/net6.0
+/BusinessCard/BusinessCard.Domain.Tests/StrykerOutput/2023-07-03.07-29-33/reports
