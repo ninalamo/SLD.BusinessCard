@@ -1,4 +1,4 @@
-using BusinessCard.Domain.AggregatesModel.NfcAggregate;
+using BusinessCard.Domain.AggregatesModel.NFCAggregate;
 using Moq;
 using Shouldly;
 
@@ -21,7 +21,7 @@ namespace BusinessCard.Domain.Tests
             var oldId = card.CompanyId;
 
             card.Key.ShouldBe("Test");
-            card.CompanyId.ShouldNotBe(default(Guid));
+            card.CompanyId.ShouldNotBe(default);
 
             card = new NfcCard("Another Test", Guid.NewGuid());
             card.Key.ShouldNotBe("Test");

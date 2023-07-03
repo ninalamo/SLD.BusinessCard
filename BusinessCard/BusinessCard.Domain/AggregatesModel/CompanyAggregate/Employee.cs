@@ -1,27 +1,26 @@
-﻿using BusinessCard.Domain.AggregatesModel.NfcAggregate;
-
-namespace BusinessCard.Domain.AggregatesModel.CustomerAggregate
+﻿
+namespace BusinessCard.Domain.AggregatesModel.CompanyAggregate
 {
-    public class Customer : Entity
+    public class Employee : Entity
     {
-        public Customer(string firstName, string lastName, string middleName, string phoneNumber, string email, string address, Guid? cardId)
+        public Employee(string firstName, string lastName, string middleName, string phoneNumber, string email, string address, Guid? cardId)
         {
 
             if (cardId == default)
                 throw new ArgumentNullException(nameof(cardId));
 
             FirstName = firstName;
-            LastName = lastName ;
+            LastName = lastName;
             MiddleName = middleName;
             PhoneNumber = phoneNumber;
             Email = email;
             Address = address;
-            
+
             _cardId = cardId;
 
         }
 
-        public Customer(string firstName, string lastName, string middleName, string phoneNumber, string email, string address)
+        public Employee(string firstName, string lastName, string middleName, string phoneNumber, string email, string address)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -45,10 +44,25 @@ namespace BusinessCard.Domain.AggregatesModel.CustomerAggregate
         private Guid? _cardId;
         public Guid? GetCardId() => _cardId;
 
-        public void BindToNFC(Guid cardId)
+
+
+        public void UpdateContactDetails(string phoneNumber, string email, string address)
+        {
+            PhoneNumber = phoneNumber;
+            Email = email;
+            Address = address;
+        }
+
+        public void AddCard(Guid cardId)
         {
             _cardId = cardId;
         }
+        public void RemoveCard()
+        {
+            _cardId = null;
+        }
 
     }
+
+
 }

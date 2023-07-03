@@ -1,8 +1,8 @@
 ﻿using BusinessCard.Domain.Seedwork;
 
-namespace BusinessCard.Domain.AggregatesModel.NfcAggregate
+namespace BusinessCard.Domain.AggregatesModel.NFCAggregate
 {
-    public class NfcCard : Entity
+    public class NfcCard : Entity, IAggregateRoot
     {
         public string Key { get; }
         public Guid CompanyId { get; } = default;
