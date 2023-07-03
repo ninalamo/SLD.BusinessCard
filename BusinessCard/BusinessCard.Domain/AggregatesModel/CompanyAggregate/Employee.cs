@@ -5,10 +5,6 @@ namespace BusinessCard.Domain.AggregatesModel.CompanyAggregate
     {
         public Employee(string firstName, string lastName, string middleName, string phoneNumber, string email, string address, Guid? cardId)
         {
-
-            if (cardId == default)
-                throw new ArgumentNullException(nameof(cardId));
-
             FirstName = firstName;
             LastName = lastName;
             MiddleName = middleName;
@@ -20,16 +16,6 @@ namespace BusinessCard.Domain.AggregatesModel.CompanyAggregate
 
         }
 
-        public Employee(string firstName, string lastName, string middleName, string phoneNumber, string email, string address)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            MiddleName = middleName;
-            PhoneNumber = phoneNumber;
-            Email = email;
-            Address = address;
-            _cardId = null;
-        }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }

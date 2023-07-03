@@ -1,7 +1,8 @@
 ﻿using BusinessCard.Domain.AggregatesModel.CompanyAggregate;
-using Castle.Core.Resource;
-using Faker;
 using Shouldly;
+using CompanyFaker = Faker.Company;
+using NameFaker = Faker.Name;
+using Phone = Faker.Phone;
 
 namespace BusinessCard.Domain.Tests
 {
@@ -10,7 +11,7 @@ namespace BusinessCard.Domain.Tests
         [Fact]
         public void shouldBeAbleToCreate()
         {
-            string companyName = CompanyFaker.Name();
+            string companyName = Faker.Company.Name();
             Company company = new(companyName);
             company.Name.ShouldBe(companyName);
         }
@@ -18,14 +19,14 @@ namespace BusinessCard.Domain.Tests
         [Fact]
         public void shouldBeAbleToRename()
         {
-            Company company = new(CompanyFaker.Name()) ;
+            Company company = new(Faker.Company.Name()) ;
             company.Name = "GMA";
             company.Name.ShouldBe("GMA");
         }
 
         [Fact]
         public void shouldBeAbleToGenerateAndSaveCards() {
-            Company company = new(CompanyFaker.Name());
+            Company company = new(Faker.Company.Name());
             company.EnrolNFCCard(new[] { "ABC", "DEF", "XYZ", "AAA", "BBB", "CCC" });
             company.Cards.Count().ShouldBe(6);
             company.Cards.Select(c => c.Key).Contains("ABC").ShouldBeTrue();
@@ -45,12 +46,12 @@ namespace BusinessCard.Domain.Tests
         {
             Company company = new("ABC");
             company.AddEmployee(new(
-                NameFaker.MaleFirstName(),
-                NameFaker.LastName(),
-                NameFaker.LastName(),
-                PhoneFaker.Phone(),
-                InternetFaker.Email(),
-                LocationFaker.StreetName()));
+                NameFaker.First(),
+                NameFaker.Last(),
+                NameFaker.Last(),
+                Phone.Number(),
+                Faker.Internet.Email(),
+                Faker.DateOfBirth.Next().AddYears(-31).ToShortDateString(), null));
 
             company.Employees.ShouldNotBeNull();
             company.Employees.Count().ShouldBe(1);

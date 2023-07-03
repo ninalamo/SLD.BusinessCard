@@ -1,6 +1,10 @@
 ﻿using BusinessCard.Domain.AggregatesModel.CompanyAggregate;
 using BusinessCard.Domain.AggregatesModel.NFCAggregate;
+using Faker;
 using Shouldly;
+using NameFaker = Faker.Name;
+
+
 
 namespace BusinessCard.Domain.Tests
 {
@@ -9,7 +13,7 @@ namespace BusinessCard.Domain.Tests
         [Fact]
         public void shouldBeAbleToCreateWithoutCard()
         {
-            Employee customer = new("Nin", "Alamo", "Calzada", "09091234567", "nin.alamo@outlook.com", "General Trias, Cavite, Philippines");
+            Employee customer = new("Nin", "Alamo", "Calzada", "09091234567", "nin.alamo@outlook.com", "General Trias, Cavite, Philippines", null);
             customer.GetCardId().ShouldBe(default);
             customer.FullName.ShouldBe($"{customer.FirstName} {customer.MiddleName} {customer.LastName}");
             customer.Email.ShouldBe("nin.alamo@outlook.com");
@@ -21,12 +25,12 @@ namespace BusinessCard.Domain.Tests
         {
             NfcCard card = new("Test", Guid.NewGuid());
             Employee customer = new(
-                NameFaker.MaleFirstName(),
-                NameFaker.LastName(), 
-                NameFaker.LastName(), 
-                PhoneFaker.Phone(),
-                InternetFaker.Email(),
-                LocationFaker.StreetName(),
+                NameFaker.First(),
+                NameFaker.Last(), 
+                NameFaker.Last(), 
+                Phone.Number(),
+                Internet.Email(),
+              Address.StreetName(),
                 card.Id);
 
             customer.FullName.ShouldBe($"{customer.FirstName} {customer.MiddleName} {customer.LastName}");
@@ -39,20 +43,19 @@ namespace BusinessCard.Domain.Tests
         [Fact]
         public void shouldBeAbleToBindCard()
         {
-            ThisCustomer.GetCardId().ShouldBe(default);
-
-            ThisCustomer.AddCard(It.IsAny<Guid>());
-            ThisCustomer.GetCardId().ShouldBe(It.IsAny<Guid>());
+            ThisCustomer.AddCard(Guid.NewGuid());
+            ThisCustomer.GetCardId().ShouldNotBeNull();
            
         }
 
 
         private static Employee ThisCustomer = new(
-                NameFaker.MaleFirstName(),
-                NameFaker.LastName(),
-                NameFaker.LastName(),
-                PhoneFaker.Phone(),
-                InternetFaker.Email(),
-                LocationFaker.StreetName());
+                NameFaker.First(),
+                NameFaker.Last(),
+                NameFaker.Last(),
+                Phone.Number(),
+                Address.StreetName(),
+                Internet.Email(),
+                Guid.NewGuid());
     }
 }

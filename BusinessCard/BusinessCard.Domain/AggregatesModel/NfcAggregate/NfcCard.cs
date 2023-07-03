@@ -24,4 +24,9 @@ namespace BusinessCard.Domain.AggregatesModel.NFCAggregate
             return cards;
         }
     }
+
+    public interface INfcAggregateRoot : IRepository<NfcCard> { 
+        NfcCard Create(NfcCard card);
+        Task CreateBatch(IEnumerable<NfcCard> cards);
+    }
 }
