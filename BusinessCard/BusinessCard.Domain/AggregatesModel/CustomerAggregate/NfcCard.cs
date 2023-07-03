@@ -2,7 +2,7 @@
 
 namespace BusinessCard.Domain.AggregatesModel.CustomerAggregate
 {
-    public class NfcCard : ValueObject
+    public class NfcCard : Entity
     {
         public string Key { get; }
         public Guid CompanyId { get; } = default;
@@ -13,10 +13,15 @@ namespace BusinessCard.Domain.AggregatesModel.CustomerAggregate
             CompanyId = companyId;
         }
 
-        protected override IEnumerable<object> GetEqualityComponents()
+        public static IEnumerable<NfcCard> GenerateEmptyCards(int count = 1)
         {
-            yield return Key;
-            yield return CompanyId;
+            List<NfcCard> cards = new();
+            for(int i = 0; i < count; i++)
+            {
+                cards.Add(new(string.Empty, Guid.Empty));
+            }
+
+            return cards;
         }
     }
 }

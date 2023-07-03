@@ -28,5 +28,14 @@ namespace BusinessCard.Domain.Tests
             card.CompanyId.ShouldNotBe(oldId);
         }
 
+        [Fact]
+        public void shouldBeAbleToGenerate()
+        {
+            var cards = NfcCard.GenerateEmptyCards(1000);
+            cards.Count().ShouldBe(1000);
+            cards.All(c => c.CompanyId == default).ShouldBeTrue();
+            cards.All(c => c.Key == string.Empty).ShouldBeTrue();
+        }
+
     }
 }
