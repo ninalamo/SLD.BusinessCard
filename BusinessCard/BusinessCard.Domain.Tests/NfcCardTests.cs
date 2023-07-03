@@ -1,4 +1,4 @@
-using BusinessCard.Domain.AggregatesModel.CustomerAggregate;
+using BusinessCard.Domain.AggregatesModel.NfcAggregate;
 using Moq;
 using Shouldly;
 

@@ -1,4 +1,6 @@
 ﻿using BusinessCard.Domain.AggregatesModel.CustomerAggregate;
+using BusinessCard.Domain.AggregatesModel.NfcAggregate;
+using Moq;
 using Shouldly;
 
 namespace BusinessCard.Domain.Tests
@@ -9,7 +11,7 @@ namespace BusinessCard.Domain.Tests
         public void shouldBeAbleToCreateWithoutCard()
         {
             Customer customer = new("Nin", "Alamo", "Calzada", "09091234567", "nin.alamo@outlook.com", "General Trias, Cavite, Philippines");
-            customer.Card.ShouldBeNull();
+            customer.GetCardId().ShouldBe(default);
             customer.FullName.ShouldBe($"{customer.FirstName} {customer.MiddleName} {customer.LastName}");
             customer.Email.ShouldBe("nin.alamo@outlook.com");
             customer.PhoneNumber.ShouldBe("09091234567");
@@ -19,24 +21,22 @@ namespace BusinessCard.Domain.Tests
         public void shouldBeAbleToCreate()
         {
             NfcCard card = new("Test", Guid.NewGuid());
-            Customer customer = new("Nin", "Alamo", "Calzada", "09091234567", "nin.alamo@outlook.com", "General Trias, Cavite, Philippines",card);
+            Customer customer = new("Nin", "Alamo", "Calzada", "09091234567", "nin.alamo@outlook.com", "General Trias, Cavite, Philippines");
             customer.FullName.ShouldBe($"{customer.FirstName} {customer.MiddleName} {customer.LastName}");
             customer.Email.ShouldBe("nin.alamo@outlook.com");
             customer.PhoneNumber.ShouldBe("09091234567");
 
-            customer.Card.ShouldNotBeNull();
-            customer.Card.Key.ShouldBe("Test");
-            customer.Card.CompanyId.ShouldNotBe(default);
+            customer.GetCardId().ShouldBe(default);
         }
 
         [Fact]
         public void shouldBeAbleToBindCard()
         {
-            ThisCustomer.Card.ShouldBe(default);
+            ThisCustomer.GetCardId().ShouldBe(default);
 
-            ThisCustomer.BindToNFC(new NfcCard("Test",Guid.NewGuid()));
-            ThisCustomer.Card.ShouldNotBeNull();
-            ThisCustomer.Card.Key.ShouldBe("Test");
+            ThisCustomer.BindToNFC(It.IsAny<Guid>());
+            ThisCustomer.GetCardId().ShouldBe(It.IsAny<Guid>());
+           
         }
 
         private static Customer ThisCustomer = new("Nin", "Alamo", "Calzada", "09091234567", "nin.alamo@outlook.com", "General Trias, Cavite, Philippines");

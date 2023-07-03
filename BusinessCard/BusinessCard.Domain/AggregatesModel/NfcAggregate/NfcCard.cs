@@ -1,6 +1,6 @@
 ﻿using BusinessCard.Domain.Seedwork;
 
-namespace BusinessCard.Domain.AggregatesModel.CustomerAggregate
+namespace BusinessCard.Domain.AggregatesModel.NfcAggregate
 {
     public class NfcCard : Entity
     {
@@ -16,7 +16,7 @@ namespace BusinessCard.Domain.AggregatesModel.CustomerAggregate
         public static IEnumerable<NfcCard> GenerateEmptyCards(int count = 1)
         {
             List<NfcCard> cards = new();
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 cards.Add(new(string.Empty, Guid.Empty));
             }
