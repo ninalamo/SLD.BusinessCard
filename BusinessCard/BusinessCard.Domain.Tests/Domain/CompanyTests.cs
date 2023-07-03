@@ -4,7 +4,7 @@ using CompanyFaker = Faker.Company;
 using NameFaker = Faker.Name;
 using Phone = Faker.Phone;
 
-namespace BusinessCard.Domain.Tests.AggregatesModel
+namespace BusinessCard.Tests.Domain
 {
     public class CompanyTests
     {
@@ -37,7 +37,7 @@ namespace BusinessCard.Domain.Tests.AggregatesModel
         public void shouldBeAbleToAddEmployee()
         {
             Company company = new(CompanyFaker.Name());
-            company.AddEmployee(It.IsAny<Employee>());
+            company.AddEmployee(new Employee("Nin", "Alamo", "Calzada", "09091234567", "nin.alamo@outlook.com", "General Trias, Cavite, Philippines", null));
             company.Employees.ShouldNotBeNull();
             company.Employees.Count().ShouldBe(1);
         }

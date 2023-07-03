@@ -1,8 +1,7 @@
 using BusinessCard.Domain.AggregatesModel.NFCAggregate;
-using Moq;
 using Shouldly;
 
-namespace BusinessCard.Domain.Tests.AggregatesModel
+namespace BusinessCard.Tests.Domain
 {
     public class NfcCardTests
     {

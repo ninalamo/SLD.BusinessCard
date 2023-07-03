@@ -4,12 +4,12 @@ using BusinessCard.Domain.Seedwork;
 
 namespace BusinessCard.Infrastructure.Repositories
 {
-    public class NfcCardRepository : ICardRepository
+    public class CardRepository : ICardRepository
     {
-        private readonly MyDbContext _context;
+        private readonly CardDbContext _context;
         public IUnitOfWork UnitOfWork => _context;
 
-        public NfcCardRepository(MyDbContext context)
+        public CardRepository(CardDbContext context)
         {
             _context = context ?? throw BusinessCardDomainException.CreateArgumentNullException(nameof(context));
         }
@@ -19,7 +19,17 @@ namespace BusinessCard.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task CreateBatch(IEnumerable<NfcCard> cards)
+        public Task CreateBatchAsync(IEnumerable<NfcCard> cards)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ToggleActive(string key, bool isActive = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ToggleBatchActive(Guid companyID, bool isActive = false)
         {
             throw new NotImplementedException();
         }

@@ -5,9 +5,9 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessCard.Domain", "BusinessCard.Domain\BusinessCard.Domain.csproj", "{8AEB86D5-D02B-40CB-B20E-56211A343AE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessCard.Domain.Tests", "BusinessCard.Domain.Tests\BusinessCard.Domain.Tests.csproj", "{11A5E053-4D08-4542-B61F-2009DFE8E79A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessCard.Tests", "BusinessCard.Domain.Tests\BusinessCard.Tests.csproj", "{11A5E053-4D08-4542-B61F-2009DFE8E79A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCard.Infrastructure", "BusinessCard.Infrastructure\BusinessCard.Infrastructure.csproj", "{9D73A02E-CF4D-40D3-840A-F67C0E72668E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessCard.Infrastructure", "BusinessCard.Infrastructure\BusinessCard.Infrastructure.csproj", "{9D73A02E-CF4D-40D3-840A-F67C0E72668E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

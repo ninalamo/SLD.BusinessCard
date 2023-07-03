@@ -27,6 +27,8 @@ namespace BusinessCard.Domain.AggregatesModel.NFCAggregate
 
     public interface ICardRepository : IRepository<NfcCard> { 
         NfcCard Create(NfcCard card);
-        Task CreateBatch(IEnumerable<NfcCard> cards);
+        Task CreateBatchAsync(IEnumerable<NfcCard> cards);
+        void ToggleActive(string key, bool isActive = false);
+        Task ToggleBatchActive(Guid companyID, bool isActive = false);
     }
 }

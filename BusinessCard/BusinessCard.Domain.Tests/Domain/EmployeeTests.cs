@@ -6,7 +6,7 @@ using NameFaker = Faker.Name;
 
 
 
-namespace BusinessCard.Domain.Tests.AggregatesModel
+namespace BusinessCard.Tests.Domain
 {
     public class EmployeeTests
     {
