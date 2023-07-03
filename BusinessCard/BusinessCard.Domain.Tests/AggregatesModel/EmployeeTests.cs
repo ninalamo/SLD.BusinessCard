@@ -6,7 +6,7 @@ using NameFaker = Faker.Name;
 
 
 
-namespace BusinessCard.Domain.Tests
+namespace BusinessCard.Domain.Tests.AggregatesModel
 {
     public class EmployeeTests
     {
@@ -26,8 +26,8 @@ namespace BusinessCard.Domain.Tests
             NfcCard card = new("Test", Guid.NewGuid());
             Employee customer = new(
                 NameFaker.First(),
-                NameFaker.Last(), 
-                NameFaker.Last(), 
+                NameFaker.Last(),
+                NameFaker.Last(),
                 Phone.Number(),
                 Internet.Email(),
               Address.StreetName(),
@@ -45,7 +45,7 @@ namespace BusinessCard.Domain.Tests
         {
             ThisCustomer.AddCard(Guid.NewGuid());
             ThisCustomer.GetCardId().ShouldNotBeNull();
-           
+
         }
 
 

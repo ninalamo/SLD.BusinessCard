@@ -4,14 +4,14 @@ using CompanyFaker = Faker.Company;
 using NameFaker = Faker.Name;
 using Phone = Faker.Phone;
 
-namespace BusinessCard.Domain.Tests
+namespace BusinessCard.Domain.Tests.AggregatesModel
 {
     public class CompanyTests
     {
         [Fact]
         public void shouldBeAbleToCreate()
         {
-            string companyName = Faker.Company.Name();
+            string companyName = CompanyFaker.Name();
             Company company = new(companyName);
             company.Name.ShouldBe(companyName);
         }
@@ -19,14 +19,15 @@ namespace BusinessCard.Domain.Tests
         [Fact]
         public void shouldBeAbleToRename()
         {
-            Company company = new(Faker.Company.Name()) ;
+            Company company = new(CompanyFaker.Name());
             company.Name = "GMA";
             company.Name.ShouldBe("GMA");
         }
 
         [Fact]
-        public void shouldBeAbleToGenerateAndSaveCards() {
-            Company company = new(Faker.Company.Name());
+        public void shouldBeAbleToGenerateAndSaveCards()
+        {
+            Company company = new(CompanyFaker.Name());
             company.EnrolNFCCard(new[] { "ABC", "DEF", "XYZ", "AAA", "BBB", "CCC" });
             company.Cards.Count().ShouldBe(6);
             company.Cards.Select(c => c.Key).Contains("ABC").ShouldBeTrue();
@@ -35,7 +36,7 @@ namespace BusinessCard.Domain.Tests
         [Fact]
         public void shouldBeAbleToAddEmployee()
         {
-            Company company = new (CompanyFaker.Name()) ;
+            Company company = new(CompanyFaker.Name());
             company.AddEmployee(It.IsAny<Employee>());
             company.Employees.ShouldNotBeNull();
             company.Employees.Count().ShouldBe(1);
