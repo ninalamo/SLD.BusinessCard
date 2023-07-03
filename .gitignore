@@ -10,3 +10,5 @@
 /BusinessCard/BusinessCard.Domain.Tests/obj
 /BusinessCard/BusinessCard.Domain.Tests/bin/Debug/net6.0
 /BusinessCard/BusinessCard.Domain.Tests/StrykerOutput/2023-07-03.07-29-33/reports
+/BusinessCard/BusinessCard.Infrastructure/bin/Debug/net6.0
+/BusinessCard/BusinessCard.Infrastructure/obj
