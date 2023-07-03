@@ -8,6 +8,7 @@
         }
 
         public static BusinessCardDomainException Create(Exception? innerException) => new(MESSAGE, innerException);
+        public static BusinessCardDomainException CreateArgumentNullException(string nameOfParam) => new(MESSAGE, new ArgumentNullException($"{nameOfParam} is null."));
 
 
     }
