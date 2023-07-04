@@ -41,9 +41,11 @@ namespace BusinessCard.Tests.Domain
             Client company = new(companyName, false, Tier.Basic);
 
             await company.GenerateContactsAsync(1000);
-
+    
             company.Contacts.ShouldNotBeEmpty();
             company.Contacts.Count().ShouldBe(1000);
+            company.Contacts.First().IsTransient().ShouldBeFalse();        
+            company.Contacts.First().Card.Key.ShouldBeNullOrEmpty();
         }
 
     }
