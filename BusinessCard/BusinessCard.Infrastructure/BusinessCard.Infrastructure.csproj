@@ -15,4 +15,8 @@
     <ProjectReference Include="..\BusinessCard.Domain\BusinessCard.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>

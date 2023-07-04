@@ -1,5 +1,4 @@
-﻿using BusinessCard.Domain.AggregatesModel.CompanyAggregate;
-using BusinessCard.Domain.AggregatesModel.NFCAggregate;
+﻿using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,9 +22,9 @@ namespace BusinessCard.Infrastructure
         }
         #endregion
 
-        public DbSet<Company> Companies { get; set; }
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<NfcCard> NfcCards { get; set; }
+        public DbSet<Client> Companies { get; set; }
+        public DbSet<Person> Employees { get; set; }
+        public DbSet<Card> NfcCards { get; set; }
 
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
