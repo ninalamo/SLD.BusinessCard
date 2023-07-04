@@ -9,7 +9,7 @@ namespace BusinessCard.Tests.Domain
     public class ClientTest
     {
         [Fact]
-        public void PersonShouldBeCreated()
+        public void ClientShouldBeCreated()
         {
             string companyName = CompanyFaker.Name();
             Client company = new(companyName, false, Tier.Basic);
@@ -17,7 +17,7 @@ namespace BusinessCard.Tests.Domain
         }
 
         [Fact]
-        public void PersonShouldBeAbleToRename()
+        public void ClientShouldBeAbleToRename()
         {
             string companyName = CompanyFaker.Name();
             Client company = new(companyName, false, Tier.Basic);
@@ -32,6 +32,18 @@ namespace BusinessCard.Tests.Domain
             Client company = new(companyName, false, Tier.Basic);
             company.Contacts.ShouldBeEmpty();
             company.Contacts.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public async Task ClientShouldBeAbleToGenerateMultiplePlaceholders()
+        {
+            string companyName = CompanyFaker.Name();
+            Client company = new(companyName, false, Tier.Basic);
+
+            await company.GenerateContactsAsync(1000);
+
+            company.Contacts.ShouldNotBeEmpty();
+            company.Contacts.Count().ShouldBe(1000);
         }
 
     }

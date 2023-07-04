@@ -27,7 +27,21 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         }
         #endregion
 
-       
+        public async Task GenerateContactsAsync(int count)
+        {
+            if (count > 1000)
+            {
+                throw BusinessCardDomainException.Create(new InvalidOperationException("Count limit exceeded 1000"));
+            }
+
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    _contacts.Add(new Person());
+                }
+            });
+        }
     
 
     }
