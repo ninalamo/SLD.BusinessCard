@@ -7,7 +7,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
     {
         public string CompanyName { get; set; }
         public Tier Subscription { get; private set; }
-        public bool IsDiscreet { get; private set; }
+        public bool IsDiscreet { get; set; }
 
 
         private List<Person> _contacts;
@@ -44,12 +44,5 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         }
     
 
-    }
-
-    public interface ICompanyRepository : IRepository<Client>
-    {
-        Client Create(string name);
-        Client Update(Client company);
-        
     }
 }
