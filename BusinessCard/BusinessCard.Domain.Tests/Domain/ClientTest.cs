@@ -48,5 +48,15 @@ namespace BusinessCard.Tests.Domain
             company.Contacts.First().Card.Key.ShouldBeNullOrEmpty();
         }
 
+        [Fact]
+        public void ClientCanBeDiscreet()
+        {
+            string companyName = CompanyFaker.Name();
+            Client company = new(companyName, false, Tier.Basic);
+            company.IsDiscreet = false;
+
+            company.IsDiscreet.ShouldBeFalse();
+        }
+
     }
 }
