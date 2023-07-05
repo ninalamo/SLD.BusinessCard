@@ -6,6 +6,6 @@
         Creative = 2,
         Corporate = 3,
         Patron = 4,
-        Steward = 5,
+        Tycoon = 5,
     }
 }

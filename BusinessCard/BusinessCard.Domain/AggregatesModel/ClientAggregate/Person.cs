@@ -1,9 +1,10 @@
 ﻿
+using BusinessCard.Domain.Exceptions;
 using Newtonsoft.Json;
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
-    public class Person : Entity
+    public sealed class Person : Entity
     {
         public Person(
             string firstName, 
@@ -14,8 +15,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             string email, 
             string address, 
             string occupation,
-            string[] socialMedia,
-            Tier overrideSubscription) : base()
+            string[] socialMedia) : base()
         {
             FirstName = firstName;
             LastName = lastName;
@@ -26,10 +26,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             Address = address;
             Occupation = occupation;
             
-            OverrideSubscription = overrideSubscription;
             SetSocialMedia(socialMedia);
-            
-
         }
 
         public Person()
@@ -43,7 +40,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         }
 
         public bool IsSubsriptionOverride { get; private set; }
-        public Tier OverrideSubscription { get; private set; }
+        public Tier? OverrideSubscription { get; private set; }
 
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -58,9 +55,9 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public Card Card { get; private set; }
 
 
-        public void SetSubscription(bool isSubsriptionOverride,  Tier overrideSubscription)
+        public void SetOverrideSubscription(Tier overrideSubscription)
         {
-            IsSubsriptionOverride = isSubsriptionOverride;
+            IsSubsriptionOverride = true;
             OverrideSubscription = overrideSubscription;
         }
 
@@ -87,8 +84,31 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             }
             SocialMedia = json;
         }
-
         
+        public void SetCard(string key)
+        {
+            if (Card == default) Card = new();
+            Card.SetKey(key);
+        }
+
+        public void RemoveCard()
+        {
+            Card = null;
+        }
+
+        public bool HasCard() => Card != default;
+
+        public void EnableCard()
+        {
+            if (Card == default) throw BusinessCardDomainException.CreateArgumentNullException(nameof(Card));
+            Card.IsActive = true;
+        }
+
+        public void DisableCard()
+        {
+            if (Card == default) throw BusinessCardDomainException.CreateArgumentNullException(nameof(Card));
+            Card.Deactivate();
+        }
 
     }
 }

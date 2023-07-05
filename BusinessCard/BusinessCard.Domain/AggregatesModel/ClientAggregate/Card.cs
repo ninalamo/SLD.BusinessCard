@@ -2,15 +2,21 @@
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
-    public class Card : Entity
+    public sealed class Card : Entity
     {
 
         public string Key { get; private set; }
-        public Card() { }
 
-        public void LinkToPhysicalCard(string key)
+        public Card()
         {
-            if(key != default)
+#if DEBUG
+            Id = Guid.NewGuid();
+#endif
+        }
+
+        public void SetKey(string key)
+        {
+            if(Key != default)
             {
                 throw BusinessCardDomainException.Create(new Exception("Business validation error. NFC Key is immutable"));
             }
