@@ -27,6 +27,13 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         }
         #endregion
 
+        public void UpdateSelf(string name, bool isDiscreet, Tier subscription)
+        {
+            CompanyName = name;
+            IsDiscreet = isDiscreet;
+            Subscription = subscription;
+        }
+
         public async Task GenerateContactsAsync(int count)
         {
             if (count > 1000)
