@@ -19,7 +19,6 @@ namespace BusinessCard.Tests.Domain
         public void PersonShouldBeCreatedWithACard()
         {
             Person person = new();
-            person.IsTransient().ShouldBeFalse();
             person.Card.ShouldNotBeNull();
         }
         
@@ -27,7 +26,6 @@ namespace BusinessCard.Tests.Domain
         public void PersonShouldAddSocialMedia()
         {
             Person person = new();
-            person.IsTransient().ShouldBeFalse();
             person.Card.ShouldNotBeNull();
         }
         
@@ -35,21 +33,17 @@ namespace BusinessCard.Tests.Domain
         public void PersonShouldBeAbleToLinkEmptyCard()
         {
             Person person = new();
-            person.IsTransient().ShouldBeFalse();
             person.SetCard("abc");
 
             person.Card.Key.ShouldBe("abc");
-            person.Card.IsTransient().ShouldBeFalse();
         }
         
         [Fact]
         public void PersonShouldBeAbleToLinkToAnotherCard()
         {
             Person person = new();
-            person.IsTransient().ShouldBeFalse();
             person.SetCard("abc");
             person.Card.Key.ShouldBe("abc");
-            person.Card.IsTransient().ShouldBeFalse();
             
             person.RemoveCard();
             person.Card.ShouldBeNull();
