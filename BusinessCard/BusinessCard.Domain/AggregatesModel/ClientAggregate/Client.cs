@@ -10,13 +10,13 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public bool IsDiscreet { get; set; }
 
 
-        private List<Person> _contacts;
-        public IReadOnlyCollection<Person> Contacts => _contacts.AsReadOnly();
+        private readonly List<Person> _persons;
+        public IReadOnlyCollection<Person> Persons => _persons.AsReadOnly();
 
 
         #region Constructors and Factory
-        public Client() { 
-            _contacts = new List<Person>();
+        private Client() { 
+            _persons = new List<Person>();
             IsActive = false;
         }
         public Client(string name, bool isDiscreet, Tier subscription) : this()
@@ -38,7 +38,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             {
                 for (int i = 0; i < count; i++)
                 {
-                    _contacts.Add(new Person());
+                    _persons.Add(new Person());
                 }
             });
         }

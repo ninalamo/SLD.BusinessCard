@@ -12,7 +12,7 @@ namespace BusinessCard.API.Controllers
     [ApiController]
     public class ClientsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        
         // GET: api/Clients
         [HttpGet]
         public IEnumerable<string> Get()

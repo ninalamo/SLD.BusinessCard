@@ -14,7 +14,7 @@ internal class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
         builder.HasIndex(b => b.CompanyName).IsUnique();
 
         builder.Metadata
-            .FindNavigation(nameof(Client.Contacts))
+            .FindNavigation(nameof(Client.Persons))
             .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

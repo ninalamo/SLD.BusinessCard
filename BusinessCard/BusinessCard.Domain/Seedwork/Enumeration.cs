@@ -13,7 +13,7 @@ public abstract class Enumeration : IComparable
 
     public Guid Id { get; }
 
-    public int CompareTo(object other)
+    public int CompareTo(object? other)
     {
         return Id.CompareTo(((Enumeration)other).Id);
     }
@@ -32,11 +32,11 @@ public abstract class Enumeration : IComparable
             .Cast<T>();
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is not Enumeration otherValue) return false;
 
-        var typeMatches = GetType().Equals(obj.GetType());
+        var typeMatches = GetType() == obj.GetType();
         var valueMatches = Id.Equals(otherValue.Id);
 
         return typeMatches && valueMatches;

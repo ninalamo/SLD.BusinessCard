@@ -9,18 +9,16 @@
     public bool IsTransient() => Id == default;
 
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        if (obj == null || !(obj is Entity))
+        if (obj == null || !(obj is Entity item))
             return false;
 
-        if (ReferenceEquals(this, obj))
+        if (ReferenceEquals(this, item))
             return true;
 
-        if (GetType() != obj.GetType())
+        if (GetType() != item.GetType())
             return false;
-
-        var item = (Entity)obj;
 
         if (item.IsTransient() || IsTransient())
             return false;
@@ -43,7 +41,7 @@
         return base.GetHashCode();
     }
 
-    public static bool operator ==(Entity left, Entity right)
+    public static bool operator ==(Entity left, Entity? right)
     {
         if (Equals(left, null))
             return Equals(right, null) ? true : false;

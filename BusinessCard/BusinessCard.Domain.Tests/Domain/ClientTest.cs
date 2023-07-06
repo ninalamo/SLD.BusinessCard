@@ -17,7 +17,7 @@ namespace BusinessCard.Tests.Domain
             Client company = new(companyName, false, Tier.Basic);
             company.CompanyName.ShouldBe(companyName);
 
-            var assembly = Assembly.GetAssembly(typeof(LokiContext)).GetName().Name;
+            var assembly = Assembly.GetAssembly(typeof(LokiContext))?.GetName().Name;
             assembly.ShouldNotBeNullOrEmpty(assembly);
         }
 
@@ -35,8 +35,8 @@ namespace BusinessCard.Tests.Domain
         {
             string companyName = CompanyFaker.Name();
             Client company = new(companyName, false, Tier.Basic);
-            company.Contacts.ShouldBeEmpty();
-            company.Contacts.ShouldNotBeNull();
+            company.Persons.ShouldBeEmpty();
+            company.Persons.ShouldNotBeNull();
         }
 
         [Fact]
@@ -47,10 +47,10 @@ namespace BusinessCard.Tests.Domain
 
             await company.GenerateContactsAsync(1000);
     
-            company.Contacts.ShouldNotBeEmpty();
-            company.Contacts.Count().ShouldBe(1000);
-            company.Contacts.First().IsTransient().ShouldBeFalse();        
-            company.Contacts.First().Card.Key.ShouldBeNullOrEmpty();
+            company.Persons.ShouldNotBeEmpty();
+            company.Persons.Count().ShouldBe(1000);
+            company.Persons.First().IsTransient().ShouldBeFalse();        
+            company.Persons.First().Card.Key.ShouldBeNullOrEmpty();
         }
 
         [Fact]

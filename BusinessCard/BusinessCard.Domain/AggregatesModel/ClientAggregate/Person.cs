@@ -32,7 +32,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public Person()
         {
             IsSubsriptionOverride = false;
-            Card = new();
+            Card = new Card();
             
 #if DEBUG
             Id = Guid.NewGuid();
@@ -96,7 +96,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             Card = null;
         }
 
-        public bool HasCard() => Card != default;
+        public bool HasCard() => Card != default(Card);
 
         public void EnableCard()
         {
