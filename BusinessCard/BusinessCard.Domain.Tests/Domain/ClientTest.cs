@@ -1,4 +1,6 @@
-﻿using BusinessCard.Domain.AggregatesModel.ClientAggregate;
+﻿using System.Reflection;
+using BusinessCard.Domain.AggregatesModel.ClientAggregate;
+using BusinessCard.Infrastructure;
 using Shouldly;
 using CompanyFaker = Faker.Company;
 using NameFaker = Faker.Name;
@@ -14,6 +16,9 @@ namespace BusinessCard.Tests.Domain
             string companyName = CompanyFaker.Name();
             Client company = new(companyName, false, Tier.Basic);
             company.CompanyName.ShouldBe(companyName);
+
+            var assembly = Assembly.GetAssembly(typeof(LokiContext)).GetName().Name;
+            assembly.ShouldNotBeNullOrEmpty(assembly);
         }
 
         [Fact]
