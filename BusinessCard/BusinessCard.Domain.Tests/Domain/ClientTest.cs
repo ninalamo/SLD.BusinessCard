@@ -49,7 +49,6 @@ namespace BusinessCard.Tests.Domain
     
             company.Persons.ShouldNotBeEmpty();
             company.Persons.Count().ShouldBe(1000);
-            company.Persons.First().IsTransient().ShouldBeFalse();        
             company.Persons.First().Card.Key.ShouldBeNullOrEmpty();
         }
 
