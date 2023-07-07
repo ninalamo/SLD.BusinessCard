@@ -33,6 +33,11 @@ public class UpsertClientCommandValidation : AbstractValidator<UpsertClientComma
 public class UpsertClientCommandHandler : IRequestHandler<UpsertClientCommand, CommandResult>
 {
     private readonly IClientsRepository _repository;
+
+    public UpsertClientCommandHandler(IClientsRepository repository)
+    {
+        _repository = repository;
+    }
     public async Task<CommandResult> Handle(UpsertClientCommand request, CancellationToken cancellationToken)
     {
         var id = Guid.Empty;
@@ -49,7 +54,7 @@ public class UpsertClientCommandHandler : IRequestHandler<UpsertClientCommand, C
             id = _repository.Create(request.CompanyName, request.IsDiscreet, request.Subscription).Id;
         }
 
-        _repository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await _repository.UnitOfWork.SaveChangesAsync(cancellationToken);
         return CommandResult.Success(id);
     }
 }

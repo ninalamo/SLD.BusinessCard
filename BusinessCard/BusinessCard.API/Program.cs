@@ -3,6 +3,7 @@
 using System.Net;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using Autofac.Extensions.DependencyInjection;
 using BusinessCard.API;
 using BusinessCard.API.Application.Behaviors;
 using BusinessCard.API.Extensions;
@@ -25,6 +26,9 @@ builder
     .Services
     .AddCustomDbContext(builder.Configuration)
     .AddCustomSwagger();
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
 
 builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder =>
 {
@@ -56,38 +60,15 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavi
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
 
+
+
+
+
+
 //claims middlewares
 builder.Services.AddScoped(typeof(ICurrentUser), typeof(CurrentUser));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-builder.WebHost
-    .ConfigureKestrel(options =>
-    {
-        options.Listen(IPAddress.Any, builder.Configuration.GetValue("GRPC_PORT", 5001),
-            listenOptions =>
-            {
-                listenOptions.Protocols = HttpProtocols.Http1;
-            });
-        options.Listen(IPAddress.Any, builder.Configuration.GetValue("PORT", 80),
-            listenOptions =>
-                listenOptions.Protocols = HttpProtocols.Http1);
-
-
-        //options.ListenLocalhost(5001,o => o.Protocols = HttpProtocols.Http2);
-
-        // var config = (IConfiguration)options.ApplicationServices.GetService(typeof(IConfiguration));
-        // var cert = new X509Certificate2(config["Certificate:File"],
-        //     config["Certificate:Password"]);
-        //
-        // options.ConfigureHttpsDefaults(h =>
-        // {
-        //
-        //     h.ClientCertificateMode = ClientCertificateMode.AllowCertificate;
-        //     h.CheckCertificateRevocation = false;
-        //     h.ServerCertificate = cert;
-        // });
-    });
-    
+   
 
 var app = builder.Build();
 
@@ -99,8 +80,9 @@ if (app.Environment.IsDevelopment())
 
 }
 
-app.MapGrpcService<ClientsService>();
 app.MapGrpcService<GreeterService>();
+
+app.MapGet("/", () => "");
 
 app.UseHttpsRedirection();
 

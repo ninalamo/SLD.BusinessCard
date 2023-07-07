@@ -21,7 +21,6 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
     public override async Task<UpsertClientGrpcCommandResult> UpsertClient(UpsertClientGrpcCommand request, ServerCallContext context)
     {
-        
         Guid? id = string.IsNullOrEmpty(request.Id) ? default : Guid.Parse(request.Id);
         var result = await _mediator.Send(new UpsertClientCommand(id, request.CompanyName,request.IsDiscreet,(Tier)request.Subscription));
         return new UpsertClientGrpcCommandResult
