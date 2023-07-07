@@ -13,8 +13,9 @@ Contains business entities relating to database persistence with self-evaluating
 This contains dependencies that are external in nature -- such as database persistence, email, message queues and pipelines etc.
 <br/>
 
-### Mvc (Application)
-Entry point of the application -- but for an api-based application this is the API.
+### Mvc (Application) - GRPC Application
+Microservice monolith set on gRPC protocol. https://learn.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-7.0
+This is the main mode of communication between app servers.
 
 ## Local Setup
 
