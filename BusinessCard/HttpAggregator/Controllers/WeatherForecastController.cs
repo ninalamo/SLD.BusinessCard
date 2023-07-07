@@ -1,3 +1,5 @@
+using Grpc.Net.Client;
+using GrpcGreeter;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HttpAggregator.Controllers;
@@ -19,14 +21,20 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    public async Task<string> Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+        AppContext.SetSwitch(
+            "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+        var httpHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+        using var channel = GrpcChannel.ForAddress("http://localhost:80", new GrpcChannelOptions(){HttpHandler = httpHandler});
+        var client = new Greeter.GreeterClient(channel);
+        var reply = await client.SayHelloAsync(
+            new HelloRequest { Name = "GreeterClient" });
+        return reply.ToString();
     }
 }

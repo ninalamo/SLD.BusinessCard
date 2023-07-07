@@ -31,4 +31,10 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             IsSuccess = result.IsSuccess
         };
     }
+    
+
+
+    #region snippet
+    
+    #endregion
 }
