@@ -7,6 +7,13 @@ namespace BusinessCard.API.Application.Commands.UpsertClient;
 
 public class UpsertClientCommand : IRequest<CommandResult>
 {
+    public UpsertClientCommand(Guid? id, string companyName, bool isDiscreet, Tier subscription)
+    {
+        Id = id;
+        CompanyName = companyName;
+        IsDiscreet = isDiscreet;
+        Subscription = subscription;
+    }
     public Guid? Id { get; private set; }
     public string CompanyName { get; private set; }
     public Tier Subscription { get; private set; }

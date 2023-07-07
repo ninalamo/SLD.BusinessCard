@@ -11,6 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessCard.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCard.API", "BusinessCard.API\BusinessCard.API.csproj", "{FF2F5CA0-B3F0-4017-BE00-41D56135C27F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{627161FF-58E4-4126-9B54-8F5C2EC7CD04}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{6663050D-46F6-4B84-9C0D-66A0FB4AE832}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5EBE7200-0198-4CD5-92E2-22ABB07BE2D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,5 +45,11 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B14630CA-BA53-445A-8507-369A58154D2D}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FF2F5CA0-B3F0-4017-BE00-41D56135C27F} = {627161FF-58E4-4126-9B54-8F5C2EC7CD04}
+		{8AEB86D5-D02B-40CB-B20E-56211A343AE2} = {627161FF-58E4-4126-9B54-8F5C2EC7CD04}
+		{9D73A02E-CF4D-40D3-840A-F67C0E72668E} = {627161FF-58E4-4126-9B54-8F5C2EC7CD04}
+		{11A5E053-4D08-4542-B61F-2009DFE8E79A} = {5EBE7200-0198-4CD5-92E2-22ABB07BE2D8}
 	EndGlobalSection
 EndGlobal

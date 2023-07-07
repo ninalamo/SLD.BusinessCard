@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option csharp_namespace = "ClientService";
+
+package BusinessCardApi;
+
+service ClientGrpc {
+    rpc UpsertClient(UpsertClientGrpcCommand) returns (UpsertClientGrpcCommandResult) {}
+}
+
+message UpsertClientGrpcCommand {
+    string id = 1;
+    string companyName = 2;
+    bool isDiscreet = 3;
+    int32 subscription = 4;
+}
+
+
+message UpsertClientGrpcCommandResult {
+    string id = 1;
+    string errorMessage = 2;
+    bool isSuccess = 3;
+}
+
+
