@@ -37,21 +37,7 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder =>
         .AllowAnyHeader()
         .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
 }));
-//
-// builder.Services.AddAuthentication().AddCertificate(opt =>
-// {
-//     opt.AllowedCertificateTypes = CertificateTypes.SelfSigned;
-//     opt.RevocationMode = X509RevocationMode.NoCheck; // Self-Signed Certs (Development)
-//     opt.Events = new CertificateAuthenticationEvents()
-//     {
-//         OnCertificateValidated = ctx =>
-//         {
-//             // Write additional Validation  
-//             ctx.Success();
-//             return Task.CompletedTask;
-//         }
-//     };
-// });
+
 
 
 //register mediatr and pipelines
