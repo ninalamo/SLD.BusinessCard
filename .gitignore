@@ -4,19 +4,10 @@
 
 /.vs
 /BusinessCard/.vs
-/BusinessCard/BusinessCard.Domain/obj
-/BusinessCard/BusinessCard.Domain/bin/Debug/net6.0
-/BusinessCard/BusinessCard.Domain.Tests/obj/Debug/net6.0
-/BusinessCard/BusinessCard.Domain.Tests/obj
-/BusinessCard/BusinessCard.Domain.Tests/bin/Debug/net6.0
-/BusinessCard/BusinessCard.Domain.Tests/StrykerOutput/2023-07-03.07-29-33/reports
-/BusinessCard/BusinessCard.Infrastructure/bin/Debug/net6.0
-/BusinessCard/BusinessCard.Infrastructure/obj
-/BusinessCard/BusinessCard.API/obj
-/BusinessCard/BusinessCard.API/bin/Debug/net6.0
-BusinessCard/.idea/.idea.BusinessCard/.idea/vcs.xml
-BusinessCard/.idea/.idea.BusinessCard/.idea/indexLayout.xml
-BusinessCard/.idea/.idea.BusinessCard/.idea/encodings.xml
+*/obj
+*/bin/Debug/net6.0
+*/StrykerOutput/2023-07-03.07-29-33/reports
+.idea/
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio
