@@ -19,5 +19,15 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
         builder.Property(b => b.SocialMedia).IsRequired();
 
         builder.Property<Guid>("ClientId").IsRequired();
+        
+        builder.Property<Guid>("_memberTierId")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("MemberTierId")
+            .IsRequired();
+
+        builder.HasOne<MemberTier>()
+            .WithMany()
+            .HasForeignKey("_memberTierId")
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

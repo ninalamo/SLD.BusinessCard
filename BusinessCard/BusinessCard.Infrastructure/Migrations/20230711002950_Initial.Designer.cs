@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessCard.Infrastructure.Migrations
 {
     [DbContext(typeof(LokiContext))]
-    [Migration("20230706140204_Initial")]
+    [Migration("20230711002950_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -89,15 +89,85 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("Subscription")
-                        .HasColumnType("int");
+                    b.Property<Guid>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyName")
                         .IsUnique();
 
+                    b.HasIndex("SubscriptionId");
+
                     b.ToTable("client", "kardibee");
+                });
+
+            modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.MemberTier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Level")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("membertier", "kardibee");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Level = 1,
+                            Name = "level_one"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                            Level = 2,
+                            Name = "level_two"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000003"),
+                            Level = 3,
+                            Name = "level_three"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000004"),
+                            Level = 4,
+                            Name = "level_four"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000005"),
+                            Level = 5,
+                            Name = "level_five"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000006"),
+                            Level = 6,
+                            Name = "level_six"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000007"),
+                            Level = 7,
+                            Name = "level_seven"
+                        });
                 });
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Person", b =>
@@ -160,9 +230,6 @@ namespace BusinessCard.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OverrideSubscription")
-                        .HasColumnType("int");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -171,13 +238,30 @@ namespace BusinessCard.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("_memberTierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("MemberTierId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CardId");
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("_memberTierId");
+
                     b.ToTable("people", "kardibee");
+                });
+
+            modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", b =>
+                {
+                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.MemberTier", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Person", b =>
@@ -192,6 +276,12 @@ namespace BusinessCard.Infrastructure.Migrations
                         .WithMany("Persons")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.MemberTier", null)
+                        .WithMany()
+                        .HasForeignKey("_memberTierId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Card");

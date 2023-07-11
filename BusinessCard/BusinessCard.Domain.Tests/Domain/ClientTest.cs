@@ -14,7 +14,7 @@ namespace BusinessCard.Tests.Domain
         public void ClientShouldBeCreated()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, Tier.Basic);
+            Client company = new(companyName, false, Guid.Empty);
             company.CompanyName.ShouldBe(companyName);
 
             var assembly = Assembly.GetAssembly(typeof(LokiContext))?.GetName().Name;
@@ -25,7 +25,7 @@ namespace BusinessCard.Tests.Domain
         public void ClientShouldBeAbleToRename()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, Tier.Basic);
+            Client company = new(companyName, false,Guid.Empty);
             company.CompanyName = "GMA";
             company.CompanyName.ShouldBe("GMA");
         }
@@ -34,7 +34,7 @@ namespace BusinessCard.Tests.Domain
         public void PersonShouldHaveEmptyButNotNullContacts()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, Tier.Basic);
+            Client company = new(companyName, false, Guid.Empty);
             company.Persons.ShouldBeEmpty();
             company.Persons.ShouldNotBeNull();
         }
@@ -43,7 +43,7 @@ namespace BusinessCard.Tests.Domain
         public async Task ClientShouldBeAbleToGenerateMultiplePlaceholders()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, Tier.Basic);
+            Client company = new(companyName, false, Guid.Empty);
 
             await company.GenerateContactsAsync(1000);
     
@@ -56,7 +56,7 @@ namespace BusinessCard.Tests.Domain
         public void ClientCanBeDiscreet()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, Tier.Basic);
+            Client company = new(companyName, false, Guid.Empty);
             company.IsDiscreet = false;
 
             company.IsDiscreet.ShouldBeFalse();

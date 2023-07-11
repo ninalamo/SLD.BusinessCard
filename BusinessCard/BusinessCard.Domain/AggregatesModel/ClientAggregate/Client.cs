@@ -6,7 +6,9 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
     public class Client : Entity, IAggregateRoot
     {
         public string CompanyName { get; set; }
-        public Tier Subscription { get; private set; }
+
+        private Guid MemberTierId;
+        public MemberTier Subscription { get; private set; }
         public bool IsDiscreet { get; set; }
 
 
@@ -19,19 +21,19 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             _persons = new List<Person>();
             IsActive = false;
         }
-        public Client(string name, bool isDiscreet, Tier subscription) : this()
+        public Client(string name, bool isDiscreet, Guid memberTierId) : this()
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
-            Subscription = subscription;
+            MemberTierId = memberTierId;
         }
         #endregion
 
-        public void UpdateSelf(string name, bool isDiscreet, Tier subscription)
+        public void UpdateSelf(string name, bool isDiscreet, int subscription)
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
-            Subscription = subscription;
+            MemberTierId = MemberTier.GetLevels().First(i => i.Level == subscription).Id;
         }
 
         public async Task GenerateContactsAsync(int count)

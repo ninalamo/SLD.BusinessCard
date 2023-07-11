@@ -15,7 +15,7 @@ public class ClientsRepository : IClientsRepository
         _context = context ?? throw BusinessCardDomainException.CreateArgumentNullException(nameof(context));
     }
     
-    public Client Create(string name, bool isDiscreet, Tier subsription) => _context.Clients.Add(new Client(name, isDiscreet, subsription)).Entity;
+    public Client Create(string name, bool isDiscreet, Guid tierId) => _context.Clients.Add(new Client(name, isDiscreet, tierId)).Entity;
 
     public Client Update(Client client) => _context.Clients.Update(client).Entity;
 

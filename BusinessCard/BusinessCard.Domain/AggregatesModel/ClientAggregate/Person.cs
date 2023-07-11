@@ -6,6 +6,8 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
     public sealed class Person : Entity
     {
+        private Guid _memberTierId;
+
         public Person(
             string firstName, 
             string lastName, 
@@ -15,7 +17,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             string email, 
             string address, 
             string occupation,
-            string[] socialMedia) : base()
+            string[] socialMedia) : this()
         {
             FirstName = firstName;
             LastName = lastName;
@@ -32,6 +34,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public Person()
         {
             IsSubsriptionOverride = false;
+            _memberTierId = MemberTier.GetLevels().First(i => i.Level == 1).Id;
             Card = new Card();
             
 #if DEBUG
@@ -40,7 +43,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         }
 
         public bool IsSubsriptionOverride { get; private set; }
-        public Tier? OverrideSubscription { get; private set; }
+
 
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -55,11 +58,11 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public Card Card { get; private set; }
 
 
-        public void SetOverrideSubscription(Tier overrideSubscription)
-        {
-            IsSubsriptionOverride = true;
-            OverrideSubscription = overrideSubscription;
-        }
+        // public void SetOverrideSubscription(MemberTier overrideSubscription)
+        // {
+        //     IsSubsriptionOverride = true;
+        //     MemberTier = overrideSubscription;
+        // }
 
         public void SetName(string firstname,string lastname, string middlename, string nameSuffix)
         {
