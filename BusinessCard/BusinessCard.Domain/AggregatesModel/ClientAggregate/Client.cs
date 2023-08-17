@@ -7,8 +7,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
     {
         public string CompanyName { get; set; }
 
-        private Guid MemberTierId;
-        public MemberTier Subscription { get; private set; }
+        private Guid _memberTierId;
         public bool IsDiscreet { get; set; }
 
 
@@ -25,7 +24,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
-            MemberTierId = memberTierId;
+            _memberTierId = memberTierId;
         }
         #endregion
 
@@ -33,7 +32,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
-            MemberTierId = MemberTier.GetLevels().First(i => i.Level == subscription).Id;
+            _memberTierId = MemberTier.GetLevels().First(i => i.Level == subscription).Id;
         }
 
         public async Task GenerateContactsAsync(int count)

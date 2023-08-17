@@ -10,15 +10,16 @@
 
   <ItemGroup>
     <Protobuf Include="Proto\client_commands.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
-    <Content Include="Proto\client_commands.proto" />
+<!--    <Content Include="Proto\client_commands.proto" />-->
     <Protobuf Include="Proto\greet.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
-    <Content Include="Proto\greet.proto" />
-    <None Remove="@(Protobuf)" />
+<!--    <Content Include="Proto\greet.proto" />-->
+<!--    <None Remove="@(Protobuf)" />-->
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.5.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection.AzureFunctions" Version="7.2.0.92" />
     <PackageReference Include="FluentValidation" Version="11.6.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Google.Protobuf" Version="3.23.4" />

@@ -16,5 +16,15 @@ internal class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
         builder.Metadata
             .FindNavigation(nameof(Client.Persons))
             .SetPropertyAccessMode(PropertyAccessMode.Field);
+        
+        builder.Property<Guid>("_memberTierId")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("MemberTierId")
+            .IsRequired();
+
+        builder.HasOne<MemberTier>()
+            .WithMany()
+            .HasForeignKey("_memberTierId")
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

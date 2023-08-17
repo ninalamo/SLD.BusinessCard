@@ -6,9 +6,14 @@ using System.Security.Cryptography.X509Certificates;
 using Autofac.Extensions.DependencyInjection;
 using BusinessCard.API;
 using BusinessCard.API.Application.Behaviors;
+using BusinessCard.API.Application.Commands;
+using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.API.Extensions;
 using BusinessCard.API.Grpc;
+using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
+using BusinessCard.Infrastructure.Repositories;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
@@ -30,6 +35,8 @@ builder
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 
+
+
 builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder =>
 {
     builder.AllowAnyOrigin()
@@ -46,6 +53,15 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavi
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
 
+// Register command and query handlers
+builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
+builder.Services.AddScoped<IRequestHandler<UpsertClientCommand, CommandResult>, UpsertClientCommandHandler>();
+    
+// Register notification handlers
+// builder.Services.AddScoped(typeof(INotificationHandler<>), typeof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler));
+
+// Register validators
+builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(UpsertClientCommandValidation)));
 
 
 
@@ -67,6 +83,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapGrpcService<GreeterService>();
+app.MapGrpcService<ClientsService>();
 
 app.MapGet("/", () => "");
 

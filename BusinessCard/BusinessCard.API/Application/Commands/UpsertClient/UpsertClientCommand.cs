@@ -40,12 +40,16 @@ public class UpsertClientCommandHandler : IRequestHandler<UpsertClientCommand, C
     }
     public async Task<CommandResult> Handle(UpsertClientCommand request, CancellationToken cancellationToken)
     {
-        var id = Guid.Empty;
+        Guid id = Guid.Empty;
         var tier = MemberTier.GetLevels().First(i => i.Level == request.MemberTierLevel).Id;
-        if (request.Id.HasValue)
+        if (request.Id.HasValue && request.Id.Value != Guid.Empty)
         {
             //update
             var updated = await _repository.GetEntityByIdAsync(request.Id.Value);
+
+            if (updated == null) 
+                return CommandResult.Failed(request.Id, $"Client with id:{request.Id} does not exist.");
+           
             updated.UpdateSelf(request.CompanyName,request.IsDiscreet,request.MemberTierLevel);
             id = _repository.Update(updated).Id;
         }
@@ -54,8 +58,6 @@ public class UpsertClientCommandHandler : IRequestHandler<UpsertClientCommand, C
             //create
             id = _repository.Create(request.CompanyName, request.IsDiscreet,tier).Id;
         }
-
-        await _repository.UnitOfWork.SaveChangesAsync(cancellationToken);
         return CommandResult.Success(id);
     }
 }

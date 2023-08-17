@@ -22,7 +22,7 @@ public record CommandResult
 
     public static CommandResult Success(Guid? id)
     {
-        return Create(true, default, id);
+        return Create(true, string.Empty, id);
     }
 
     public static CommandResult Failed(Guid? id, string errorMessage)

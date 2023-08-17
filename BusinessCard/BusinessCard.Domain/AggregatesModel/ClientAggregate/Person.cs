@@ -57,13 +57,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public string Occupation { get; private set; }
         public Card Card { get; private set; }
 
-
-        // public void SetOverrideSubscription(MemberTier overrideSubscription)
-        // {
-        //     IsSubsriptionOverride = true;
-        //     MemberTier = overrideSubscription;
-        // }
-
         public void SetName(string firstname,string lastname, string middlename, string nameSuffix)
         {
             FirstName = firstname;
@@ -83,7 +76,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         {
             var json = string.Empty;
             if (links.Any()) {
-                json = JsonConvert.SerializeObject(links.Select(x => new { link = x }).ToArray());
+                json = JsonConvert.SerializeObject(links.Select(x => new { Link = x }).ToArray());
             }
             SocialMedia = json;
         }
