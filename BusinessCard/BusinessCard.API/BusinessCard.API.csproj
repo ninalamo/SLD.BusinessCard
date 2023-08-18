@@ -54,7 +54,6 @@
     <Folder Include="Application\IntegrationEvents\EventHandling\" />
     <Folder Include="Application\IntegrationEvents\Events\" />
     <Folder Include="Application\Queries\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
