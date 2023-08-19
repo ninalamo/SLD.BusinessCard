@@ -1,4 +1,6 @@
+using BusinessCard.API.Application.Commands.EditClientCommandHandler;
 using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.API.Exceptions;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Exceptions;
 using ClientService;
@@ -21,25 +23,33 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
     public override async Task<ClientGrpcCommandResult> AddClientGrpc(AddClientGrpcCommand request, ServerCallContext context)
     {
-        var result = await _mediator.Send(new AddClientCommand( request.CompanyName,request.IsDiscreet,request.Subscription));
-        return new ClientGrpcCommandResult
+        try
         {
-            ErrorMessage = result.ErrorMessage,
-            Id = result.Id?.ToString(),
-            IsSuccess = result.IsSuccess
-        };
+            var result =
+                await _mediator.Send(
+                    new AddClientCommand(request.CompanyName, request.IsDiscreet, request.Subscription));
+            return new ClientGrpcCommandResult
+            {
+                Id = result.Id?.ToString(),
+            };
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 
-    public override Task<ClientGrpcCommandResult> EditClientGrpc(EditClientGrpcCommand request, ServerCallContext context)
+    public override async Task<ClientGrpcCommandResult> EditClientGrpc(EditClientGrpcCommand request, ServerCallContext context)
     {
         //TODO: Fix this shit
-        // var result = await _mediator.Send(new EditClientCommand(request.Id, request.CompanyName,request.IsDiscreet,request.Subscription));
-        // return new ClientGrpcCommandResult
-        // {
-        //     ErrorMessage = result.ErrorMessage,
-        //     Id = result.Id?.ToString(),
-        //     IsSuccess = result.IsSuccess
-        // };
+        if (!Guid.TryParse(request.Id, out var guid))
+            throw BusinessCardApiException.Create(new ArgumentException("Id is not a Guid."));
+        
+         var result = await _mediator.Send(new EditClientCommand(guid, request.CompanyName,request.Subscription,request.IsDiscreet));
+         return new ClientGrpcCommandResult
+         {
+             Id = result.ToString(),
+         };
 
         return null;
 
