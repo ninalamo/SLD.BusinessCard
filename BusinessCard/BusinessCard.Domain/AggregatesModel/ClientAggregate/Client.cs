@@ -26,6 +26,19 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             IsDiscreet = isDiscreet;
             _memberTierId = memberTierId;
         }
+        
+        public Client(string name, bool isDiscreet, int level) : this()
+        {
+            CompanyName = name;
+            IsDiscreet = isDiscreet;
+            var tier = MemberTier.GetLevels().FirstOrDefault(i => i.Level == level)?.Id;
+            
+            if(!tier.HasValue) throw BusinessCardDomainException.Create(new ArgumentException(nameof(level)));
+            if (tier.Value == Guid.Empty) throw BusinessCardDomainException.Create(new ArgumentException(nameof(level)));
+
+            _memberTierId = tier.Value;
+
+        }
         #endregion
 
         public void UpdateSelf(string name, bool isDiscreet, int subscription)

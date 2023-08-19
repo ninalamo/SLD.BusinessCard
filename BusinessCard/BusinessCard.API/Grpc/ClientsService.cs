@@ -19,16 +19,29 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         _logger = logger ?? throw BusinessCardDomainException.CreateArgumentNullException(nameof(logger));
     }
 
-    public override async Task<UpsertClientGrpcCommandResult> UpsertClient(UpsertClientGrpcCommand request, ServerCallContext context)
+    public override async Task<ClientGrpcCommandResult> AddClientGrpc(AddClientGrpcCommand request, ServerCallContext context)
     {
-        Guid? id = string.IsNullOrEmpty(request.Id) ? Guid.Empty : Guid.Parse(request.Id);
-        var result = await _mediator.Send(new UpsertClientCommand(id, request.CompanyName,request.IsDiscreet,request.Subscription));
-        return new UpsertClientGrpcCommandResult
+        var result = await _mediator.Send(new AddClientCommand( request.CompanyName,request.IsDiscreet,request.Subscription));
+        return new ClientGrpcCommandResult
         {
             ErrorMessage = result.ErrorMessage,
             Id = result.Id?.ToString(),
             IsSuccess = result.IsSuccess
         };
     }
-    
+
+    public override Task<ClientGrpcCommandResult> EditClientGrpc(EditClientGrpcCommand request, ServerCallContext context)
+    {
+        //TODO: Fix this shit
+        // var result = await _mediator.Send(new EditClientCommand(request.Id, request.CompanyName,request.IsDiscreet,request.Subscription));
+        // return new ClientGrpcCommandResult
+        // {
+        //     ErrorMessage = result.ErrorMessage,
+        //     Id = result.Id?.ToString(),
+        //     IsSuccess = result.IsSuccess
+        // };
+
+        return null;
+
+    }
 }

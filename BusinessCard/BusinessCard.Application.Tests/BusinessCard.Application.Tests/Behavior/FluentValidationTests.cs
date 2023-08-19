@@ -15,17 +15,17 @@ public class FluentValidationTests
     public async Task Handle_ValidRequest_NoValidationErrors()
     {
         // Arrange
-        var validators = new List<IValidator<UpsertClientCommand>>
+        var validators = new List<IValidator<AddClientCommand>>
         {
-            new UpsertClientCommandValidation()
+            new AddClientCommandValidator()
         };
 
-        var loggerMock = new Mock<ILogger<ValidatorBehavior<UpsertClientCommand, CommandResult>>>();
-        var request = new UpsertClientCommand(null,"Sonic Lynx Digital",true,1);
+        var loggerMock = new Mock<ILogger<ValidatorBehavior<AddClientCommand, CommandResult>>>();
+        var request = new AddClientCommand("Sonic Lynx Digital",true,1);
         var nextHandlerMock = new Mock<RequestHandlerDelegate<CommandResult>>();
         nextHandlerMock.Setup(h => h()).ReturnsAsync(CommandResult.Success(Guid.NewGuid()));
 
-        var behavior = new ValidatorBehavior<UpsertClientCommand, CommandResult>(validators, loggerMock.Object);
+        var behavior = new ValidatorBehavior<AddClientCommand, CommandResult>(validators, loggerMock.Object);
 
         // Act
         var result = await behavior.Handle(request, nextHandlerMock.Object, CancellationToken.None);

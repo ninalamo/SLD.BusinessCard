@@ -19,7 +19,7 @@ public class ClientsRepository : IClientsRepository
 
     public Client Update(Client client) => _context.Clients.Update(client).Entity;
 
-    public async Task<Client> GetEntityByIdAsync(Guid id) => await _context.Clients.Include(c => c.Persons).ThenInclude(p => p.Card).SingleOrDefaultAsync(c => c.Id == id);
+    public async Task<Client> GetEntityByIdAsync(Guid id) => await _context.Clients.SingleOrDefaultAsync(c => c.Id == id);
 
-    public async Task<Client> GetWithPropertiesByIdAsync(Guid id) =>  await _context.Clients.SingleOrDefaultAsync(c => c.Id == id);
+    public async Task<Client> GetWithPropertiesByIdAsync(Guid id) =>  await _context.Clients.Include(c => c.Persons).ThenInclude(p => p.Card).SingleOrDefaultAsync(c => c.Id == id);
 }

@@ -5,10 +5,17 @@ option csharp_namespace = "ClientService";
 package BusinessCardApi;
 
 service ClientGrpc {
-    rpc UpsertClient(UpsertClientGrpcCommand) returns (UpsertClientGrpcCommandResult) {}
+    rpc AddClientGrpc(AddClientGrpcCommand) returns (ClientGrpcCommandResult) {}
+    rpc EditClientGrpc(EditClientGrpcCommand) returns (ClientGrpcCommandResult) {}
 }
 
-message UpsertClientGrpcCommand {
+message AddClientGrpcCommand {    
+    string companyName = 1;
+    bool isDiscreet = 2;
+    int32 subscription = 3;
+}
+
+message EditClientGrpcCommand {
     string id = 1;
     string companyName = 2;
     bool isDiscreet = 3;
@@ -16,7 +23,7 @@ message UpsertClientGrpcCommand {
 }
 
 
-message UpsertClientGrpcCommandResult {
+message ClientGrpcCommandResult {
     string id = 1;
     string errorMessage = 2;
     bool isSuccess = 3;

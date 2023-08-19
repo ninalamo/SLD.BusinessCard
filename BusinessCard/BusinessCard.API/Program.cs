@@ -10,6 +10,7 @@ using BusinessCard.API.Application.Commands;
 using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.API.Extensions;
 using BusinessCard.API.Grpc;
+using BusinessCard.API.Logging;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
 using BusinessCard.Infrastructure.Repositories;
@@ -45,7 +46,7 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder =>
         .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
 }));
 
-
+builder.Services.AddScoped(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 
 //register mediatr and pipelines
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblies(typeof(Program).Assembly));
@@ -55,13 +56,13 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBeha
 
 // Register command and query handlers
 builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
-builder.Services.AddScoped<IRequestHandler<UpsertClientCommand, CommandResult>, UpsertClientCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AddClientCommand, CommandResult>, AddClientCommandHandler>();
     
 // Register notification handlers
 // builder.Services.AddScoped(typeof(INotificationHandler<>), typeof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler));
 
 // Register validators
-builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(UpsertClientCommandValidation)));
+builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(AddClientCommandValidator)));
 
 
 

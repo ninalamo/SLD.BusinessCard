@@ -26,7 +26,7 @@ namespace BusinessCard.Infrastructure
 
         #endregion
 
-        public DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Card> Cards { get; set; }
 
@@ -41,9 +41,9 @@ namespace BusinessCard.Infrastructure
             return await base.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<int> SaveEntitiesAsync(CancellationToken token = default)
+        public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
-            return await SaveChangesAsync(token);
+            return await SaveChangesAsync(cancellationToken);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
