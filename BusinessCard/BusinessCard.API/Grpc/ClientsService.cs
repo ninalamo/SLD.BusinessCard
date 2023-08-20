@@ -23,25 +23,17 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
     public override async Task<ClientGrpcCommandResult> AddClientGrpc(AddClientGrpcCommand request, ServerCallContext context)
     {
-        try
+        var result =
+            await _mediator.Send(
+                new AddClientCommand(request.CompanyName, request.IsDiscreet, request.Subscription));
+        return new ClientGrpcCommandResult
         {
-            var result =
-                await _mediator.Send(
-                    new AddClientCommand(request.CompanyName, request.IsDiscreet, request.Subscription));
-            return new ClientGrpcCommandResult
-            {
-                Id = result.Id?.ToString(),
-            };
-        }
-        catch (Exception ex)
-        {
-            throw;
-        }
+            Id = result.Id?.ToString(),
+        };
     }
 
     public override async Task<ClientGrpcCommandResult> EditClientGrpc(EditClientGrpcCommand request, ServerCallContext context)
     {
-        //TODO: Fix this shit
         if (!Guid.TryParse(request.Id, out var guid))
             throw BusinessCardApiException.Create(new ArgumentException("Id is not a Guid."));
         

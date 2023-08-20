@@ -1,8 +1,15 @@
-﻿namespace BusinessCard.API.Exceptions;
+﻿using System.Runtime.Serialization;
+
+namespace BusinessCard.API.Exceptions;
 
 public class BusinessCardApiException : Exception
 {
     private const string MESSAGE = "BUSINESS_CARD_API_EXCEPTION was caught.";
+
+    public BusinessCardApiException(string message) : base(message)
+    {
+        
+    }
     public BusinessCardApiException(string? message, Exception? innerException) : base(message, innerException)
     {
     }
@@ -10,4 +17,8 @@ public class BusinessCardApiException : Exception
     public static BusinessCardApiException Create(Exception? innerException) => new(MESSAGE, innerException);
     public static BusinessCardApiException CreateArgumentNullException(string nameOfParam) => new(MESSAGE, new ArgumentNullException($"{nameOfParam} is null."));
 
+    public override string ToString()
+    {
+        return MESSAGE;
+    }
 }

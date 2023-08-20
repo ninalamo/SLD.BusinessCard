@@ -10,6 +10,7 @@ using BusinessCard.API.Application.Commands;
 using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.API.Extensions;
 using BusinessCard.API.Grpc;
+using BusinessCard.API.Interceptors;
 using BusinessCard.API.Logging;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
@@ -28,6 +29,7 @@ builder
     .AddGrpc(o =>
     {
         o.EnableDetailedErrors = true;
+        o.Interceptors.Add<ServerInterceptor>();
     })
     .Services
     .AddCustomDbContext(builder.Configuration)
@@ -35,6 +37,7 @@ builder
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
+builder.Services.AddSingleton<ServerInterceptor>();
 
 
 
