@@ -26,7 +26,7 @@ public class ServerInterceptor : Interceptor
         {
             return await continuation(request, context);
         }
-        catch (DbUpdateException dbEx) when (dbEx.InnerException != null)
+        catch (DbUpdateException dbEx) when (dbEx.InnerException is not null)
         {
             _logger.LogError(dbEx, dbEx.InnerException?.Message);
             var status = dbEx.InnerException.HResult switch
@@ -36,7 +36,7 @@ public class ServerInterceptor : Interceptor
             };
             throw new RpcException(status, dbEx.InnerException.Message);
         }
-        catch (BusinessCardDomainException domEx) when (domEx.InnerException != null && domEx.InnerException is ValidationException inEx)
+        catch (BusinessCardDomainException domEx) when (domEx.InnerException is ValidationException inEx)
         {
             _logger.LogError(domEx, inEx.Message);
             var errors = string.Join(Environment.NewLine, inEx.Errors.Select(c => c.ErrorMessage));
@@ -45,7 +45,7 @@ public class ServerInterceptor : Interceptor
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Error thrown by {context.Method}.");
-            throw;
+            throw new RpcException(new Status(StatusCode.Internal, ex.Message));
         }
     }
 }
