@@ -7,6 +7,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
     public class Person : Entity
     {
         private Guid _memberTierId;
+        private Guid _cardId;
 
         public Person(
             string firstName, 
@@ -36,8 +37,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             IsSubsriptionOverride = false;
             _memberTierId = MemberTier.GetLevels().First(i => i.Level == 1).Id;
             Card = new Card();
-            
-
         }
 
         public bool IsSubsriptionOverride { get; private set; }

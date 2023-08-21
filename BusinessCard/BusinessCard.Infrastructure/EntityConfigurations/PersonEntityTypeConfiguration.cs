@@ -12,8 +12,13 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
         builder.HasKey(b => b.Id);
         builder.Property(b => b.FirstName).IsRequired();
         builder.Property(b => b.LastName).IsRequired();
+        
         builder.Property(b => b.PhoneNumber).IsRequired();
+        builder.HasIndex(b => b.PhoneNumber).IsUnique();
+        
         builder.Property(b => b.Email).IsRequired();
+        builder.HasIndex(b => b.Email).IsUnique();
+        
         builder.Property(b => b.Address).IsRequired();
         builder.Property(b => b.Occupation).IsRequired();
         builder.Property(b => b.SocialMedia).IsRequired();
@@ -28,6 +33,16 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
         builder.HasOne<MemberTier>()
             .WithMany()
             .HasForeignKey("_memberTierId")
+            .OnDelete(DeleteBehavior.NoAction);
+       
+        builder.Property<Guid>("_cardId")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("CardId")
+            .IsRequired();
+
+        builder.HasOne( b => b.Card)
+            .WithMany()
+            .HasForeignKey("_cardId")
             .OnDelete(DeleteBehavior.NoAction);
     }
 }
