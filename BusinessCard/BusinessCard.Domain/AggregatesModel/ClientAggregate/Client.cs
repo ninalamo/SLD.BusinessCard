@@ -63,6 +63,28 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
                 }
             });
         }
+
+        private Person AddMember(Person person)
+        {
+            _persons.Add(person);
+            return person;
+        }
+
+        public async Task<Person> AddMember(string firstName,
+            string lastName,
+            string middleName,
+            string nameSuffix,
+            string phoneNumber,
+            string email,
+            string address,
+            string occupation,
+            string[] socialMedia)
+        {
+            var person = new Person(firstName, lastName, middleName, nameSuffix, phoneNumber, email, address,
+                occupation, socialMedia);
+
+            return AddMember(person);
+        }
     
 
     }

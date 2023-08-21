@@ -26,7 +26,7 @@ namespace BusinessCard.Infrastructure
 
         #endregion
 
-        public virtual DbSet<Client> Clients { get; set; }
+        public  DbSet<Client> Clients { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Card> Cards { get; set; }
 
@@ -35,10 +35,10 @@ namespace BusinessCard.Infrastructure
 
         public bool HasActiveTransaction => _currentTransaction != null;
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             //this.DbAudit(_currentUser);
-            return await base.SaveChangesAsync(cancellationToken);
+            return base.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default)

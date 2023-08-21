@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
-    public sealed class Person : Entity
+    public class Person : Entity
     {
         private Guid _memberTierId;
 
@@ -37,9 +37,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             _memberTierId = MemberTier.GetLevels().First(i => i.Level == 1).Id;
             Card = new Card();
             
-#if DEBUG
-            Id = Guid.NewGuid();
-#endif
+
         }
 
         public bool IsSubsriptionOverride { get; private set; }

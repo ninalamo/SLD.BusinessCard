@@ -13,7 +13,7 @@ public class ClientsRepositoryTests
     public async Task GetEntityByIdAsync_ReturnsClient_WhenClientExists()
     {
         // Arrange
-        var context = CreateInMemoryDbContext();
+        var context = await CreateInMemoryDbContext();
 
         var existingClient = new Client("Existing Client", true, Guid.NewGuid());
         var existingClientId = context.Clients.Add(existingClient).Entity.Id;
@@ -34,12 +34,12 @@ public class ClientsRepositoryTests
     public async Task AddClientAsync_ReturnsId_AfterSaveChanges()
     {
         // Arrange
-        var context = CreateInMemoryDbContext();
+        var context =  await CreateInMemoryDbContext();
         var repository = new ClientsRepository(context);
         const string name = "New Client";
 
         // Act
-        var client = repository.Create(name, true, Guid.NewGuid());
+        var client = await repository.CreateAsync(name, true, Guid.NewGuid());
         await repository.UnitOfWork.SaveChangesAsync(new CancellationToken());
 
         // Assert
@@ -52,7 +52,7 @@ public class ClientsRepositoryTests
     public async Task UpdateClientAsync_ReturnsId_AfterSaveChanges()
     {
         // Arrange
-        var context = CreateInMemoryDbContext();
+        var context =  await CreateInMemoryDbContext();
 
         var existingClient = new Client("Existing Client", true, 1);
         var existingClientId = context.Clients.Add(existingClient).Entity.Id;
@@ -61,7 +61,7 @@ public class ClientsRepositoryTests
         var repository = new ClientsRepository(context);
 
         // Act
-        var clientToUpdate = await repository.GetEntityByIdAsync(existingClientId);
+        var clientToUpdate = await repository.GetWithPropertiesByIdAsync(existingClientId);
         clientToUpdate.UpdateSelf("Updated Client", false, 2);
         repository.Update(clientToUpdate);
         await repository.UnitOfWork.SaveChangesAsync(default);
@@ -71,10 +71,34 @@ public class ClientsRepositoryTests
         Assert.Equal(existingClientId, clientToUpdate.Id);
         Assert.Equal("Updated Client", clientToUpdate.CompanyName);
     }
+    
+    [Fact]
+    public async Task AddMemberAsync_ReturnsId_AfterSaveChanges()
+    {
+        // Arrange
+        var context = await CreateInMemoryDbContext();
+        var guid = await context.Clients.AsNoTracking().Select(c => c.Id).FirstOrDefaultAsync();
+        var repository = new ClientsRepository(context);
+
+        //Act
+        var client = await repository.GetWithPropertiesByIdAsync(guid);
+        var person =await client.AddMember("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite", "Encoder",
+            new[] { "facebook.com" });
+        repository.Update(client);
+     
+         await repository.UnitOfWork.SaveChangesAsync(CancellationToken.None);
+        
+        
+         // Assert
+         Assert.NotEqual(Guid.Empty,person.Id);
+         Assert.NotNull(client.Persons);
+                                                                                                                                                                                                                                                                                               
+        Assert.True(client.Persons.Any());
+    }
 
 
 
-    private static LokiContext CreateInMemoryDbContext()
+    private static async Task<LokiContext> CreateInMemoryDbContext()
     {
         var dbContextOptions = new DbContextOptionsBuilder<LokiContext>()
             .UseInMemoryDatabase(databaseName: "in-memory")
@@ -88,6 +112,10 @@ public class ClientsRepositoryTests
         currentUserMock.Setup(x => x.Roles).Returns(new[]{"admin"});
 
         var context = new LokiContext(dbContextOptions, mediatorMock.Object, currentUserMock.Object);
+
+        await context.Clients.AddAsync(new Client("KMC", true, 1));
+        await context.SaveChangesAsync(default);
+        
         return context;
     }
 }

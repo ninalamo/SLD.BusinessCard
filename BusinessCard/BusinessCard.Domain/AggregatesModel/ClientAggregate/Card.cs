@@ -9,9 +9,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 
         public Card()
         {
-#if DEBUG
-            Id = Guid.NewGuid();
-#endif
+            Key = string.Empty;
         }
 
         public void SetKey(string key)

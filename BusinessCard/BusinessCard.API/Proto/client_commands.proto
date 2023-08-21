@@ -7,9 +7,10 @@ package BusinessCardApi;
 service ClientGrpc {
     rpc AddClientGrpc(AddClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc EditClientGrpc(EditClientGrpcCommand) returns (ClientGrpcCommandResult) {}
+    rpc AddMemberGrpc(AddMemberGrpcCommand) returns (ClientGrpcCommandResult){}
 }
 
-message AddClientGrpcCommand {    
+message AddClientGrpcCommand {
     string companyName = 1;
     bool isDiscreet = 2;
     int32 subscription = 3;
@@ -20,6 +21,23 @@ message EditClientGrpcCommand {
     string companyName = 2;
     bool isDiscreet = 3;
     int32 subscription = 4;
+}
+
+message AddMemberGrpcCommand {
+    string firstName = 1;
+    string lastName = 2;
+    string middleName = 3;
+    string nameSuffix = 4;
+    string phoneNumber = 5;
+    string email = 6;
+    string address = 7;
+    string occupation = 8;
+    string facebook = 9;
+    string linkedIn = 10;
+    string instagram = 11;
+    string pinterest = 12;
+    string twitter = 13;
+    string clientId = 14;
 }
 
 

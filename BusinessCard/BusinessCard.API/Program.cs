@@ -35,7 +35,7 @@ builder
     .AddCustomDbContext(builder.Configuration)
     .AddCustomSwagger();
 
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+// builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 builder.Services.AddSingleton<ServerInterceptor>();
 

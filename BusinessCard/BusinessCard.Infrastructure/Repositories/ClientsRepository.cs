@@ -15,11 +15,36 @@ public class ClientsRepository : IClientsRepository
         _context = context ?? throw BusinessCardDomainException.CreateArgumentNullException(nameof(context));
     }
     
-    public Client Create(string name, bool isDiscreet, Guid tierId) => _context.Clients.Add(new Client(name, isDiscreet, tierId)).Entity;
+    public async Task<Client> CreateAsync(string name, bool isDiscreet, Guid tierId)
+    {
+        var entity = await _context.Clients.AddAsync(new Client(name, isDiscreet, tierId));
+        var state = _context.Entry(entity).State;
+        return entity.Entity;
+    }
 
-    public Client Update(Client client) => _context.Clients.Update(client).Entity;
+    public Client Update(Client client)
+    {
+        try
+        {
+            var entity = _context.Clients.Update(client);
+            var state = _context.Entry(client).State;
+            return entity.Entity;
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
 
-    public async Task<Client> GetEntityByIdAsync(Guid id) => await _context.Clients.SingleOrDefaultAsync(c => c.Id == id);
+    public async Task<Client> GetEntityByIdAsync(Guid id) =>  _context.Clients.FirstOrDefault(c => c.Id == id);
 
-    public async Task<Client> GetWithPropertiesByIdAsync(Guid id) =>  await _context.Clients.Include(c => c.Persons).ThenInclude(p => p.Card).SingleOrDefaultAsync(c => c.Id == id);
+    public async Task<Client> GetWithPropertiesByIdAsync(Guid id)
+    {
+        var entity =  _context.Clients
+            .Include(c => c.Persons)
+            .ThenInclude(p => p.Card)
+            .FirstOrDefault(c => c.Id == id);
+        return entity;
+    }
+
 }
