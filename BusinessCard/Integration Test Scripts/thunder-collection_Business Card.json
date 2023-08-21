@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "Business Card",
-    "dateExported": "2023-08-21T12:58:50.832Z",
+    "dateExported": "2023-08-21T14:36:55.179Z",
     "version": "1.1",
     "folders": [],
     "requests": [
@@ -20,6 +20,25 @@
             "body": {
                 "type": "json",
                 "raw": "{\n  \"company_name\": \"KMC Savills\",\n  \"is_discreet\": true,\n  \"subscription\": 1\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "60b21a63-1d70-419d-a2d2-a5fed42790cc",
+            "colId": "23af7f34-de18-4a12-8dc1-5de140aca14d",
+            "containerId": "",
+            "name": "PUT Client",
+            "url": "https://localhost:7204/api/clients/",
+            "method": "PUT",
+            "sortNum": 20000,
+            "created": "2023-08-21T14:36:01.707Z",
+            "modified": "2023-08-21T14:36:01.707Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"company_name\": \"KMC Savills Inc\",\n  \"is_discreet\": true,\n  \"subscription\": 1,\n  \"id\": \"51B2A2FA-4FD0-4898-566C-08DBA171A81D\"\n}",
                 "form": []
             },
             "tests": []

@@ -6,6 +6,8 @@ using BusinessCard.API.Extensions;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Exceptions;
 using ClientService;
+using FluentValidation;
+using FluentValidation.Results;
 using Grpc.Core;
 using MediatR;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -39,14 +41,17 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         };
     }
 
- 
-
+    /// <summary>
+    /// Updates client (company) details.
+    /// 'gRPC' implementation
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    /// <exception cref="BusinessCardApiException"></exception>
     public override async Task<ClientGrpcCommandResult> EditClientGrpc(EditClientGrpcCommand request, ServerCallContext context)
     {
-        if (!Guid.TryParse(request.Id, out var guid))
-            throw BusinessCardApiException.Create(new ArgumentException("Id is not a Guid."));
-        
-         var result = await _mediator.Send(ToEditClientCommand(request, guid));
+         var result = await _mediator.Send(ToEditClientCommand(request));
          return new ClientGrpcCommandResult
          {
              Id = result.ToString(),
@@ -73,9 +78,9 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return new AddClientCommand(request.CompanyName, request.IsDiscreet, request.Subscription);
     }
     
-    private static EditClientCommand ToEditClientCommand(EditClientGrpcCommand request, Guid guid)
+    private static EditClientCommand ToEditClientCommand(EditClientGrpcCommand request)
     {
-        return new EditClientCommand(guid, request.CompanyName,request.Subscription,request.IsDiscreet);
+        return new EditClientCommand(request.Id.ToGuid(), request.CompanyName,request.Subscription,request.IsDiscreet);
     }
 
 
