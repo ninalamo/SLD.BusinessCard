@@ -23,6 +23,13 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         _logger = logger ?? throw BusinessCardDomainException.CreateArgumentNullException(nameof(logger));
     }
 
+    /// <summary>
+    /// Adds client (company) to database.
+    /// 'gRPC' implementation
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
     public override async Task<ClientGrpcCommandResult> AddClientGrpc(AddClientGrpcCommand request, ServerCallContext context)
     {
         var result = await _mediator.Send(ToAddClientCommand(request));

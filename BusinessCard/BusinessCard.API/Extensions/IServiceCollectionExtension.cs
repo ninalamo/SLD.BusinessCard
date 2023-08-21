@@ -1,4 +1,12 @@
+using System.Reflection;
+using BusinessCard.API.Application.Behaviors;
+using BusinessCard.API.Application.Commands;
+using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Infrastructure;
+using BusinessCard.Infrastructure.Repositories;
+using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -22,10 +30,6 @@ public static class IServiceCollectionExtension
                         });
                 } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
             );
-        
-       
-        //services.AddScoped<CatalogDbContextInitializer>();
-
         return services;
     }
     
@@ -66,6 +70,24 @@ public static class IServiceCollectionExtension
             });
         });
 
+        return services;
+    }
+
+    public static IServiceCollection AddMediatorBundles(this IServiceCollection services)
+    {
+
+        //register mediatr and pipelines
+        services.AddMediatR(c => c.RegisterServicesFromAssemblies(typeof(Program).Assembly));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
+
+        // Register command and query handlers
+        services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
+        services.AddScoped<IRequestHandler<AddClientCommand, CommandResult>, AddClientCommandHandler>();
+
+        // Register validators
+        services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(AddClientCommandValidator)));
         return services;
     }
 }

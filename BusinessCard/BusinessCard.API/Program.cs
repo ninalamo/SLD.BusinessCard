@@ -1,5 +1,3 @@
-
-
 using System.Net;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
@@ -26,55 +24,29 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder
     .Services
+    .AddSingleton<ServerInterceptor>()
     .AddGrpc(o =>
     {
         o.EnableDetailedErrors = true;
         o.Interceptors.Add<ServerInterceptor>();
-    })
-    .Services
+    });
+
+builder.Services
     .AddCustomDbContext(builder.Configuration)
-    .AddCustomSwagger();
-
-// builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-
-builder.Services.AddSingleton<ServerInterceptor>();
-
-
-
-builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder =>
-{
-    builder.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
-}));
-
-builder.Services.AddScoped(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
-
-//register mediatr and pipelines
-builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblies(typeof(Program).Assembly));
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
-
-// Register command and query handlers
-builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
-builder.Services.AddScoped<IRequestHandler<AddClientCommand, CommandResult>, AddClientCommandHandler>();
-    
-// Register notification handlers
-// builder.Services.AddScoped(typeof(INotificationHandler<>), typeof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler));
-
-// Register validators
-builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(AddClientCommandValidator)));
-
-
-
-
+    .AddCustomSwagger()
+    .AddCors(o => o.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+    }))
+    .AddMediatorBundles();
 
 //claims middlewares
+builder.Services.AddScoped(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 builder.Services.AddScoped(typeof(ICurrentUser), typeof(CurrentUser));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-   
 
 var app = builder.Build();
 
@@ -83,7 +55,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/V1/swagger.json", "Catalog WebAPI"); });
-
 }
 
 app.MapGrpcService<GreeterService>();
