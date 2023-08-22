@@ -6,6 +6,7 @@ using BusinessCard.API;
 using BusinessCard.API.Application.Behaviors;
 using BusinessCard.API.Application.Commands;
 using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.API.Application.Queries;
 using BusinessCard.API.Application.Queries.GetClients;
 using BusinessCard.API.Extensions;
 using BusinessCard.API.Grpc;
@@ -50,6 +51,8 @@ builder.Services.AddScoped(typeof(ICurrentUser), typeof(CurrentUser));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 //register queries
+builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddScoped<IClientQueries>(i => new ClientQueries(connectionString));
 

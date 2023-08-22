@@ -24,7 +24,7 @@ public record GetClientsQueryResult
 public record ClientsResult
 {
     [JsonPropertyName("client_id")]
-    public string ClientId { get; init; }
+    public Guid ClientId { get; init; }
     [JsonPropertyName("company_name")]
     public string CompanyName {get;  init; }
     [JsonPropertyName("is_discreet")]
@@ -41,10 +41,6 @@ public record ClientsResult
     public string? CreatedBy { get; init; }
     [JsonPropertyName("modified_by")]
     public string? ModifiedBy { get; init; }
-    [JsonPropertyName("card_id")]
-    public string? CardId { get; init; }
-    [JsonPropertyName("card_key")]
-    public string? CardKey { get; init; }
     [JsonPropertyName("created_on")]
     public DateTimeOffset? CreatedOn { get; init; }
     [JsonPropertyName("modified_on")]

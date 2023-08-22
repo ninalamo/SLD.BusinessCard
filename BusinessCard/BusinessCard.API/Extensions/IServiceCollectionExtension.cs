@@ -83,7 +83,6 @@ public static class IServiceCollectionExtension
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
 
         // Register command and query handlers
-        services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
         services.AddScoped<IRequestHandler<AddClientCommand, CommandResult>, AddClientCommandHandler>();
 
         // Register validators

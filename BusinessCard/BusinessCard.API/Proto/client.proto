@@ -60,7 +60,7 @@ message GetClientGrpcQueryResult {
 }
 
 message ClientResult {
-    string id = 1;
+    string clientId = 1;
     string companyName = 2;
     bool isDiscreet = 3;
     int32 subscriptionLevel = 4;
@@ -70,8 +70,6 @@ message ClientResult {
     string modifiedBy = 8;
     string createdOn = 9;
     string modifiedOn = 10;
-    string cardId = 11;
-    string cardKey = 12;
-    string subscription = 13;
-    bool isActive = 14;
+    string subscription = 11;
+    bool isActive = 12;
 }

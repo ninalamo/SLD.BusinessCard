@@ -23,10 +23,4 @@ public static class TypeExtensions
     {
         return @object.GetType().GetGenericTypeName();
     }
-    public static Guid ToGuid(this string str)
-    {
-        if (!Guid.TryParse(str, out var guid)) throw new ArgumentException($"{str} is not a valid Guid.");
-        return guid;
-    }
-    
 }

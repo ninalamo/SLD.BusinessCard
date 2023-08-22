@@ -31,7 +31,7 @@ public class ServerInterceptor : Interceptor
             _logger.LogError(dbEx, dbEx.InnerException?.Message);
             var status = dbEx.InnerException.HResult switch
             {
-                HresultAlreadyExists => new Status(StatusCode.AlreadyExists, "Value already exists."),
+                HresultAlreadyExists => new Status(StatusCode.AlreadyExists, dbEx.InnerException.Message),
                 _ => new Status(StatusCode.Internal, "Error has occurred.")
             };
             throw new RpcException(status, dbEx.InnerException.Message);
@@ -39,6 +39,12 @@ public class ServerInterceptor : Interceptor
         catch (BusinessCardDomainException domEx) when (domEx.InnerException is ValidationException inEx)
         {
             _logger.LogError(domEx, inEx.Message);
+            var errors = string.Join(Environment.NewLine, inEx.Errors.Select(c => c.ErrorMessage));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, errors));
+        }
+        catch (BusinessCardApiException bEx) when (bEx.InnerException is ValidationException inEx)
+        {
+            _logger.LogError(bEx, inEx.Message);
             var errors = string.Join(Environment.NewLine, inEx.Errors.Select(c => c.ErrorMessage));
             throw new RpcException(new Status(StatusCode.InvalidArgument, errors));
         }
