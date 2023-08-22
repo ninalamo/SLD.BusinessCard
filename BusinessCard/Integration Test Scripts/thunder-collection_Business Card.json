@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "Business Card",
-    "dateExported": "2023-08-21T14:36:55.179Z",
+    "dateExported": "2023-08-22T22:00:58.672Z",
     "version": "1.1",
     "folders": [],
     "requests": [
@@ -41,6 +41,20 @@
                 "raw": "{\n  \"company_name\": \"KMC Savills Inc\",\n  \"is_discreet\": true,\n  \"subscription\": 1,\n  \"id\": \"51B2A2FA-4FD0-4898-566C-08DBA171A81D\"\n}",
                 "form": []
             },
+            "tests": []
+        },
+        {
+            "_id": "8f1aed56-4eec-43b4-ba6b-bf7309b11bc3",
+            "colId": "23af7f34-de18-4a12-8dc1-5de140aca14d",
+            "containerId": "",
+            "name": "GET Client",
+            "url": "https://localhost:7204/api/Clients",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-08-22T22:00:48.436Z",
+            "modified": "2023-08-22T22:00:48.436Z",
+            "headers": [],
+            "params": [],
             "tests": []
         }
     ]
