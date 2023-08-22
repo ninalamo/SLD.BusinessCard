@@ -8,6 +8,7 @@ service ClientGrpc {
     rpc AddClientGrpc(AddClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc EditClientGrpc(EditClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc AddMemberGrpc(AddMemberGrpcCommand) returns (ClientGrpcCommandResult){}
+    rpc GetClientsGrpc(GetClientGrpcQuery) returns (GetClientGrpcQueryResult){}
 }
 
 message AddClientGrpcCommand {
@@ -45,4 +46,32 @@ message ClientGrpcCommandResult {
     string id = 1;
 }
 
+message GetClientGrpcQuery {
+    int32 pageSize = 1;
+    int32 pageNumber = 2;
+    string name = 3;
+}
 
+message GetClientGrpcQueryResult {
+    int32 pageSize = 1;
+    int32 pageNumber = 2;
+    int32 totalCount = 3;
+    repeated ClientResult clients = 4;
+}
+
+message ClientResult {
+    string id = 1;
+    string companyName = 2;
+    bool isDiscreet = 3;
+    int32 subscriptionLevel = 4;
+    int32 cardHolders = 5;
+    int32 nonCardHolders = 6;
+    string createdBy = 7;
+    string modifiedBy = 8;
+    string createdOn = 9;
+    string modifiedOn = 10;
+    string cardId = 11;
+    string cardKey = 12;
+    string subscription = 13;
+    bool isActive = 14;
+}
