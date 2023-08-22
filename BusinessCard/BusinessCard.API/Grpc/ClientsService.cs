@@ -1,6 +1,7 @@
 using BusinessCard.API.Application.Commands.AddMember;
 using BusinessCard.API.Application.Commands.EditClientCommandHandler;
 using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.API.Application.Queries.GetClients;
 using BusinessCard.API.Exceptions;
 using BusinessCard.API.Extensions;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
@@ -58,6 +59,40 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
          };
     }
 
+    public override async Task<GetClientGrpcQueryResult> GetClientsGrpc(GetClientGrpcQuery request, ServerCallContext context)
+    {
+        var result = await _mediator.Send(new GetClientsQuery(request.PageSize, request.PageNumber, request.Name));
+
+        var grpcResult = new GetClientGrpcQueryResult
+        {
+            PageSize = result.PageSize,
+            PageNumber = result.PageNumber,
+            TotalCount = result.TotalCount,
+
+        };
+        
+        grpcResult.Clients.AddRange(result.Clients.Select(c => new ClientResult
+        {
+            CardHolders = c.CardHolders,
+            CompanyName = c.CompanyName,
+            Id = c.ClientId,
+            IsDiscreet = c.IsDiscreet,
+            NonCardHolders = c.NonCardHolders,
+            CardKey = c.CardKey,
+            Subscription = c.Subscription,
+            SubscriptionLevel = c.SubscriptionLevel,
+            CardId = c.CardId,
+            CreatedBy = c.CreatedBy,
+            CreatedOn = c.CreatedOn?.ToString("yyyy-MMM-dd"),
+            ModifiedBy = c.ModifiedBy,
+            ModifiedOn = c.ModifiedOn?.ToString("yyyy-MMM-dd"),
+            IsActive = c.IsActive
+        }));
+
+        return grpcResult;
+    }
+
+
     public override async Task<ClientGrpcCommandResult> AddMemberGrpc(AddMemberGrpcCommand request, ServerCallContext context)
     {
         if (!Guid.TryParse(request.ClientId, out var guid))
@@ -70,6 +105,9 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             Id = result.ToString(),
         };
     }
+    
+    
+    
     
     #region Transform
     
