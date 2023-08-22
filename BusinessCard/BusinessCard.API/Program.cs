@@ -20,8 +20,17 @@ using MediatR;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Add Serilog
+builder.Host.UseSerilog((ctx, lc) => lc
+    .Enrich.FromLogContext()
+    .MinimumLevel.Verbose()
+    .WriteTo.Console()
+    .WriteTo.Debug()
+    .WriteTo.Seq("http://localhost:5341"));
 
 // Add services to the container.
 builder
