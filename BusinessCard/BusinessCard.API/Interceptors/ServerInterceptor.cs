@@ -44,8 +44,8 @@ public class ServerInterceptor : Interceptor
         }
         catch (BusinessCardApiException bEx) when (bEx.InnerException is ValidationException inEx)
         {
-            _logger.LogError(bEx, inEx.Message);
             var errors = string.Join(Environment.NewLine, inEx.Errors.Select(c => c.ErrorMessage));
+            _logger.LogError(bEx, errors);
             throw new RpcException(new Status(StatusCode.InvalidArgument, errors));
         }
         catch (Exception ex)
