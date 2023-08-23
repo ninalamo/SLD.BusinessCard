@@ -4,4 +4,5 @@ namespace BusinessCard.API.Application.Queries;
 public interface IClientQueries
 {
     Task<(int,IEnumerable<ClientsResult>)> GetClientsWithPagination(int pageSize, int pageNumber, string? name);
+    Task<ClientsResult> GetClientbyId(Guid id);
 }

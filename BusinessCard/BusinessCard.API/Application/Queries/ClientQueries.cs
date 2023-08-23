@@ -7,11 +7,13 @@ namespace BusinessCard.API.Application.Queries;
 public class ClientQueries : IClientQueries
 {
     private readonly string _connectionString;
-
+ 
     public ClientQueries(string connectionString)
     {
         _connectionString = connectionString;
     }
+    
+    
 
     public async Task<(int,IEnumerable<ClientsResult>)> GetClientsWithPagination(int pageSize, int pageNumber, string? name)
     {
@@ -59,5 +61,40 @@ public class ClientQueries : IClientQueries
         var result = await connection.QueryAsync<ClientsResult>(query, parameters);
 
         return (count.First(), result);
+    }
+
+    public async Task<ClientsResult> GetClientbyId(Guid id)
+    {
+	    DynamicParameters parameters = new DynamicParameters();
+	    parameters.Add("Id", id);
+
+	    string query = @"SELECT TOP 1
+	  		C.[Id] [ClientId] 
+      		,C.[CompanyName] 
+      		,M.[Level] [SubscriptionLevel] 
+      		,C.[IsDiscreet] 
+      		,C.[CreatedBy] 
+      		,C.[CreatedOn] 
+      		,C.[ModifiedBy] 
+      		,C.[ModifiedOn] 
+      		,C.[IsActive] 
+	  		,M.[Name] [Subscription] 
+	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 1)  [Cardholders] 
+	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 0)  [NonCardholders] 
+  		FROM [kardb].[kardibee].[client] C 
+  			LEFT JOIN kardb.kardibee.people P ON P.ClientId = C.Id 
+  			LEFT JOIN kardb.kardibee.membertier M ON M.Id = C.MemberTierId 
+  		WHERE C.[Id] = @Id ";
+
+	    await using SqlConnection connection = new SqlConnection(_connectionString);
+        
+	    await connection.OpenAsync(CancellationToken.None);
+
+	    IEnumerable<ClientsResult> result = await connection.QueryAsync<ClientsResult>(query, parameters);
+
+	    ClientsResult[] clientsResults = result as ClientsResult[] ?? result.ToArray();
+	    if (!clientsResults.Any()) throw new KeyNotFoundException("Id not found.");
+
+	    return clientsResults.FirstOrDefault();
     }
 }

@@ -1,17 +1,15 @@
 using BusinessCard.API.Application.Commands.AddMember;
 using BusinessCard.API.Application.Commands.EditClientCommandHandler;
 using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.API.Application.Queries.GetClientById;
 using BusinessCard.API.Application.Queries.GetClients;
-using BusinessCard.API.Exceptions;
 using BusinessCard.API.Extensions;
-using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Exceptions;
 using ClientService;
 using FluentValidation;
 using FluentValidation.Results;
 using Grpc.Core;
 using MediatR;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BusinessCard.API.Grpc;
 
@@ -59,6 +57,13 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
          };
     }
 
+    public override async Task<ClientResult> GetClientByIdGrpc(GetClientByIdGrpcQuery request, ServerCallContext context)
+    {
+        var result = await _mediator.Send(new GetClientByIdQuery(request.Id.ToGuid()));
+        
+        return ToClientResult(result);
+    }
+
     public override async Task<GetClientGrpcQueryResult> GetClientsGrpc(GetClientGrpcQuery request, ServerCallContext context)
     {
         var result = await _mediator.Send(new GetClientsQuery(request.PageSize, request.PageNumber, request.Name));
@@ -71,7 +76,28 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
         };
         
-        grpcResult.Clients.AddRange(result.Clients.Select(c => new ClientResult
+        grpcResult.Clients.AddRange(result.Clients.Select(c => ToClientResult(c)));
+
+        return grpcResult;
+    }
+
+    public override async Task<ClientGrpcCommandResult> AddMemberGrpc(AddMemberGrpcCommand request, ServerCallContext context)
+    {
+        if (!Guid.TryParse(request.ClientId, out var guid))
+            throw new ValidationException("Validation Error",new []{new ValidationFailure("Id","Id is not a Guid.")});
+
+        var result = await _mediator.Send(ToAddMemberCommand(request));
+        
+        return new ClientGrpcCommandResult
+        {
+            Id = result.ToString(),
+        };
+    }
+    
+    #region Transform
+    private static ClientResult ToClientResult(ClientsResult c)
+    {
+        return  new ClientResult
         {
             CardHolders = c.CardHolders,
             CompanyName = c.CompanyName,
@@ -85,29 +111,8 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             ModifiedBy = c.ModifiedBy,
             ModifiedOn = c.ModifiedOn?.ToString("yyyy-MMM-dd"),
             IsActive = c.IsActive
-        }));
-
-        return grpcResult;
-    }
-
-
-    public override async Task<ClientGrpcCommandResult> AddMemberGrpc(AddMemberGrpcCommand request, ServerCallContext context)
-    {
-        if (!Guid.TryParse(request.ClientId, out var guid))
-            throw BusinessCardApiException.Create(new ArgumentException("Id is not a Guid."));
-
-        var result = await _mediator.Send(ToAddMemberCommand(request));
-        
-        return new ClientGrpcCommandResult
-        {
-            Id = result.ToString(),
         };
     }
-    
-    
-    
-    
-    #region Transform
     
     private static AddClientCommand ToAddClientCommand(AddClientGrpcCommand request)
     {
