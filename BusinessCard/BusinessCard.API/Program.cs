@@ -66,6 +66,7 @@ builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository)
 
 var connectionString = builder.Configuration.GetConnectionString("DevServerConnection");
 builder.Services.AddScoped<IClientQueries>(i => new ClientQueries(connectionString));
+builder.Host.UseSystemd();
 
 var app = builder.Build();
 
