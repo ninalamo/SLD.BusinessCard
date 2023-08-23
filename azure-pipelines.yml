@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- main
+- devserver
 
 pool:
   name: Default
@@ -42,12 +42,17 @@ steps:
       publishWebProjects: false
       projects: '$(apiProject)'
       arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-      zipAfterPublish: true
-  
-  - task: PublishBuildArtifacts@1
-    name: 'PublishBuildArtifacts'
-    displayName: 'Publish Build Artifacts'
+      zipAfterPublish: false
+
+  - task: CopyFilesOverSSH@0
+    displayName: 'Deploy to Development Server'
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'ProjectArtifacts'
-      publishLocation: 'Container'
+      sshEndpoint: l4d2.gazo.win
+      sourceFolder: '$(Build.ArtifactStagingDirectory)/$(apiProjectName)'
+      targetFolder: ~/bcarddev.tuldok.dev
+
+  - task: SSH@0
+    inputs:
+      sshEndpoint: 'l4d2.gazo.win'
+      runOptions: 'commands'
+      commands: 'touch ~/bcarddev.tuldok.dev/restarter.file'
