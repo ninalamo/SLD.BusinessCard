@@ -14,11 +14,13 @@ using BusinessCard.API.Interceptors;
 using BusinessCard.API.Logging;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
+using BusinessCard.Infrastructure;
 using BusinessCard.Infrastructure.Repositories;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
 
@@ -72,6 +74,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/V1/swagger.json", "Catalog WebAPI"); });
+}
+
+using (var scope = app.Services.CreateAsyncScope())
+{
+    var ctx = scope.ServiceProvider.GetRequiredService<LokiContext>();
+    await ctx.Database.MigrateAsync();
 }
 
 app.MapGrpcService<GreeterService>();
