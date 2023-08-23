@@ -11,7 +11,7 @@ service ClientGrpc {
     rpc GetClientsGrpc(GetPaginatedClientsGrpcQuery) returns (GetPaginatedClientsGrpcQueryResult){}
     rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (ClientResult){}
 
-    rpc GetMembersByClientIdGrpc(GetMembersByIdQuery)returns(GetMembersByIdQueryResult){}
+    rpc GetMembersByClientIdGrpc(GetMembersByIdQuery)returns(GetPaginatedMembersByIdQueryResult){}
 }
 
 
@@ -88,7 +88,7 @@ message GetMembersByIdQuery{
     int32 pageNumber = 3;
 }
 
-message GetMembersByIdQueryResult {
+message GetPaginatedMembersByIdQueryResult {
     int32 pageSize = 1;
     int32 pageNumber = 2;
     int32 totalCount = 3;
