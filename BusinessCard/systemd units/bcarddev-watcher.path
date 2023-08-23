@@ -1,0 +1,8 @@
+[Unit]
+Description=bcarddev File Watcher
+
+[Path]
+PathModified=/home/ubuntu/bcarddev.tuldok.dev/restarter.file
+
+[Install]
+WantedBy=multi-user.target
