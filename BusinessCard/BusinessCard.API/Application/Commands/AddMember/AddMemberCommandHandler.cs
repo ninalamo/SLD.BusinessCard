@@ -1,5 +1,4 @@
 using BusinessCard.API.Application.Commands.UpsertClient;
-using BusinessCard.API.Exceptions;
 using BusinessCard.API.Logging;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using FluentValidation;
@@ -52,6 +51,6 @@ public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Guid>
             validationFailures.Add(new ValidationFailure("Email", $"Email: ({request.Email}) Already exists."));
 
         if (validationFailures.Any())
-            throw BusinessCardApiException.Create(new ValidationException("Validation error.", validationFailures));
+            throw new ValidationException("Business validation error.", validationFailures);
     }
 }

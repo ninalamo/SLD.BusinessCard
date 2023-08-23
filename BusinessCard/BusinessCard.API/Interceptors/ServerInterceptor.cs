@@ -1,20 +1,17 @@
-﻿using BusinessCard.API.Exceptions;
-using BusinessCard.Domain.Exceptions;
-using FluentValidation;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
-using Microsoft.EntityFrameworkCore;
 
 namespace BusinessCard.API.Interceptors;
 
 public class ServerInterceptor : Interceptor
 {
-    private readonly ILogger _logger;
-    private const int HresultAlreadyExists = -2146232060;
+    private readonly ILogger<ServerInterceptor> _logger;
+    private readonly Guid _correlationId;
 
     public ServerInterceptor(ILogger<ServerInterceptor> logger)
     {
         _logger = logger;
+        _correlationId = Guid.NewGuid();
     }
 
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(TRequest request, ServerCallContext context,
@@ -26,32 +23,9 @@ public class ServerInterceptor : Interceptor
         {
             return await continuation(request, context);
         }
-        catch (DbUpdateException dbEx) when (dbEx.InnerException is not null)
+        catch (Exception e)
         {
-            _logger.LogError(dbEx, dbEx.InnerException?.Message);
-            var status = dbEx.InnerException.HResult switch
-            {
-                HresultAlreadyExists => new Status(StatusCode.AlreadyExists, dbEx.InnerException.Message),
-                _ => new Status(StatusCode.Internal, "Error has occurred.")
-            };
-            throw new RpcException(status, dbEx.InnerException.Message);
-        }
-        catch (BusinessCardDomainException domEx) when (domEx.InnerException is ValidationException inEx)
-        {
-            _logger.LogError(domEx, inEx.Message);
-            var errors = string.Join(Environment.NewLine, inEx.Errors.Select(c => c.ErrorMessage));
-            throw new RpcException(new Status(StatusCode.InvalidArgument, errors));
-        }
-        catch (BusinessCardApiException bEx) when (bEx.InnerException is ValidationException inEx)
-        {
-            var errors = string.Join(Environment.NewLine, inEx.Errors.Select(c => c.ErrorMessage));
-            _logger.LogError(bEx, errors);
-            throw new RpcException(new Status(StatusCode.InvalidArgument, errors));
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error thrown by {context.Method}.");
-            throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+            throw e.Handle(context, _logger, _correlationId);
         }
     }
 }

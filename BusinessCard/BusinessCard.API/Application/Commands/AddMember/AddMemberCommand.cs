@@ -1,4 +1,3 @@
-using BusinessCard.API.Exceptions;
 using MediatR;
 
 namespace BusinessCard.API.Application.Commands.AddMember;
