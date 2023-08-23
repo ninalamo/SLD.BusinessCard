@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "Business Card",
-    "dateExported": "2023-08-22T22:00:58.672Z",
+    "dateExported": "2023-08-23T04:19:06.775Z",
     "version": "1.1",
     "folders": [],
     "requests": [
@@ -53,6 +53,39 @@
             "sortNum": 30000,
             "created": "2023-08-22T22:00:48.436Z",
             "modified": "2023-08-22T22:00:48.436Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ba710963-7233-47fd-bf8a-89b7f49739f0",
+            "colId": "23af7f34-de18-4a12-8dc1-5de140aca14d",
+            "containerId": "",
+            "name": "POST Member",
+            "url": "https://localhost:7204/api/clients/857F2883-3F94-4183-56F7-08DBA0646057/members",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-08-23T00:05:04.507Z",
+            "modified": "2023-08-23T00:05:04.507Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"client_id\": \"857F2883-3F94-4183-56F7-08DBA0646057\",\r\n  \"first_name\": \"Denver\",\r\n  \"last_name\": \"Gazo\",\r\n  \"middle_name\": \"\",\r\n  \"name_suffix\": \"\",\r\n  \"phone_number\": \"12341234\",\r\n  \"email\": \"tuldok@gmail.com\",\r\n  \"address\": \"Bicutan\",\r\n  \"occupation\": \"CTO / CIO\",\r\n  \"facebook\": \"fb.com\",\r\n  \"linkedin\": \"linkedin.com\",\r\n  \"instagram\": \"ig.com\",\r\n  \"pinterest\": \"\",\r\n  \"twitter\": \"\"\r\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "653d58eb-ba94-40c8-be59-924e01d99331",
+            "colId": "23af7f34-de18-4a12-8dc1-5de140aca14d",
+            "containerId": "",
+            "name": "GET Client By Id",
+            "url": "https://localhost:7204/api/Clients/5F73C616-FAB3-4D63-535C-08DBA35C433a",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-08-23T02:51:11.783Z",
+            "modified": "2023-08-23T04:16:38.801Z",
             "headers": [],
             "params": [],
             "tests": []
