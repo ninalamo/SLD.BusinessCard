@@ -1,3 +1,4 @@
+using BusinessCard.API.Application.Common.Interfaces;
 using BusinessCard.Infrastructure;
 using Dapper;
 using MediatR;
