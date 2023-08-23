@@ -66,9 +66,21 @@ builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository)
 
 var connectionString = builder.Configuration.GetConnectionString("DevServerConnection");
 builder.Services.AddScoped<IClientQueries>(i => new ClientQueries(connectionString));
+
+// reverse proxy headers forwarding config
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor |
+        Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto;
+});
+
+// enable Systemd integration
 builder.Host.UseSystemd();
 
 var app = builder.Build();
+
+// enable proxy headers forwarding
+app.UseForwardedHeaders();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
