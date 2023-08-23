@@ -14,6 +14,7 @@ using BusinessCard.API.Interceptors;
 using BusinessCard.API.Logging;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
+using BusinessCard.Infrastructure;
 using BusinessCard.Infrastructure.Repositories;
 using FluentValidation;
 using MediatR;
