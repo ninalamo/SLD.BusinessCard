@@ -62,7 +62,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 //register queries
 builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DevServerConnection");
 builder.Services.AddScoped<IClientQueries>(i => new ClientQueries(connectionString));
 
 var app = builder.Build();

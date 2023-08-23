@@ -15,7 +15,7 @@ public class LokiContextFactory : IDesignTimeDbContextFactory<LokiContext>
             .AddEnvironmentVariables()
             .Build();
 
-        var connectionString = config.GetConnectionString("DefaultConnection");
+        var connectionString = config.GetConnectionString("DevServerConnection");
 
         var optionsBuilder = new DbContextOptionsBuilder<LokiContext>();
         optionsBuilder.UseSqlServer(connectionString, x => x.MigrationsAssembly(Assembly.GetAssembly(typeof(LokiContext))?.GetName().Name));

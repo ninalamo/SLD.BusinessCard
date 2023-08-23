@@ -16,7 +16,7 @@ public static class IServiceCollectionExtension
 {
     public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("DevServerConnection");
 
         services
             .AddDbContext<LokiContext>(options =>
