@@ -64,16 +64,15 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return ToClientResult(result);
     }
 
-    public override async Task<GetClientGrpcQueryResult> GetClientsGrpc(GetClientGrpcQuery request, ServerCallContext context)
+    public override async Task<GetPaginatedClientsGrpcQueryResult> GetClientsGrpc(GetPaginatedClientsGrpcQuery request, ServerCallContext context)
     {
         var result = await _mediator.Send(new GetClientsQuery(request.PageSize, request.PageNumber, request.Name));
 
-        var grpcResult = new GetClientGrpcQueryResult
+        var grpcResult = new GetPaginatedClientsGrpcQueryResult()
         {
             PageSize = result.PageSize,
             PageNumber = result.PageNumber,
             TotalCount = result.TotalCount,
-
         };
         
         grpcResult.Clients.AddRange(result.Clients.Select(c => ToClientResult(c)));

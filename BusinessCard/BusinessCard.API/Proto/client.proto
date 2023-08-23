@@ -8,9 +8,12 @@ service ClientGrpc {
     rpc AddClientGrpc(AddClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc EditClientGrpc(EditClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc AddMemberGrpc(AddMemberGrpcCommand) returns (ClientGrpcCommandResult){}
-    rpc GetClientsGrpc(GetClientGrpcQuery) returns (GetClientGrpcQueryResult){}
+    rpc GetClientsGrpc(GetPaginatedClientsGrpcQuery) returns (GetPaginatedClientsGrpcQueryResult){}
     rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (ClientResult){}
+
+    rpc GetMembersByClientIdGrpc(GetMembersByIdQuery)returns(GetMembersByIdQueryResult){}
 }
+
 
 message AddClientGrpcCommand {
     string companyName = 1;
@@ -47,7 +50,7 @@ message ClientGrpcCommandResult {
     string id = 1;
 }
 
-message GetClientGrpcQuery {
+message GetPaginatedClientsGrpcQuery {
     int32 pageSize = 1;
     int32 pageNumber = 2;
     string name = 3;
@@ -57,7 +60,7 @@ message GetClientByIdGrpcQuery {
     string id = 1;
 }
 
-message GetClientGrpcQueryResult {
+message GetPaginatedClientsGrpcQueryResult {
     int32 pageSize = 1;
     int32 pageNumber = 2;
     int32 totalCount = 3;
@@ -77,4 +80,39 @@ message ClientResult {
     string modifiedOn = 10;
     string subscription = 11;
     bool isActive = 12;
+}
+
+message GetMembersByIdQuery{
+    string clientId = 1;
+    int32 pageSize = 2;
+    int32 pageNumber = 3;
+}
+
+message GetMembersByIdQueryResult {
+    int32 pageSize = 1;
+    int32 pageNumber = 2;
+    int32 totalCount = 3;
+    repeated MemberResult members = 4;
+}
+
+message MemberResult {
+    string firstName = 1;
+    string lastName = 2;
+    string middleName = 3;
+    string nameSuffix = 4;
+    string phoneNumber = 5;
+    string email = 6;
+    string address = 7;
+    string occupation = 8;
+    string facebook = 9;
+    string linkedIn = 10;
+    string instagram = 11;
+    string pinterest = 12;
+    string twitter = 13;
+    string clientId = 14;
+    string clientName = 16;
+    string subscription = 17;
+    int32 subscriptionLevel = 18;
+    string cardId = 19;
+    int32 cardKey = 20;
 }
