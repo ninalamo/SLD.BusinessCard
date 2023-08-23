@@ -38,6 +38,13 @@
 
     <ItemGroup>
       <Folder Include="Commands\" />
+      <Folder Include="Queries\" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <None Remove="appsettings.json" />
     </ItemGroup>
 
 

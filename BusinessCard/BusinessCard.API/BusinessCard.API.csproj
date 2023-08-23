@@ -60,4 +60,8 @@
     <Folder Include="Application\IntegrationEvents\Events\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Application\Queries\GetClientById\GetClientByIdQueryValidator.cs" />
+  </ItemGroup>
+
 </Project>
