@@ -17,6 +17,8 @@ public static class ExceptionHelpers
             RpcException => HandleRpcException((RpcException)exception, logger, correlationId),
             BusinessCardDomainException => HandleApiException((BusinessCardDomainException)exception, logger, correlationId),
             DbUpdateException => HandleDbUpdateException((DbUpdateException) exception, context,logger,correlationId),
+            KeyNotFoundException => HandleNotFoundException((KeyNotFoundException)exception,context, logger, correlationId),
+            ValidationException=> HandleValidationException((ValidationException) exception,context, logger, correlationId),
             _ => HandleDefault(exception, context, logger, correlationId)
         };
 
@@ -28,6 +30,8 @@ public static class ExceptionHelpers
 
         return new RpcException(status, CreateTrailers(correlationId));
     }
+    
+  
 
     private static RpcException HandleDbUpdateException<T>(DbUpdateException exception, ServerCallContext context,
         ILogger<T> logger, Guid correlationId)
@@ -59,7 +63,7 @@ public static class ExceptionHelpers
 
     private static RpcException HandleRpcException<T>(RpcException exception, ILogger<T> logger, Guid correlationId)
     {
-        logger.LogError(exception, $"CorrelationId: {correlationId} - An error occurred");
+        logger.LogError(exception, "CorrelationId: {CorrelationId} - An error occurred", correlationId);
         var trailers = exception.Trailers;
         trailers.Add(CreateTrailers(correlationId)[0]);
         return new RpcException(new Status(exception.StatusCode, exception.Message), trailers);
@@ -93,8 +97,26 @@ public static class ExceptionHelpers
 
     private static RpcException HandleDefault<T>(Exception exception, ServerCallContext context, ILogger<T> logger, Guid correlationId)
     {
-        logger.LogError(exception, $"CorrelationId: {correlationId} - An error occurred");
+        logger.LogError(exception, "CorrelationId: {CorrelationId} - An error occurred", correlationId);
         return new RpcException(new Status(StatusCode.Internal, exception.Message), CreateTrailers(correlationId));
+    }
+    
+    private static RpcException HandleNotFoundException<T>(KeyNotFoundException exception, ServerCallContext context, ILogger<T> logger, Guid correlationId)
+    {
+        logger.LogError(exception, "CorrelationId: {CorrelationId} - A timeout occurred", correlationId);
+
+        var status = new Status(StatusCode.NotFound, exception.Message);
+
+        return new RpcException(status, CreateTrailers(correlationId));
+    }
+    
+    private static RpcException HandleValidationException<T>(ValidationException exception, ServerCallContext context, ILogger<T> logger, Guid correlationId)
+    {
+        logger.LogError(exception, "CorrelationId: {CorrelationId} - A timeout occurred", correlationId);
+        var errors = string.Join(Environment.NewLine, exception.Errors.Select(c => c.ErrorMessage));
+        var status = new Status(StatusCode.InvalidArgument, errors);
+
+        return new RpcException(status, CreateTrailers(correlationId));
     }
 
     /// <summary>

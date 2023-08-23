@@ -43,6 +43,8 @@ public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Guid>
     private static void BusinessValidate(AddMemberCommand request, Client client)
     {
         var validationFailures = new List<ValidationFailure>();
+        if (client == null) throw new KeyNotFoundException("Id not found.");
+        
         if (client.Persons.Any(i => i.PhoneNumber == request.PhoneNumber))
             validationFailures.Add(new ValidationFailure("PhoneNumber",
                 $"PhoneNumber: ({request.PhoneNumber}) Already exists."));
