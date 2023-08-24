@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace BusinessCard.API.Application.Commands.EditClientCommandHandler;
+namespace BusinessCard.API.Application.Commands.EditClient;
 
 public class EditClientCommand : IRequest<Guid>
 {

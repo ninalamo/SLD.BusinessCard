@@ -72,7 +72,7 @@ public class ClientsRepositoryTests
 
         // Act
         var clientToUpdate = await repository.GetWithPropertiesByIdAsync(existingClientId);
-        clientToUpdate.UpdateSelf("Updated Client", false, 2);
+        clientToUpdate.Amend("Updated Client", false, 2);
         repository.Update(clientToUpdate);
         await repository.UnitOfWork.SaveChangesAsync(default);
 

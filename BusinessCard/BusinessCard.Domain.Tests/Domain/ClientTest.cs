@@ -45,10 +45,10 @@ namespace BusinessCard.Tests.Domain
             string companyName = CompanyFaker.Name();
             Client company = new(companyName, false, Guid.Empty);
 
-            await company.GenerateContactsAsync(1000);
+            await company.CreateDummyCards(1000);
     
             company.Persons.ShouldNotBeEmpty();
-            company.Persons.Count().ShouldBe(1000);
+            company.Persons.Count.ShouldBe(1000);
             company.Persons.First().Card.Key.ShouldBeNullOrEmpty();
         }
 

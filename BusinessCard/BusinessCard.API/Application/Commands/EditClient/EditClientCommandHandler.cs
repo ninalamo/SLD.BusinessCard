@@ -4,7 +4,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
-namespace BusinessCard.API.Application.Commands.EditClientCommandHandler;
+namespace BusinessCard.API.Application.Commands.EditClient;
 
 public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Guid>
 {
@@ -31,9 +31,11 @@ public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Guid>
                 new ValidationFailure[] { new ValidationFailure("Id", "Id does not exist.") }));
         }
         _logger.LogInformation($"Updating {nameof(entity)}. {DateTime.UtcNow}");
-        entity.UpdateSelf(request.CompanyName,request.IsDiscreet,request.MemberTierLevel);
+        entity.Amend(request.CompanyName,request.IsDiscreet,request.MemberTierLevel);
         
         _repository.Update(entity);
+        
+        _logger.LogInformation($"Exiting {nameof(Handle)} in {nameof(EditClientCommandHandler)} with request: {request}. {DateTime.UtcNow}");
         
         _logger.LogInformation($"Return {nameof(entity.Id)}. {DateTime.UtcNow}");
         return entity.Id;
