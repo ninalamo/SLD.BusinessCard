@@ -6,7 +6,7 @@ Type=notify
 ExecStart=/home/ubuntu/bcarddev.tuldok.dev/BusinessCard.API
 User=ubuntu
 Environment=ASPNETCORE_ENVIRONMENT=Production
-Environment=ASPNETCORE_URLS=http://localhost:5002
+Environment=ASPNETCORE_URLS=https://localhost:5002
 WorkingDirectory=/home/ubuntu/bcarddev.tuldok.dev
 
 [Install]
