@@ -52,12 +52,14 @@ steps:
   #     targetFolder: ~/bcarddev.tuldok.dev
 
   - task: SSH@0
+    displayName: Deploy to Development Server
     inputs:
       sshEndpoint: 'l4d2.gazo.win'
       runOptions: 'commands'
-      commands: 'cp -R $(Build.ArtifactStagingDirectory)/$(apiProjectName)/* ~/bcarddev.tuldok.dev'
+      commands: 'cp -R $(Build.ArtifactStagingDirectory)/$(apiProjectName)/* /home/ubuntu/bcarddev.tuldok.dev'
 
   - task: SSH@0
+    displayName: Restart Service
     inputs:
       sshEndpoint: 'l4d2.gazo.win'
       runOptions: 'commands'
