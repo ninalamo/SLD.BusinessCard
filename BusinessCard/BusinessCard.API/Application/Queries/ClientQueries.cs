@@ -1,4 +1,9 @@
+using System.Runtime.InteropServices.JavaScript;
+using BusinessCard.API.Application.Common.Interfaces;
+using BusinessCard.API.Application.Common.SQLScripts;
 using BusinessCard.API.Application.Queries.GetClients;
+using BusinessCard.API.Application.Queries.GetMembers;
+using ClientService;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
@@ -6,53 +11,36 @@ namespace BusinessCard.API.Application.Queries;
 
 public class ClientQueries : IClientQueries
 {
-    private readonly string _connectionString;
- 
-    public ClientQueries(string connectionString)
+    private readonly IDbConnectionFactory _dbConnectionFactory;
+
+    public ClientQueries(IDbConnectionFactory factory)
     {
-        _connectionString = connectionString;
+	    _dbConnectionFactory = factory;
     }
     
-    
-
     public async Task<(int,IEnumerable<ClientsResult>)> GetClientsWithPagination(int pageSize, int pageNumber, string? name)
     {
         var parameters = new DynamicParameters();
         parameters.Add("pageNumber", pageNumber);
         parameters.Add("pageSize", pageSize);
         parameters.Add("offSet",(pageNumber -1) * pageSize);
-        
 
-        var query = @"SELECT 
-	  		C.[Id] [ClientId] 
-      		,C.[CompanyName] 
-      		,M.[Level] [SubscriptionLevel] 
-      		,C.[IsDiscreet] 
-      		,C.[CreatedBy] 
-      		,C.[CreatedOn] 
-      		,C.[ModifiedBy] 
-      		,C.[ModifiedOn] 
-      		,C.[IsActive] 
-	  		,M.[Name] [Subscription] 
-	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 1)  [Cardholders] 
-	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 0)  [NonCardholders] 
-  		FROM [kardb].[kardibee].[client] C 
-  			LEFT JOIN kardb.kardibee.people P ON P.ClientId = C.Id 
-  			LEFT JOIN kardb.kardibee.membertier M ON M.Id = C.MemberTierId ";
+
+        var query = SqlScript.SelectClients;
 
         if (!string.IsNullOrEmpty(name))
         {
             parameters.Add("CompanyName",name);
-            query += "WHERE C.[CompanyName] LIKE '@CompanyName%' ";
+            query += " WHERE C.[CompanyName] LIKE '@CompanyName%' ";
         }
         
-        query += @"ORDER BY C.[CompanyName] 
+        query += @" ORDER BY C.[CompanyName] 
         OFFSET @offSet 
         ROWS FETCH NEXT @pageSize ROWS ONLY";
 
-        var countQuery = @"SELECT COUNT(*) FROM kardb.kardibee.client";
-        
-        await using var connection = new SqlConnection(_connectionString);
+        var countQuery = SqlScript.ClientCount;
+
+        await using var connection = _dbConnectionFactory.CreateConnection(); //new SqlConnection(_connectionString);
         
         await connection.OpenAsync(CancellationToken.None);
 
@@ -63,38 +51,58 @@ public class ClientQueries : IClientQueries
         return (count.First(), result);
     }
 
-    public async Task<ClientsResult> GetClientbyId(Guid id)
+    public async Task<ClientsResult> GetClientById(Guid id)
     {
-	    DynamicParameters parameters = new DynamicParameters();
+	    DynamicParameters parameters = new();
 	    parameters.Add("Id", id);
 
-	    string query = @"SELECT TOP 1
-	  		C.[Id] [ClientId] 
-      		,C.[CompanyName] 
-      		,M.[Level] [SubscriptionLevel] 
-      		,C.[IsDiscreet] 
-      		,C.[CreatedBy] 
-      		,C.[CreatedOn] 
-      		,C.[ModifiedBy] 
-      		,C.[ModifiedOn] 
-      		,C.[IsActive] 
-	  		,M.[Name] [Subscription] 
-	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 1)  [Cardholders] 
-	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 0)  [NonCardholders] 
-  		FROM [kardb].[kardibee].[client] C 
-  			LEFT JOIN kardb.kardibee.people P ON P.ClientId = C.Id 
-  			LEFT JOIN kardb.kardibee.membertier M ON M.Id = C.MemberTierId 
-  		WHERE C.[Id] = @Id ";
+	    string query = SqlScript.SelectClientById;
 
-	    await using SqlConnection connection = new SqlConnection(_connectionString);
+	    await using SqlConnection connection =_dbConnectionFactory.CreateConnection(); // new SqlConnection(_connectionString);
         
 	    await connection.OpenAsync(CancellationToken.None);
 
-	    IEnumerable<ClientsResult> result = await connection.QueryAsync<ClientsResult>(query, parameters);
+	    var result = await connection.QueryAsync<ClientsResult>(query, parameters);
 
-	    ClientsResult[] clientsResults = result as ClientsResult[] ?? result.ToArray();
+	    var clientsResults = result as ClientsResult[] ?? result.ToArray();
+	    
 	    if (!clientsResults.Any()) throw new KeyNotFoundException("Id not found.");
 
 	    return clientsResults.FirstOrDefault();
+    }
+
+    public async Task<(int,IEnumerable<MembersResult>)> GetMembersWithPagination(int pageSize, int pageNumber, Guid clientId)
+    {
+	    DynamicParameters parameters = new();
+	    parameters.Add("ClientId", clientId);
+	    parameters.Add("pageNumber", pageNumber);
+	    parameters.Add("pageSize", pageSize);
+	    parameters.Add("offSet",(pageNumber -1) * pageSize);
+
+	    var countQuery = SqlScript.MemberCount;
+
+	    await using var connection = _dbConnectionFactory.CreateConnection(); //new SqlConnection(_connectionString);
+        
+	    await connection.OpenAsync(CancellationToken.None);
+
+	    var count = await connection.QueryAsync<int>(countQuery,new{ ClientId = clientId});
+
+	    if (count.FirstOrDefault() == 0) return (0, Array.Empty<MembersResult>());
+
+	    var query = SqlScript.SelectMembers + " WHERE P.[ClientId] = @ClientId ";
+	    if (count.FirstOrDefault() == 1)
+	    {
+		    query += @" ORDER BY P.[LastName], P.[FirstName] ";
+	    }
+	    else
+	    {
+		    query += @" ORDER BY P.[LastName], P.[FirstName]  
+			OFFSET @offSet 
+			ROWS FETCH NEXT @pageSize ROWS ONLY";    
+	    }
+
+	    var result = await connection.QueryAsync<MembersResult>(query, parameters);
+
+	    return (count.First(), result ?? Array.Empty<MembersResult>());
     }
 }

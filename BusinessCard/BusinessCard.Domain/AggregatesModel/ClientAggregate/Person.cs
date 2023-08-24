@@ -1,6 +1,7 @@
 ﻿
 using BusinessCard.Domain.Exceptions;
 using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
@@ -18,7 +19,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             string email, 
             string address, 
             string occupation,
-            string[] socialMedia) : this()
+            string socialMedia) : this()
         {
             FirstName = firstName;
             LastName = lastName;
@@ -37,6 +38,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             IsSubsriptionOverride = false;
             _memberTierId = MemberTier.GetLevels().First(i => i.Level == 1).Id;
             Card = new Card();
+            IsActive = false;
         }
 
         public bool IsSubsriptionOverride { get; private set; }
@@ -69,13 +71,15 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             Address = address;
         }
 
-        public void SetSocialMedia(string[] links)
+        public void SetSocialMedia(string links)
         {
-            var json = string.Empty;
-            if (links.Any()) {
-                json = JsonConvert.SerializeObject(links.Select(x => new { Link = x }).ToArray());
-            }
-            SocialMedia = json;
+            SocialMedia = links;
+        }
+
+        private string ToJson(Dictionary<string, string> dict)
+        {
+            var entries = dict.Select(d => string.Format("\"{0}\": [{1}]", d.Key, d.Value));
+            return "{" + string.Join(",", entries) + "}";
         }
         
         public void SetCard(string key)

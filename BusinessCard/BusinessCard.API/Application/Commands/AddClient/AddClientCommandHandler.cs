@@ -1,6 +1,5 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using BusinessCard.API.Logging;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using MediatR;
 
@@ -10,9 +9,9 @@ namespace BusinessCard.API.Application.Commands.UpsertClient;
 public class AddClientCommandHandler : IRequestHandler<AddClientCommand, CommandResult>
 {
     private readonly IClientsRepository _repository;
-    private readonly ILoggerAdapter<AddClientCommandHandler> _logger;
+    private readonly ILogger<AddClientCommandHandler> _logger;
 
-    public AddClientCommandHandler(IClientsRepository repository, ILoggerAdapter<AddClientCommandHandler> logger)
+    public AddClientCommandHandler(IClientsRepository repository, ILogger<AddClientCommandHandler> logger)
     {
         _repository = repository;
         _logger = logger;

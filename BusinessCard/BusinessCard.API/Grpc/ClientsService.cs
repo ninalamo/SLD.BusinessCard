@@ -1,8 +1,11 @@
+using System.Text;
 using BusinessCard.API.Application.Commands.AddMember;
 using BusinessCard.API.Application.Commands.EditClientCommandHandler;
 using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.API.Application.Common.Models;
 using BusinessCard.API.Application.Queries.GetClientById;
 using BusinessCard.API.Application.Queries.GetClients;
+using BusinessCard.API.Application.Queries.GetMembers;
 using BusinessCard.API.Extensions;
 using BusinessCard.Domain.Exceptions;
 using ClientService;
@@ -10,6 +13,9 @@ using FluentValidation;
 using FluentValidation.Results;
 using Grpc.Core;
 using MediatR;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace BusinessCard.API.Grpc;
 
@@ -57,7 +63,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
          };
     }
 
-    public override async Task<ClientResult> GetClientByIdGrpc(GetClientByIdGrpcQuery request, ServerCallContext context)
+    public override async Task<ClientGrpcResult> GetClientByIdGrpc(GetClientByIdGrpcQuery request, ServerCallContext context)
     {
         var result = await _mediator.Send(new GetClientByIdQuery(request.Id.ToGuid()));
         
@@ -92,11 +98,79 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             Id = result.ToString(),
         };
     }
-    
-    #region Transform
-    private static ClientResult ToClientResult(ClientsResult c)
+
+    public override async Task<GetPaginatedMembersByIdQueryResult> GetMembersByClientIdGrpc(GetMembersByIdQuery request,
+        ServerCallContext context)
     {
-        return  new ClientResult
+        if (!Guid.TryParse(request.ClientId, out var guid))
+            throw new ValidationException("Validation Error",
+                new[] { new ValidationFailure("Id", "Id is not a Guid.") });
+
+        var result = await _mediator.Send(new GetMembersQuery(request.PageSize,request.PageNumber,request.ClientId.ToGuid()));
+
+        var grpcResult = new GetPaginatedMembersByIdQueryResult()
+        {
+            PageSize = result.PageSize,
+            PageNumber = result.PageNumber,
+            TotalCount = result.TotalCount,
+        };
+
+        grpcResult.Members.AddRange(result.Members.Select(c => new MemberGrpcResult()
+        {
+            Address = c.Address,
+            ClientId = c.ClientId.ToString(),
+            Subscription = c.Subscription,
+            SubscriptionLevel = c.SubscriptionLevel,
+            FullName = NameBuilder(c),
+            Email = c.Email,
+            Facebook = GetSocialMedia(c).Facebook,
+            Id = c.Id.ToString(),
+            Instagram = GetSocialMedia(c).Instagram,
+            Occupation = c.Occupation,
+            Pinterest =  GetSocialMedia(c).Pinterest,
+            Twitter =  GetSocialMedia(c).Twitter,
+            LinkedIn =  GetSocialMedia(c).LinkedIn,
+            CardKey = c.CardKey,
+            PhoneNumber = c.PhoneNumber,
+        }));
+
+        return grpcResult;
+    }
+
+    
+
+    #region Transform
+    
+    private static SocialMediaObject GetSocialMedia(MembersResult member)
+    {
+        return JsonSerializer.Deserialize<SocialMediaObject>(member.SocialMedia);
+    }
+
+    private static string NameBuilder(MembersResult result)
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append(result.FirstName);
+        builder.Append(" ");
+
+        if (string.IsNullOrEmpty(result.MiddleName))
+        {
+            builder.Append(result.LastName);
+        }
+        else
+        {
+            builder.Append(result.MiddleName);
+            builder.Append(" ");
+            builder.Append(result.LastName);
+        }
+
+        builder.Append(" ");
+        builder.Append(result.NameSuffix);
+
+        return builder.ToString().TrimEnd();
+    }
+    private static ClientGrpcResult ToClientResult(ClientsResult c)
+    {
+        return  new ClientGrpcResult
         {
             CardHolders = c.CardHolders,
             CompanyName = c.CompanyName,

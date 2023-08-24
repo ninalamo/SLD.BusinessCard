@@ -12,6 +12,7 @@
 
     <ItemGroup>
         <PackageReference Include="FluentValidation" Version="11.6.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
         <PackageReference Include="Moq" Version="4.20.69" />
         <PackageReference Include="xunit" Version="2.4.2"/>
@@ -38,6 +39,13 @@
 
     <ItemGroup>
       <Folder Include="Commands\" />
+      <Folder Include="Queries\" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <None Remove="appsettings.json" />
     </ItemGroup>
 
 

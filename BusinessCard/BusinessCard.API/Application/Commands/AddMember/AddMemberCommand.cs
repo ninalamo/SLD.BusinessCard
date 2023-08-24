@@ -1,3 +1,5 @@
+using System.Text.Json;
+using BusinessCard.API.Application.Common.Models;
 using MediatR;
 
 namespace BusinessCard.API.Application.Commands.AddMember;
@@ -17,16 +19,14 @@ public class AddMemberCommand : IRequest<Guid>
         Address = address;
         Occupation = occupation;
 
-        var list = new List<string>();
-        
-        if(!string.IsNullOrEmpty(facebook)) list.Add(facebook);
-        if(!string.IsNullOrEmpty(facebook)) list.Add(linkedIn);
-        if(!string.IsNullOrEmpty(facebook)) list.Add(instagram);
-        if(!string.IsNullOrEmpty(facebook)) list.Add(linkedIn);
-        if(!string.IsNullOrEmpty(facebook)) list.Add(pinterest);
-        if(!string.IsNullOrEmpty(facebook)) list.Add(twitter);
-
-        SocialMedia = list.Any() ? list.ToArray() : Array.Empty<string>();
+        SocialMedia = JsonSerializer.Serialize(new SocialMediaObject()
+        {
+            Facebook = string.IsNullOrEmpty(facebook) ?  "N/A" : facebook,
+            Instagram =string.IsNullOrEmpty(instagram) ?  "N/A" : instagram,
+            LinkedIn = string.IsNullOrEmpty(linkedIn) ?  "N/A" : linkedIn,
+            Pinterest = string.IsNullOrEmpty(pinterest) ?  "N/A" : pinterest,
+            Twitter =string.IsNullOrEmpty(twitter) ?  "N/A" : twitter, 
+        });
 
     }
     public Guid ClientId { get; init; }
@@ -38,5 +38,8 @@ public class AddMemberCommand : IRequest<Guid>
     public string Email { get; init; }
     public string Address { get; init; }
     public string Occupation { get; init; }
-    public string[] SocialMedia { get; private set; }
+    public string SocialMedia { get; private set; }
+
+    private SocialMediaObject _social;
+
 }
