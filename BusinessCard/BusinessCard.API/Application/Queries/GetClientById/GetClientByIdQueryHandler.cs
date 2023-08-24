@@ -20,7 +20,7 @@ public class GetClientByIdQueryHandler : IRequestHandler<GetClientByIdQuery, Cli
     {
         _logger.LogInformation("Starting {ClientByIdQueryHandlerName} {Now}", nameof(GetClientByIdQueryHandler), DateTimeOffset.Now);
 	    
-        var result = await _queries.GetClientbyId(request.Id);
+        var result = await _queries.GetClientById(request.Id);
 
         return result;
     }

@@ -18,8 +18,8 @@ public class GetMembersQueryHandler : IRequestHandler<GetMembersQuery, GetMember
     {
         _logger.LogInformation($"Starting {nameof(GetMembersQueryResult)} {DateTimeOffset.Now}");
 	    
-        var (count, result) = await _queries.GetClientsWithPagination(request.PageSize, request.PageNumber, request.Name);
+        var (count, result) = await _queries.GetMembersWithPagination(request.PageSize, request.PageNumber, request.ClientId);
 
-        return null;// new GetMembersQueryResult(request.PageSize, request.PageNumber, count, result);
+        return new GetMembersQueryResult(request.PageSize, request.PageNumber, count, result);
     }
 }

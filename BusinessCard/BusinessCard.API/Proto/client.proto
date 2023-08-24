@@ -9,7 +9,7 @@ service ClientGrpc {
     rpc EditClientGrpc(EditClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc AddMemberGrpc(AddMemberGrpcCommand) returns (ClientGrpcCommandResult){}
     rpc GetClientsGrpc(GetPaginatedClientsGrpcQuery) returns (GetPaginatedClientsGrpcQueryResult){}
-    rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (ClientResult){}
+    rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (ClientGrpcResult){}
 
     rpc GetMembersByClientIdGrpc(GetMembersByIdQuery)returns(GetPaginatedMembersByIdQueryResult){}
 }
@@ -64,10 +64,10 @@ message GetPaginatedClientsGrpcQueryResult {
     int32 pageSize = 1;
     int32 pageNumber = 2;
     int32 totalCount = 3;
-    repeated ClientResult clients = 4;
+    repeated ClientGrpcResult clients = 4;
 }
 
-message ClientResult {
+message ClientGrpcResult {
     string clientId = 1;
     string companyName = 2;
     bool isDiscreet = 3;
@@ -92,27 +92,23 @@ message GetPaginatedMembersByIdQueryResult {
     int32 pageSize = 1;
     int32 pageNumber = 2;
     int32 totalCount = 3;
-    repeated MemberResult members = 4;
+    repeated MemberGrpcResult members = 4;
 }
 
-message MemberResult {
-    string firstName = 1;
-    string lastName = 2;
-    string middleName = 3;
-    string nameSuffix = 4;
-    string phoneNumber = 5;
-    string email = 6;
-    string address = 7;
-    string occupation = 8;
-    string facebook = 9;
-    string linkedIn = 10;
-    string instagram = 11;
-    string pinterest = 12;
-    string twitter = 13;
-    string clientId = 14;
-    string clientName = 16;
-    string subscription = 17;
-    int32 subscriptionLevel = 18;
-    string cardId = 19;
-    int32 cardKey = 20;
+message MemberGrpcResult {
+    string fullName = 1;
+    string phoneNumber = 2;
+    string email = 3;
+    string address = 4;
+    string occupation = 5;
+    string facebook = 6;
+    string linkedIn = 7;
+    string instagram = 8;
+    string pinterest = 9;
+    string twitter = 10;
+    string clientId = 11;
+    string subscription = 12;
+    int32 subscriptionLevel = 13;
+    string cardKey = 14;
+    string id = 15;
 }

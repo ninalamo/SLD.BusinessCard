@@ -12,7 +12,6 @@ using BusinessCard.API.Application.Queries.GetClients;
 using BusinessCard.API.Extensions;
 using BusinessCard.API.Grpc;
 using BusinessCard.API.Interceptors;
-using BusinessCard.API.Logging;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
 using BusinessCard.Infrastructure;

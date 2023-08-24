@@ -1,3 +1,4 @@
+using System.Text.Json;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
 using BusinessCard.Infrastructure.Repositories;
@@ -9,6 +10,15 @@ namespace BusinessCard.Infrastructure.Tests;
 
 public class ClientsRepositoryTests
 {
+    private record SocialMediaObject
+    {
+        public string Facebook { get; init; }
+        public string LinkedIn { get; init; }
+        public string Instagram { get; init; }
+        public string Pinterest { get; init; }
+        public string Twitter { get; init; }
+    }
+    
     [Fact]
     public async Task GetEntityByIdAsync_ReturnsClient_WhenClientExists()
     {
@@ -82,14 +92,25 @@ public class ClientsRepositoryTests
 
         //Act
         var client = await repository.GetWithPropertiesByIdAsync(guid);
-        var person =await client.AddMember("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite", "Encoder",
-            new[] { "facebook.com" });
+        var json = new SocialMediaObject()
+        {
+            Facebook = "facebook.com",
+            LinkedIn = "Linkedin.com",
+            Instagram = "instagram.com",
+            Pinterest = "pinterest.com",
+            Twitter = "twitter.com",
+        };
+        var person = await client.AddMember("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
+            "Encoder",
+            JsonSerializer.Serialize(json));
+        
         repository.Update(client);
      
          await repository.UnitOfWork.SaveChangesAsync(CancellationToken.None);
         
         
          // Assert
+         Assert.Equal(json,JsonSerializer.Deserialize<SocialMediaObject>(person.SocialMedia));
          Assert.NotEqual(Guid.Empty,person.Id);
          Assert.NotNull(client.Persons);
                                                                                                                                                                                                                                                                                                
