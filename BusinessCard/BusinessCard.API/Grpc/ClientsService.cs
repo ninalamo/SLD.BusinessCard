@@ -1,6 +1,8 @@
 using System.Text;
+using System.Text.Json;
 using BusinessCard.API.Application.Commands.AddMember;
-using BusinessCard.API.Application.Commands.EditClientCommandHandler;
+using BusinessCard.API.Application.Commands.EditClient;
+using BusinessCard.API.Application.Commands.RemoveClient;
 using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.API.Application.Common.Models;
 using BusinessCard.API.Application.Queries.GetClientById;
@@ -14,8 +16,6 @@ using FluentValidation.Results;
 using Grpc.Core;
 using MediatR;
 using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace BusinessCard.API.Grpc;
 
@@ -63,6 +63,13 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
          };
     }
 
+    /// <summary>
+    /// Get Clients by Id
+    /// 'gRPC' implementation
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
     public override async Task<ClientGrpcResult> GetClientByIdGrpc(GetClientByIdGrpcQuery request, ServerCallContext context)
     {
         var result = await _mediator.Send(new GetClientByIdQuery(request.Id.ToGuid()));
@@ -70,6 +77,13 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return ToClientResult(result);
     }
 
+    /// <summary>
+    /// Get client list - paginated
+    /// 'gRPC' implementation
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
     public override async Task<GetPaginatedClientsGrpcQueryResult> GetClientsGrpc(GetPaginatedClientsGrpcQuery request, ServerCallContext context)
     {
         var result = await _mediator.Send(new GetClientsQuery(request.PageSize, request.PageNumber, request.Name));
@@ -86,6 +100,14 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return grpcResult;
     }
 
+    /// <summary>
+    /// Add member to client
+    /// 'gRPC' implementation
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    /// <exception cref="ValidationException"></exception>
     public override async Task<ClientGrpcCommandResult> AddMemberGrpc(AddMemberGrpcCommand request, ServerCallContext context)
     {
         if (!Guid.TryParse(request.ClientId, out var guid))
@@ -99,6 +121,33 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         };
     }
 
+    /// <summary>
+    /// Remove (soft delete) clients - deactivate all children as well
+    /// 'gRPC' implementation
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    /// <exception cref="ValidationException"></exception>
+    public override async Task<ClientGrpcCommandResult> RemoveClientGrpc(RemoveClientGrpcCommand request, ServerCallContext context)
+    {
+        if (!Guid.TryParse(request.Id, out var guid))
+            throw new ValidationException("Validation Error",new []{new ValidationFailure("Id","Id is not a Guid.")});
+
+        await _mediator.Send(new RemoveClientCommand(guid));
+
+        return new ClientGrpcCommandResult { Id = guid.ToString() };
+
+    }
+
+    /// <summary>
+    /// Get members of a client / company
+    /// 'gRPC' implementation
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    /// <exception cref="ValidationException"></exception>
     public override async Task<GetPaginatedMembersByIdQueryResult> GetMembersByClientIdGrpc(GetMembersByIdQuery request,
         ServerCallContext context)
     {
@@ -115,29 +164,13 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             TotalCount = result.TotalCount,
         };
 
-        grpcResult.Members.AddRange(result.Members.Select(c => new MemberGrpcResult()
-        {
-            Address = c.Address,
-            ClientId = c.ClientId.ToString(),
-            Subscription = c.Subscription,
-            SubscriptionLevel = c.SubscriptionLevel,
-            FullName = NameBuilder(c),
-            Email = c.Email,
-            Facebook = GetSocialMedia(c).Facebook,
-            Id = c.Id.ToString(),
-            Instagram = GetSocialMedia(c).Instagram,
-            Occupation = c.Occupation,
-            Pinterest =  GetSocialMedia(c).Pinterest,
-            Twitter =  GetSocialMedia(c).Twitter,
-            LinkedIn =  GetSocialMedia(c).LinkedIn,
-            CardKey = c.CardKey,
-            PhoneNumber = c.PhoneNumber,
-        }));
+        grpcResult.Members.AddRange(result.Members.Select(c => ToMemberGrpcResult(c)));
 
         return grpcResult;
     }
 
-    
+  
+
 
     #region Transform
     
@@ -187,6 +220,28 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         };
     }
     
+    private static MemberGrpcResult ToMemberGrpcResult(MembersResult c)
+    {
+        return new MemberGrpcResult()
+        {
+            Address = c.Address,
+            ClientId = c.ClientId.ToString(),
+            Subscription = c.Subscription,
+            SubscriptionLevel = c.SubscriptionLevel,
+            FullName = NameBuilder(c),
+            Email = c.Email,
+            Facebook = GetSocialMedia(c).Facebook,
+            Id = c.Id.ToString(),
+            Instagram = GetSocialMedia(c).Instagram,
+            Occupation = c.Occupation,
+            Pinterest =  GetSocialMedia(c).Pinterest,
+            Twitter =  GetSocialMedia(c).Twitter,
+            LinkedIn =  GetSocialMedia(c).LinkedIn,
+            CardKey = c.CardKey,
+            PhoneNumber = c.PhoneNumber,
+        };
+    }
+    
     private static AddClientCommand ToAddClientCommand(AddClientGrpcCommand request)
     {
         return new AddClientCommand(request.CompanyName, request.IsDiscreet, request.Subscription);
@@ -205,5 +260,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             request.Occupation, request.Facebook, request.LinkedIn, request.Instagram, request.Pinterest,
             request.Twitter);
     }
+    
+    
     #endregion
 }

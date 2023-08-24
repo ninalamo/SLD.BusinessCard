@@ -7,6 +7,8 @@ package BusinessCardApi;
 service ClientGrpc {
     rpc AddClientGrpc(AddClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc EditClientGrpc(EditClientGrpcCommand) returns (ClientGrpcCommandResult) {}
+    rpc RemoveClientGrpc(RemoveClientGrpcCommand) returns (ClientGrpcCommandResult){}
+
     rpc AddMemberGrpc(AddMemberGrpcCommand) returns (ClientGrpcCommandResult){}
     rpc GetClientsGrpc(GetPaginatedClientsGrpcQuery) returns (GetPaginatedClientsGrpcQueryResult){}
     rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (ClientGrpcResult){}
@@ -26,6 +28,10 @@ message EditClientGrpcCommand {
     string companyName = 2;
     bool isDiscreet = 3;
     int32 subscription = 4;
+}
+
+message RemoveClientGrpcCommand {
+    string id = 1;
 }
 
 message AddMemberGrpcCommand {

@@ -4,21 +4,22 @@ using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
-namespace BusinessCard.API.Application.Commands.EditClientCommandHandler;
+namespace BusinessCard.API.Application.Commands.RemoveClient;
 
-public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Guid>
+public class RemoveClientCommandHandler : IRequestHandler<RemoveClientCommand>
 {
     private readonly IClientsRepository _repository;
-    private readonly ILogger<EditClientCommandHandler> _logger;
+    private readonly ILogger<RemoveClientCommandHandler> _logger;
 
-    public EditClientCommandHandler(IClientsRepository repository, ILogger<EditClientCommandHandler> logger)
+    public RemoveClientCommandHandler(IClientsRepository repository, ILogger<RemoveClientCommandHandler> logger)
     {
         _repository = repository;
         _logger = logger;
     }
-    public async Task<Guid> Handle(EditClientCommand request, CancellationToken cancellationToken)
+
+    public async Task Handle(RemoveClientCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Starting {nameof(Handle)} in {nameof(EditClientCommandHandler)} with request: {request}. {DateTime.UtcNow}");
+        _logger.LogInformation($"Starting {nameof(Handle)} in {nameof(RemoveClientCommandHandler)} with request: {request}. {DateTime.UtcNow}");
 
         var entity = await _repository.GetEntityByIdAsync(request.Id);
 
@@ -30,12 +31,18 @@ public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Guid>
             throw BusinessCardDomainException.Create(new ValidationException("Validation error.",
                 new ValidationFailure[] { new ValidationFailure("Id", "Id does not exist.") }));
         }
+
+        entity.IsActive = false;
+        entity.Persons.ToList().ForEach(p =>
+        {
+            p.IsActive = false;
+            p.DisableCard();
+        });
         _logger.LogInformation($"Updating {nameof(entity)}. {DateTime.UtcNow}");
-        entity.UpdateSelf(request.CompanyName,request.IsDiscreet,request.MemberTierLevel);
-        
         _repository.Update(entity);
         
-        _logger.LogInformation($"Return {nameof(entity.Id)}. {DateTime.UtcNow}");
-        return entity.Id;
+        _logger.LogInformation($"Exiting {nameof(Handle)} in {nameof(RemoveClientCommandHandler)} with request: {request}. {DateTime.UtcNow}");
+
+        
     }
 }

@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BusinessCard.API.Application.Commands;
 
@@ -42,6 +42,6 @@ public record CommandResult
 
     public override string ToString()
     {
-        return JsonConvert.SerializeObject(this);
+        return JsonSerializer.Serialize(this);
     }
 }
