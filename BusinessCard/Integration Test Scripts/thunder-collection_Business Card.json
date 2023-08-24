@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "Business Card",
-    "dateExported": "2023-08-23T04:19:06.775Z",
+    "dateExported": "2023-08-24T13:17:47.485Z",
     "version": "1.1",
     "folders": [],
     "requests": [
@@ -14,7 +14,7 @@
             "method": "POST",
             "sortNum": 10000,
             "created": "2023-08-21T12:58:37.793Z",
-            "modified": "2023-08-21T12:58:37.793Z",
+            "modified": "2023-08-23T13:18:35.752Z",
             "headers": [],
             "params": [],
             "body": {
@@ -33,14 +33,28 @@
             "method": "PUT",
             "sortNum": 20000,
             "created": "2023-08-21T14:36:01.707Z",
-            "modified": "2023-08-21T14:36:01.707Z",
+            "modified": "2023-08-24T08:58:35.807Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"company_name\": \"KMC Savills Inc\",\n  \"is_discreet\": true,\n  \"subscription\": 1,\n  \"id\": \"51B2A2FA-4FD0-4898-566C-08DBA171A81D\"\n}",
+                "raw": "{\n  \"company_name\": \"KMC Savills Inc\",\n  \"is_discreet\": true,\n  \"subscription\": 1,\n  \"id\": \"e10e9cba-8994-453d-91ff-08dba4803f3f\"\n}",
                 "form": []
             },
+            "tests": []
+        },
+        {
+            "_id": "26ab39bb-e49f-4cea-bcb3-ba77d0a14ae3",
+            "colId": "23af7f34-de18-4a12-8dc1-5de140aca14d",
+            "containerId": "",
+            "name": "DELETE Client",
+            "url": "https://localhost:7204/api/Clients/e10e9cba-8994-453d-91ff-08dba4803f3f",
+            "method": "DELETE",
+            "sortNum": 25000,
+            "created": "2023-08-24T13:17:18.359Z",
+            "modified": "2023-08-24T13:17:18.359Z",
+            "headers": [],
+            "params": [],
             "tests": []
         },
         {
@@ -52,7 +66,21 @@
             "method": "GET",
             "sortNum": 30000,
             "created": "2023-08-22T22:00:48.436Z",
-            "modified": "2023-08-22T22:00:48.436Z",
+            "modified": "2023-08-24T10:40:26.115Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "653d58eb-ba94-40c8-be59-924e01d99331",
+            "colId": "23af7f34-de18-4a12-8dc1-5de140aca14d",
+            "containerId": "",
+            "name": "GET Client By Id",
+            "url": "https://localhost:7204/api/Clients/e10e9cba-8994-453d-91ff-08dba4803f3f",
+            "method": "GET",
+            "sortNum": 35000,
+            "created": "2023-08-23T02:51:11.783Z",
+            "modified": "2023-08-24T09:03:41.369Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -62,30 +90,30 @@
             "colId": "23af7f34-de18-4a12-8dc1-5de140aca14d",
             "containerId": "",
             "name": "POST Member",
-            "url": "https://localhost:7204/api/clients/857F2883-3F94-4183-56F7-08DBA0646057/members",
+            "url": "https://localhost:7204/api/clients/e10e9cba-8994-453d-91ff-08dba4803f3f/members",
             "method": "POST",
             "sortNum": 40000,
             "created": "2023-08-23T00:05:04.507Z",
-            "modified": "2023-08-23T00:05:04.507Z",
+            "modified": "2023-08-24T09:12:22.196Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\r\n  \"client_id\": \"857F2883-3F94-4183-56F7-08DBA0646057\",\r\n  \"first_name\": \"Denver\",\r\n  \"last_name\": \"Gazo\",\r\n  \"middle_name\": \"\",\r\n  \"name_suffix\": \"\",\r\n  \"phone_number\": \"12341234\",\r\n  \"email\": \"tuldok@gmail.com\",\r\n  \"address\": \"Bicutan\",\r\n  \"occupation\": \"CTO / CIO\",\r\n  \"facebook\": \"fb.com\",\r\n  \"linkedin\": \"linkedin.com\",\r\n  \"instagram\": \"ig.com\",\r\n  \"pinterest\": \"\",\r\n  \"twitter\": \"\"\r\n}",
+                "raw": "{\n  \"client_id\": \"e10e9cba-8994-453d-91ff-08dba4803f3f\",\n  \"first_name\": \"Chrisdan\",\n  \"last_name\": \"Evalla\",\n  \"middle_name\": \"Rivera\",\n  \"name_suffix\": \"\",\n  \"phone_number\": \"11112222\",\n  \"email\": \"chridan.evalla@gmail.com\",\n  \"address\": \"Bicutan\",\n  \"occupation\": \"CTO / CIO\",\n  \"facebook\": \"https://www.facebook.com/chrisbrown\",\n  \"linkedin\": \"https://www.linkedin.com/in/pasupuleti-varshitha-1a1084189/\",\n  \"instagram\": \"\",\n  \"pinterest\": \"\",\n  \"twitter\": \"\"\n}",
                 "form": []
             },
             "tests": []
         },
         {
-            "_id": "653d58eb-ba94-40c8-be59-924e01d99331",
+            "_id": "7ba77617-a697-40e4-b80f-a65ea605a232",
             "colId": "23af7f34-de18-4a12-8dc1-5de140aca14d",
             "containerId": "",
-            "name": "GET Client By Id",
-            "url": "https://localhost:7204/api/Clients/5F73C616-FAB3-4D63-535C-08DBA35C433a",
+            "name": "GET Members",
+            "url": "https://localhost:7204/api/Clients/e10e9cba-8994-453d-91ff-08dba4803f3f/members",
             "method": "GET",
-            "sortNum": 50000,
-            "created": "2023-08-23T02:51:11.783Z",
-            "modified": "2023-08-23T04:16:38.801Z",
+            "sortNum": 60000,
+            "created": "2023-08-23T13:26:06.639Z",
+            "modified": "2023-08-24T10:41:12.242Z",
             "headers": [],
             "params": [],
             "tests": []

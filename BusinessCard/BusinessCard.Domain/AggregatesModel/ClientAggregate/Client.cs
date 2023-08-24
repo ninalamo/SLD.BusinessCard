@@ -1,24 +1,20 @@
 ﻿using BusinessCard.Domain.Exceptions;
 
-namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
-{
+namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
     public class Client : Entity, IAggregateRoot
     {
         public string CompanyName { get; set; }
-
         private Guid _memberTierId;
         public bool IsDiscreet { get; set; }
-
 
         private readonly List<Person> _persons;
         public IReadOnlyCollection<Person> Persons => _persons.AsReadOnly();
 
-
         #region Constructors and Factory
-        private Client() { 
-            _persons = new List<Person>();
-        }
+        
+        private Client() =>_persons = new List<Person>();
+        
         public Client(string name, bool isDiscreet, Guid memberTierId) : this()
         {
             CompanyName = name;
@@ -40,14 +36,14 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         }
         #endregion
 
-        public void UpdateSelf(string name, bool isDiscreet, int subscription)
+        public void Amend(string name, bool isDiscreet, int subscription)
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
             _memberTierId = MemberTier.GetLevels().First(i => i.Level == subscription).Id;
         }
 
-        public async Task GenerateContactsAsync(int count)
+        public async Task CreateDummyCards(int count)
         {
             if (count > 1000)
             {
@@ -63,12 +59,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             });
         }
 
-        private Person AddMember(Person person)
-        {
-            _persons.Add(person);
-            return person;
-        }
-
         public async Task<Person> AddMember(string firstName,
             string lastName,
             string middleName,
@@ -82,9 +72,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             var person = new Person(firstName, lastName, middleName, nameSuffix, phoneNumber, email, address,
                 occupation, socialMedia);
 
-            return AddMember(person);
+            _persons.Add(person);
+            return person;
         }
-    
-
     }
-}
