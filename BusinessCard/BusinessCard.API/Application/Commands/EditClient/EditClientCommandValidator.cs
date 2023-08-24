@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace BusinessCard.API.Application.Commands.EditClientCommandHandler;
+namespace BusinessCard.API.Application.Commands.EditClient;
 
 public class EditClientCommandValidator : AbstractValidator<EditClientCommand>
 {

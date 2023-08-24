@@ -1,7 +1,5 @@
 ﻿
 using BusinessCard.Domain.Exceptions;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
@@ -76,22 +74,13 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             SocialMedia = links;
         }
 
-        private string ToJson(Dictionary<string, string> dict)
-        {
-            var entries = dict.Select(d => string.Format("\"{0}\": [{1}]", d.Key, d.Value));
-            return "{" + string.Join(",", entries) + "}";
-        }
-        
-        public void SetCard(string key)
+        public void RegisterCard(string key)
         {
             if (Card == default) Card = new();
             Card.SetKey(key);
         }
 
-        public void RemoveCard()
-        {
-            Card = null;
-        }
+        public void RemoveCard() => Card = null;
 
         public bool HasCard() => Card != default(Card);
 
