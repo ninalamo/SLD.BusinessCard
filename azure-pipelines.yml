@@ -55,7 +55,7 @@ steps:
     inputs:
       sshEndpoint: 'l4d2.gazo.win'
       runOptions: 'commands'
-      commands: 'cp -R "$(Build.ArtifactStagingDirectory)/$(apiProjectName)/*" ~/bcarddev.tuldok.dev'
+      commands: 'cp -R $(Build.ArtifactStagingDirectory)/$(apiProjectName)/* ~/bcarddev.tuldok.dev'
 
   - task: SSH@0
     inputs:
