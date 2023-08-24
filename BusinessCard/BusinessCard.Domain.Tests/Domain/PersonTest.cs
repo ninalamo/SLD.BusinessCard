@@ -1,18 +1,50 @@
-﻿using BusinessCard.Domain.AggregatesModel.ClientAggregate;
+﻿using System.Text.Json;
+using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using Faker;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Shouldly;
 
 namespace BusinessCard.Tests.Domain
 {
     public class PersonTest
     {
+        private record SocialMediaObject
+        {
+            public string Facebook { get; init; }
+            public string LinkedIn { get; init; }
+            public string Instagram { get; init; }
+            public string Pinterest { get; init; }
+            public string Twitter { get; init; }
+        }
+        
         [Fact]
         public void PersonShouldBeCreated()
         {
             Person person = new();
             person.SetName(Name.First(), Name.Last(), Name.Last(), Name.Suffix());
             person.SetContactDetails(Phone.Number(), Internet.Email(), Address.Country());
-            person.SetSocialMedia(new[] { @"facebook.com/ulaga", @"linkedin.com/chrri", @"pinterest.com/my/pinterest" });
+
+            var json = new SocialMediaObject()
+            {
+                Facebook = "facebook.com",
+                LinkedIn = "Linkedin.com",
+                Instagram = "instagram.com",
+                Pinterest = "pinterest.com",
+                Twitter = "twitter.com",
+            };
+            person.SetSocialMedia(JsonSerializer.Serialize(json));
+
+            person.FirstName.ShouldNotBeNull();
+            person.LastName.ShouldNotBeNull();
+            person.Address.ShouldNotBeNull();
+            person.Email.ShouldNotBeNull();
+            person.PhoneNumber.ShouldNotBeNull();
+
+            var obj = JsonSerializer.Deserialize<SocialMediaObject>(person.SocialMedia);
+            obj.ShouldBeEquivalentTo(json);
+
+            obj.ShouldBeOfType<SocialMediaObject>();
+            obj.Facebook.ShouldBeEquivalentTo(json.Facebook);
         }
 
         [Fact]
@@ -20,14 +52,9 @@ namespace BusinessCard.Tests.Domain
         {
             Person person = new();
             person.Card.ShouldNotBeNull();
+            person.Card.Key.ShouldBeEmpty();
         }
         
-        [Fact]
-        public void PersonShouldAddSocialMedia()
-        {
-            Person person = new();
-            person.Card.ShouldNotBeNull();
-        }
         
         [Fact]
         public void PersonShouldBeAbleToLinkEmptyCard()

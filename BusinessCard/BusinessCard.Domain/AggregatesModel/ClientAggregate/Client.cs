@@ -18,7 +18,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         #region Constructors and Factory
         private Client() { 
             _persons = new List<Person>();
-            IsActive = false;
         }
         public Client(string name, bool isDiscreet, Guid memberTierId) : this()
         {
@@ -78,7 +77,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             string email,
             string address,
             string occupation,
-            string[] socialMedia)
+            string socialMedia)
         {
             var person = new Person(firstName, lastName, middleName, nameSuffix, phoneNumber, email, address,
                 occupation, socialMedia);

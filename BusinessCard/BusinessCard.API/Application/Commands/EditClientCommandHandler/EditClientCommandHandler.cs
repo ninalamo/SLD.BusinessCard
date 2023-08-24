@@ -1,4 +1,3 @@
-using BusinessCard.API.Logging;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Exceptions;
 using FluentValidation;
@@ -10,9 +9,9 @@ namespace BusinessCard.API.Application.Commands.EditClientCommandHandler;
 public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Guid>
 {
     private readonly IClientsRepository _repository;
-    private readonly ILoggerAdapter<EditClientCommandHandler> _logger;
+    private readonly ILogger<EditClientCommandHandler> _logger;
 
-    public EditClientCommandHandler(IClientsRepository repository, ILoggerAdapter<EditClientCommandHandler> logger)
+    public EditClientCommandHandler(IClientsRepository repository, ILogger<EditClientCommandHandler> logger)
     {
         _repository = repository;
         _logger = logger;

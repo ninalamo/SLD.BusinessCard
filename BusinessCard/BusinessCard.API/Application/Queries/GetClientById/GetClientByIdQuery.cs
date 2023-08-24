@@ -20,25 +20,3 @@ public class GetClientByIdQueryValidator : AbstractValidator<GetClientByIdQuery>
         RuleFor(c => c.Id).NotEmpty();
     }
 }
-
-public class GetClientByIdQueryHandler : IRequestHandler<GetClientByIdQuery, ClientsResult>
-{
-    private readonly IClientQueries _queries;
-    private readonly ILogger<GetClientByIdQueryHandler> _logger;
-
-    public GetClientByIdQueryHandler(IClientQueries queries, ILogger<GetClientByIdQueryHandler> logger)
-    {
-        _queries = queries;
-        _logger = logger;
-    }
-
-
-    public async Task<ClientsResult> Handle(GetClientByIdQuery request, CancellationToken cancellationToken)
-    {
-        _logger.LogInformation("Starting {ClientByIdQueryHandlerName} {Now}", nameof(GetClientByIdQueryHandler), DateTimeOffset.Now);
-	    
-        var result = await _queries.GetClientbyId(request.Id);
-
-        return result;
-    }
-}

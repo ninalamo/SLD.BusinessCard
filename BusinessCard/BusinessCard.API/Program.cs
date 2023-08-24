@@ -6,12 +6,12 @@ using BusinessCard.API;
 using BusinessCard.API.Application.Behaviors;
 using BusinessCard.API.Application.Commands;
 using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.API.Application.Common.Interfaces;
 using BusinessCard.API.Application.Queries;
 using BusinessCard.API.Application.Queries.GetClients;
 using BusinessCard.API.Extensions;
 using BusinessCard.API.Grpc;
 using BusinessCard.API.Interceptors;
-using BusinessCard.API.Logging;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
 using BusinessCard.Infrastructure;
@@ -47,25 +47,27 @@ builder
 builder.Services
     .AddCustomDbContext(builder.Configuration)
     .AddCustomSwagger()
-    .AddCors(o => o.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
-    }))
+    // .AddCors(o => o.AddPolicy("AllowAll", builder =>
+    // {
+    //     builder.AllowAnyOrigin()
+    //         .AllowAnyMethod()
+    //         .AllowAnyHeader()
+    //         .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+    // }))
     .AddMediatorBundles();
 
 //claims middlewares
-builder.Services.AddScoped(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 builder.Services.AddScoped(typeof(ICurrentUser), typeof(CurrentUser));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-//register queries
+//register queries and repositories
 builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
-
-var connectionString = builder.Configuration.GetConnectionString("DevServerConnection");
-builder.Services.AddScoped<IClientQueries>(i => new ClientQueries(connectionString));
+builder.Services.AddSingleton<IDbConnectionFactory>(i =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    return new DbConnectionFactory(connectionString);
+});
+builder.Services.AddScoped<IClientQueries,ClientQueries>();
 
 // reverse proxy headers forwarding config
 builder.Services.Configure<ForwardedHeadersOptions>(options =>

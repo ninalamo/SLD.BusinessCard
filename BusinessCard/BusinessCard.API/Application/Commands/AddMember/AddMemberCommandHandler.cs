@@ -1,5 +1,4 @@
 using BusinessCard.API.Application.Commands.UpsertClient;
-using BusinessCard.API.Logging;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using FluentValidation;
 using FluentValidation.Results;
@@ -10,9 +9,9 @@ namespace BusinessCard.API.Application.Commands.AddMember;
 public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Guid>
 {
     private readonly IClientsRepository _repository;
-    private readonly ILoggerAdapter<AddClientCommandHandler> _logger;
+    private readonly ILogger<AddClientCommandHandler> _logger;
 
-    public AddMemberCommandHandler(IClientsRepository repository, ILoggerAdapter<AddClientCommandHandler> logger)
+    public AddMemberCommandHandler(IClientsRepository repository, ILogger<AddClientCommandHandler> logger)
     {
         _repository = repository;
         _logger = logger;
