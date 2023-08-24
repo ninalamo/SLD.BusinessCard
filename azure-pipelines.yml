@@ -44,12 +44,18 @@ steps:
       arguments: '--configuration $(buildConfiguration) --runtime linux-x64 --self-contained --output $(Build.ArtifactStagingDirectory)'
       zipAfterPublish: false
 
-  - task: CopyFilesOverSSH@0
-    displayName: 'Deploy to Development Server'
+  # - task: CopyFilesOverSSH@0
+  #   displayName: 'Deploy to Development Server'
+  #   inputs:
+  #     sshEndpoint: l4d2.gazo.win
+  #     sourceFolder: '
+  #     targetFolder: ~/bcarddev.tuldok.dev
+
+  - task: SSH@0
     inputs:
-      sshEndpoint: l4d2.gazo.win
-      sourceFolder: '$(Build.ArtifactStagingDirectory)/$(apiProjectName)'
-      targetFolder: ~/bcarddev.tuldok.dev
+      sshEndpoint: 'l4d2.gazo.win'
+      runOptions: 'commands'
+      commands: 'cp -R "$(Build.ArtifactStagingDirectory)/$(apiProjectName)/*" ~/bcarddev.tuldok.dev'
 
   - task: SSH@0
     inputs:
