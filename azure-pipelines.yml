@@ -34,6 +34,13 @@ steps:
       projects: '$(solution)'
       arguments: '--configuration $(buildConfiguration)'
 
+  - task: SSH@0
+    displayName: Kill Service
+    inputs:
+      sshEndpoint: 'l4d2.gazo.win'
+      runOptions: 'commands'
+      commands: 'touch ~/bcarddev.tuldok.dev/killer.file'
+
   - task: DotNetCoreCLI@2
     name: 'PublishWebAPI'
     displayName: 'Publish Web API'
@@ -43,13 +50,6 @@ steps:
       projects: '$(apiProject)'
       arguments: '--configuration $(buildConfiguration) --runtime linux-x64 --self-contained --output $(Build.ArtifactStagingDirectory)'
       zipAfterPublish: false
-
-  # - task: CopyFilesOverSSH@0
-  #   displayName: 'Deploy to Development Server'
-  #   inputs:
-  #     sshEndpoint: l4d2.gazo.win
-  #     sourceFolder: '
-  #     targetFolder: ~/bcarddev.tuldok.dev
 
   - task: SSH@0
     displayName: Deploy to Development Server

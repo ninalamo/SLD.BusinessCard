@@ -1,0 +1,8 @@
+[Unit]
+Description=bcarddev killer watcher
+
+[Path]
+PathModified=/home/ubuntu/bcarddev.tuldok.dev/killer.file
+
+[Install]
+WantedBy=multi-user.target
