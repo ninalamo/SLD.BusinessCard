@@ -7,6 +7,7 @@ package BusinessCardApi;
 
 service KardGrpc {
     rpc ExportCardsGrpc(ExportCardsGrpcCommand) returns (ExportCardsGrpcCommandResult) {}
+    rpc DownloadUrlsGrpc(DownloadUrlsGrpcCommand) returns (DownloadUrlsGrpcCommandResult) {}
 }
 
 message ExportCardsGrpcCommand {
@@ -15,5 +16,13 @@ message ExportCardsGrpcCommand {
 }
 
 message ExportCardsGrpcCommandResult {
+    repeated string urls = 1;
+}
+
+message DownloadUrlsGrpcCommand {
+    string clientId = 1;
+}
+
+message DownloadUrlsGrpcCommandResult {
     repeated string urls = 1;
 }
