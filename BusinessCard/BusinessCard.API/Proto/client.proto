@@ -118,3 +118,4 @@ message MemberGrpcResult {
     string cardKey = 14;
     string id = 15;
 }
+

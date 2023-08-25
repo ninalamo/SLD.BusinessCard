@@ -28,7 +28,7 @@ public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Guid>
         BusinessValidate(request, client);
 
         _logger.LogInformation($"Adding {nameof(Person)}-{DateTimeOffset.Now}");
-        var person = await client.AddMember(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,request.SocialMedia);
+        var person = await client.AddMemberAsync(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,request.SocialMedia);
 
         _logger.LogInformation($"Update {nameof(Client)}-{DateTimeOffset.Now}");
         _repository.Update(client);

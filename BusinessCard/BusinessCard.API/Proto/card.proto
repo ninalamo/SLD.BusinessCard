@@ -1,0 +1,19 @@
+
+syntax = "proto3";
+
+option csharp_namespace = "KardService";
+
+package BusinessCardApi;
+
+service KardGrpc {
+    rpc ExportCardsGrpc(ExportCardsGrpcCommand) returns (ExportCardsGrpcCommandResult) {}
+}
+
+message ExportCardsGrpcCommand {
+    string clientId = 1;
+    int32 count = 2;
+}
+
+message ExportCardsGrpcCommandResult {
+    repeated string urls = 1;
+}

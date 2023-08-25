@@ -74,15 +74,18 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             SocialMedia = links;
         }
 
-        public void RegisterCard(string key)
+        public void AddKeyToCard(string key)
         {
             if (Card == default) Card = new();
             Card.SetKey(key);
+            IsActive = true;
         }
 
         public void RemoveCard() => Card = null;
 
         public bool HasCard() => Card != default(Card);
+
+        public bool HasKeylessCard() => HasCard() ? Card.HasKey() : false; 
 
         public void EnableCard()
         {

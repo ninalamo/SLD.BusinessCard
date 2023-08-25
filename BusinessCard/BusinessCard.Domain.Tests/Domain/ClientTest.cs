@@ -44,12 +44,33 @@ namespace BusinessCard.Tests.Domain
         {
             string companyName = CompanyFaker.Name();
             Client company = new(companyName, false, Guid.Empty);
+            int count = 1000;
+            
+            var tasks = new List<Task<Tuple<Guid, Guid>>>(); 
+            // Using Tuple to store result and loop index
 
-            await company.CreateDummyCards(1000);
-    
+            for (int i = 0; i < count; i++)
+            {
+                var task = company.AddMemberAsync(
+                    "N/A", 
+                    "N/A", 
+                    "N/A",
+                    "N/A",
+                    Guid.NewGuid().ToString(),
+                    $"{Guid.NewGuid().ToString()}@tuldok.co", 
+                    "N/A",
+                    "N/A",
+                    "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
+
+                tasks.Add(task.ContinueWith(resultTask => Tuple.Create(resultTask.Result.Id, resultTask.Result.Card.Id)));
+            }
+
+            await Task.WhenAll(tasks);
+            
             company.Persons.ShouldNotBeEmpty();
             company.Persons.Count.ShouldBe(1000);
-            company.Persons.First().Card.Key.ShouldBeNullOrEmpty();
+            company.Persons.All(p => p.Card.HasKey()).ShouldBeFalse();
+            company.Persons.All(p => p.Card.Key == string.Empty).ShouldBeTrue();
         }
 
         [Fact]

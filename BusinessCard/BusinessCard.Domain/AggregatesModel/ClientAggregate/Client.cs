@@ -1,4 +1,5 @@
-﻿using BusinessCard.Domain.Exceptions;
+﻿using System.Runtime.InteropServices.JavaScript;
+using BusinessCard.Domain.Exceptions;
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
@@ -42,24 +43,9 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
             IsDiscreet = isDiscreet;
             _memberTierId = MemberTier.GetLevels().First(i => i.Level == subscription).Id;
         }
+        
 
-        public async Task CreateDummyCards(int count)
-        {
-            if (count > 1000)
-            {
-                throw BusinessCardDomainException.Create(new InvalidOperationException("Count limit exceeded 1000"));
-            }
-
-            await Task.Run(() =>
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    _persons.Add(new Person());
-                }
-            });
-        }
-
-        public async Task<Person> AddMember(string firstName,
+        public async Task<Person> AddMemberAsync(string firstName,
             string lastName,
             string middleName,
             string nameSuffix,
@@ -70,8 +56,10 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
             string socialMedia)
         {
             var person = new Person(firstName, lastName, middleName, nameSuffix, phoneNumber, email, address,
-                occupation, socialMedia);
-
+                occupation, socialMedia)
+            {
+                IsActive = false
+            };
             _persons.Add(person);
             return person;
         }
