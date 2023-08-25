@@ -10,11 +10,13 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         
         public void SetKey(string key)
         {
-            if(Key == string.Empty)
+            if(Key != string.Empty)
             {
-                Key = key;
+                throw BusinessCardDomainException.Create(new Exception("Business validation error. NFC Key is immutable"));
+                
             }
-            throw BusinessCardDomainException.Create(new Exception("Business validation error. NFC Key is immutable"));
+            Key = key;
+
         }
 
         public bool HasKey() => !string.IsNullOrEmpty(Key);
