@@ -1,6 +1,6 @@
 namespace BusinessCard.API.Application.Common.SQLScripts;
 
-internal sealed class SqlScript
+internal static class SqlScript
 {
     public const string SelectClients = @"SELECT 
 	  		C.[Id] [ClientId] 
@@ -17,7 +17,7 @@ internal sealed class SqlScript
 	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 0)  [NonCardholders] 
   		FROM [kardb].[kardibee].[client] C 
   			LEFT JOIN kardb.kardibee.people P ON P.ClientId = C.Id 
-  			LEFT JOIN kardb.kardibee.membertier M ON M.Id = C.MemberTierId ";
+  			LEFT JOIN kardb.kardibee.membertier M ON M.Id = C.[SubscriptionId] ";
     
     public const string SelectClientById =  @"SELECT TOP 1
 	  		C.[Id] [ClientId] 
@@ -34,7 +34,7 @@ internal sealed class SqlScript
 	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 0)  [NonCardholders] 
   		FROM [kardb].[kardibee].[client] C 
   			LEFT JOIN kardb.kardibee.people P ON P.ClientId = C.Id 
-  			LEFT JOIN kardb.kardibee.membertier M ON M.Id = C.MemberTierId 
+  			LEFT JOIN kardb.kardibee.membertier M ON M.Id = C.[SubscriptionId] 
   		WHERE C.[Id] = @Id ";
 
     public const string SelectMembers = @"SELECT
@@ -61,7 +61,7 @@ internal sealed class SqlScript
 	      ,P.[IsActive]
 	FROM [kardb].[kardibee].[people] P
 	LEFT JOIN kardb.kardibee.card C ON C.Id = P.CardId
-	LEFT JOIN kardb.kardibee.membertier M ON M.Id = P.MemberTierId ";
+	LEFT JOIN kardb.kardibee.membertier M ON M.Id = P.[SubscriptionId] ";
 
     public const string ClientCount = @"SELECT COUNT(Id) FROM kardb.kardibee.client";
     

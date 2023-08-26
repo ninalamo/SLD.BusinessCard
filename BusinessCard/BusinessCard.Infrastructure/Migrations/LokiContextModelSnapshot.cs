@@ -237,9 +237,6 @@ namespace BusinessCard.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("CardId");
 
-                    b.Property<Guid>("_subscription")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("_subscriptionId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("SubscriptionId");
@@ -256,7 +253,7 @@ namespace BusinessCard.Infrastructure.Migrations
 
                     b.HasIndex("_cardId");
 
-                    b.HasIndex("_subscription");
+                    b.HasIndex("_subscriptionId");
 
                     b.ToTable("people", "kardibee");
                 });
@@ -286,7 +283,7 @@ namespace BusinessCard.Infrastructure.Migrations
 
                     b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.MemberTier", "Subscription")
                         .WithMany()
-                        .HasForeignKey("_subscription")
+                        .HasForeignKey("_subscriptionId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

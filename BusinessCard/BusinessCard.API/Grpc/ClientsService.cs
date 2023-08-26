@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using BusinessCard.API.Application.Commands.AddMember;
 using BusinessCard.API.Application.Commands.EditClient;
+using BusinessCard.API.Application.Commands.EditMember;
 using BusinessCard.API.Application.Commands.RemoveClient;
 using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.API.Application.Common.Models;
@@ -43,7 +44,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         var result = await _mediator.Send(ToAddClientCommand(request));
         return new ClientGrpcCommandResult
         {
-            Id = result.Id?.ToString(),
+            ClientId = result.Id?.ToString(),
         };
     }
 
@@ -60,7 +61,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
          var result = await _mediator.Send(ToEditClientCommand(request));
          return new ClientGrpcCommandResult
          {
-             Id = result.ToString(),
+             ClientId = result.ToString(),
          };
     }
 
@@ -116,7 +117,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
         await _mediator.Send(new RemoveClientCommand(guid));
 
-        return new ClientGrpcCommandResult { Id = guid.ToString() };
+        return new ClientGrpcCommandResult { ClientId = guid.ToString() };
 
     }
 
@@ -129,19 +130,32 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
     /// <param name="context"></param>
     /// <returns></returns>
     /// <exception cref="ValidationException"></exception>
-    public override async Task<ClientGrpcCommandResult> AddMemberGrpc(AddMemberGrpcCommand request, ServerCallContext context)
+    public override async Task<MemberGrpcCommandResult> AddMemberGrpc(AddMemberGrpcCommand request, ServerCallContext context)
     {
         if (!Guid.TryParse(request.ClientId, out var guid))
             throw new ValidationException("Validation Error",new []{new ValidationFailure("Id","Id is not a Guid.")});
 
         var result = await _mediator.Send(ToAddMemberCommand(request));
         
-        return new ClientGrpcCommandResult
+        return new MemberGrpcCommandResult
         {
-            Id = result.ToString(),
+            MemberId = result.ToString(),
         };
     }
-    
+
+    public override async Task<MemberGrpcCommandResult> EditMemberGrpc(EditMemberGrpcCommand request, ServerCallContext context)
+    {
+        if (!Guid.TryParse(request.ClientId, out var guid))
+            throw new ValidationException("Validation Error",new []{new ValidationFailure("Id","Id is not a Guid.")});
+
+        var result = await _mediator.Send(ToEditMemberCommand(request));
+        
+        return new MemberGrpcCommandResult
+        {
+            MemberId = result.ToString(),
+        };
+    }
+
     /// <summary>
     /// Get members of a client / company
     /// 'gRPC' implementation
@@ -323,6 +337,30 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             request.MiddleName, request.NameSuffix, request.PhoneNumber, request.Email, request.Address,
             request.Occupation, request.Facebook, request.LinkedIn, request.Instagram, request.Pinterest,
             request.Twitter);
+    }
+    
+    
+    private static EditMemberCommand ToEditMemberCommand(EditMemberGrpcCommand request)
+    {
+        return new EditMemberCommand(
+            clientId: request.ClientId.ToGuid(), 
+            request.Id.ToGuid(),
+            request.FirstName, 
+            request.LastName,
+            request.MiddleName, 
+            request.NameSuffix, 
+            request.PhoneNumber,
+            request.Email, 
+            request.Address,
+            request.Occupation, 
+            request.Facebook, 
+            request.LinkedIn, 
+            request.Instagram,
+            request.Pinterest,
+            request.Twitter,
+            request.CardKey,
+            request.SubscriptionLevel
+            );
     }
     
     

@@ -55,7 +55,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Commands\EditMember\" />
     <Folder Include="Application\IntegrationEvents\EventHandling\" />
     <Folder Include="Application\IntegrationEvents\Events\" />
   </ItemGroup>

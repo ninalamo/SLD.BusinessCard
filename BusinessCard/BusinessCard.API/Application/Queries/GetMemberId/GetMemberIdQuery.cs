@@ -37,11 +37,11 @@ public class GetMemberIdQueryHandler : IRequestHandler<GetMemberIdQuery, GetMemb
 
         var client = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
         
-        if (client == null) new KeyNotFoundException("Client not found.");
+        if (client == null) throw new KeyNotFoundException("Client not found.");
 
         var member = client.Persons.FirstOrDefault(c => c.Id == request.MemberId);
 
-        if (member == null) new KeyNotFoundException("Member not found.");
+        if (member == null) throw new KeyNotFoundException("Member not found.");
 
         return new GetMemberByIdQueryResult()
         {

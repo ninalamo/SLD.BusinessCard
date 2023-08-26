@@ -32,7 +32,7 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 
         builder.HasOne(b => b.Subscription)
             .WithMany()
-            .HasForeignKey("_subscription")
+            .HasForeignKey("_subscriptionId")
             .OnDelete(DeleteBehavior.NoAction);
        
         builder.Property<Guid>("_cardId")

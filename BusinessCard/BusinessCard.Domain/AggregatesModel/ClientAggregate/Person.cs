@@ -51,9 +51,14 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public string Email { get; private set; }
         public string Address { get; private set; }
         public string SocialMedia { get; private set; }
-        public string Occupation { get; private set; }
+        public string Occupation { get; set; }
         public Card Card { get; private set; }
         public MemberTier Subscription { get; private set; }
+
+        public void SetSubscription(int level)
+        {
+            _subscriptionId = MemberTier.GetTier(level).Id;
+        }
 
         public void SetName(string firstname,string lastname, string middlename, string nameSuffix)
         {
@@ -86,7 +91,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 
         public bool HasCard() => Card != default(Card);
 
-        public bool HasKeylessCard() => HasCard() ? Card.HasKey() : false; 
+        public bool HasKeylessCard() => Card.HasKey(); 
 
         public void EnableCard()
         {
