@@ -33,7 +33,8 @@ public class ClientsRepository : IClientsRepository
     {
         var entity =  _context.Clients
             .Include(c => c.Persons)
-            .ThenInclude(p => p.Card)
+                .ThenInclude(p => p.Card)
+            .Include(c => c.Persons).ThenInclude(p => p.Subscription)
             .FirstOrDefault(c => c.Id == id);
         return entity;
     }

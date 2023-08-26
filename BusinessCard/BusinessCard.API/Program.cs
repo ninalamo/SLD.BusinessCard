@@ -77,7 +77,6 @@ using (var scope = app.Services.CreateAsyncScope())
     await ctx.Database.MigrateAsync();
 }
 
-app.MapGrpcService<GreeterService>();
 app.MapGrpcService<ClientsService>();
 app.MapGrpcService<KardsService>();
 
