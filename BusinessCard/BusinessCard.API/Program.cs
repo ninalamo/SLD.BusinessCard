@@ -1,14 +1,6 @@
-using System.Net;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using Autofac.Extensions.DependencyInjection;
 using BusinessCard.API;
-using BusinessCard.API.Application.Behaviors;
-using BusinessCard.API.Application.Commands;
-using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.API.Application.Common.Interfaces;
 using BusinessCard.API.Application.Queries;
-using BusinessCard.API.Application.Queries.GetClients;
 using BusinessCard.API.Extensions;
 using BusinessCard.API.Grpc;
 using BusinessCard.API.Interceptors;
@@ -16,12 +8,7 @@ using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
 using BusinessCard.Infrastructure;
 using BusinessCard.Infrastructure.Repositories;
-using FluentValidation;
-using MediatR;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 //Add Serilog
 builder.Host.UseSerilog((ctx, lc) => lc
     .Enrich.FromLogContext()
-    .MinimumLevel.Verbose()
+    .MinimumLevel.Information()
     .WriteTo.Console()
     .WriteTo.Debug()
     .WriteTo.Seq("http://localhost:5341"));
@@ -47,13 +34,6 @@ builder
 builder.Services
     .AddCustomDbContext(builder.Configuration)
     .AddCustomSwagger()
-    // .AddCors(o => o.AddPolicy("AllowAll", builder =>
-    // {
-    //     builder.AllowAnyOrigin()
-    //         .AllowAnyMethod()
-    //         .AllowAnyHeader()
-    //         .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
-    // }))
     .AddMediatorBundles();
 
 //claims middlewares
@@ -61,13 +41,13 @@ builder.Services.AddScoped(typeof(ICurrentUser), typeof(CurrentUser));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 //register queries and repositories
+builder.Services.AddScoped<IClientQueries,ClientQueries>();
 builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
 builder.Services.AddSingleton<IDbConnectionFactory>(i =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DevServerConnection");
     return new DbConnectionFactory(connectionString);
 });
-builder.Services.AddScoped<IClientQueries,ClientQueries>();
 
 // reverse proxy headers forwarding config
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
@@ -97,8 +77,8 @@ using (var scope = app.Services.CreateAsyncScope())
     await ctx.Database.MigrateAsync();
 }
 
-app.MapGrpcService<GreeterService>();
 app.MapGrpcService<ClientsService>();
+app.MapGrpcService<KardsService>();
 
 app.MapGet("/", () => "");
 

@@ -16,7 +16,7 @@ public class GetMembersQueryHandler : IRequestHandler<GetMembersQuery, GetMember
 
     public async Task<GetMembersQueryResult> Handle(GetMembersQuery request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Starting {nameof(GetMembersQueryResult)} {DateTimeOffset.Now}");
+        _logger.LogInformation("Starting {MembersQueryResultName} {Now}", nameof(GetMembersQueryResult), DateTimeOffset.Now);
 	    
         var (count, result) = await _queries.GetMembersWithPagination(request.PageSize, request.PageNumber, request.ClientId);
 

@@ -10,8 +10,7 @@
 
   <ItemGroup>
     <Protobuf Include="Proto\client.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
-<!--    <Content Include="Proto\client_commands.proto" />-->
-    <Protobuf Include="Proto\greet.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
+    <Protobuf Include="Proto\card.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
 <!--    <Content Include="Proto\greet.proto" />-->
 <!--    <None Remove="@(Protobuf)" />-->
   </ItemGroup>

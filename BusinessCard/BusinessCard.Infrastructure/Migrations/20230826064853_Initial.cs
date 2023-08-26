@@ -55,8 +55,8 @@ namespace BusinessCard.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDiscreet = table.Column<bool>(type: "bit", nullable: false),
+                    MemberTierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -67,12 +67,11 @@ namespace BusinessCard.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_client", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_client_membertier_SubscriptionId",
-                        column: x => x.SubscriptionId,
+                        name: "FK_client_membertier_MemberTierId",
+                        column: x => x.MemberTierId,
                         principalSchema: "kardibee",
                         principalTable: "membertier",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -86,14 +85,14 @@ namespace BusinessCard.Infrastructure.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NameSuffix = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SocialMedia = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Occupation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MemberTierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -108,8 +107,7 @@ namespace BusinessCard.Infrastructure.Migrations
                         column: x => x.CardId,
                         principalSchema: "kardibee",
                         principalTable: "card",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_people_client_ClientId",
                         column: x => x.ClientId,
@@ -118,8 +116,8 @@ namespace BusinessCard.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_people_membertier_MemberTierId",
-                        column: x => x.MemberTierId,
+                        name: "FK_people_membertier_SubscriptionId",
+                        column: x => x.SubscriptionId,
                         principalSchema: "kardibee",
                         principalTable: "membertier",
                         principalColumn: "Id");
@@ -148,10 +146,10 @@ namespace BusinessCard.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_client_SubscriptionId",
+                name: "IX_client_MemberTierId",
                 schema: "kardibee",
                 table: "client",
-                column: "SubscriptionId");
+                column: "MemberTierId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_membertier_Level",
@@ -180,10 +178,24 @@ namespace BusinessCard.Infrastructure.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_people_MemberTierId",
+                name: "IX_people_Email",
                 schema: "kardibee",
                 table: "people",
-                column: "MemberTierId");
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_people_PhoneNumber",
+                schema: "kardibee",
+                table: "people",
+                column: "PhoneNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_people_SubscriptionId",
+                schema: "kardibee",
+                table: "people",
+                column: "SubscriptionId");
         }
 
         /// <inheritdoc />

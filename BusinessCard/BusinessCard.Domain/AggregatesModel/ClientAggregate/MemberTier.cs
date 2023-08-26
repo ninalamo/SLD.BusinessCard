@@ -12,6 +12,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         }
 
         public static MemberTier GetOne() => GetLevels().First(i => i.Level == 1);
+        public static MemberTier GetTier(int level) => GetLevels().First(i => i.Level == level);
 
         public static IEnumerable<MemberTier> GetLevels()
         {

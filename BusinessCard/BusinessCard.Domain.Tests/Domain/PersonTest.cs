@@ -60,7 +60,7 @@ namespace BusinessCard.Tests.Domain
         public void PersonShouldBeAbleToLinkEmptyCard()
         {
             Person person = new();
-            person.RegisterCard("abc");
+            person.AddKeyToCard("abc");
 
             person.Card.Key.ShouldBe("abc");
         }
@@ -69,13 +69,13 @@ namespace BusinessCard.Tests.Domain
         public void PersonShouldBeAbleToLinkToAnotherCard()
         {
             Person person = new();
-            person.RegisterCard("abc");
+            person.AddKeyToCard("abc");
             person.Card.Key.ShouldBe("abc");
             
             person.RemoveCard();
             person.Card.ShouldBeNull();
 
-            person.RegisterCard("xyz");
+            person.AddKeyToCard("xyz");
             person.Card.ShouldNotBeNull();
             person.Card.Key.ShouldBe("xyz");
         }
