@@ -8,12 +8,12 @@ service ClientGrpc {
     rpc AddClientGrpc(AddClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc EditClientGrpc(EditClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc RemoveClientGrpc(RemoveClientGrpcCommand) returns (ClientGrpcCommandResult){}
-
-    rpc AddMemberGrpc(AddMemberGrpcCommand) returns (ClientGrpcCommandResult){}
-    rpc GetClientsGrpc(GetPaginatedClientsGrpcQuery) returns (GetPaginatedClientsGrpcQueryResult){}
+    rpc GetPaginatedClientsGrpc(GetPaginatedClientsGrpcQuery) returns (GetPaginatedClientsGrpcQueryResult){}
     rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (ClientGrpcResult){}
 
-    rpc GetMembersByClientIdGrpc(GetMembersByIdQuery)returns(GetPaginatedMembersByIdQueryResult){}
+    rpc AddMemberGrpc(AddMemberGrpcCommand) returns (ClientGrpcCommandResult){}
+    rpc GetPaginatedMembersGrpc(GetPaginatedMembersGrpcQuery)returns(GetPaginatedMembersGrpcQueryResult){}
+    rpc GetMemberByIdGrpc(GetMemberByIdGrpcQuery)returns(MemberGrpcResult){}
 }
 
 
@@ -88,13 +88,18 @@ message ClientGrpcResult {
     bool isActive = 12;
 }
 
-message GetMembersByIdQuery{
+message GetPaginatedMembersGrpcQuery{
     string clientId = 1;
     int32 pageSize = 2;
     int32 pageNumber = 3;
 }
 
-message GetPaginatedMembersByIdQueryResult {
+message GetMemberByIdGrpcQuery{
+    string clientId = 1;
+    string memberId = 2;
+}
+
+message GetPaginatedMembersGrpcQueryResult {
     int32 pageSize = 1;
     int32 pageNumber = 2;
     int32 totalCount = 3;
@@ -117,5 +122,8 @@ message MemberGrpcResult {
     int32 subscriptionLevel = 13;
     string cardKey = 14;
     string id = 15;
+    string firstName = 16;
+    string middleName = 17;
+    string lastName = 18;
+    string nameSuffix = 19;
 }
-

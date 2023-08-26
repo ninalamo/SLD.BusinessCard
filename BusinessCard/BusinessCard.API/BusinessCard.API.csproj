@@ -11,7 +11,6 @@
   <ItemGroup>
     <Protobuf Include="Proto\client.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
     <Protobuf Include="Proto\card.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
-    <Protobuf Include="Proto\greet.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
 <!--    <Content Include="Proto\greet.proto" />-->
 <!--    <None Remove="@(Protobuf)" />-->
   </ItemGroup>
@@ -56,6 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Application\Commands\EditMember\" />
     <Folder Include="Application\IntegrationEvents\EventHandling\" />
     <Folder Include="Application\IntegrationEvents\Events\" />
   </ItemGroup>
