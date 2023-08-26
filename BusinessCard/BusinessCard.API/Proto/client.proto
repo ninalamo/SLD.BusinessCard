@@ -11,7 +11,8 @@ service ClientGrpc {
     rpc GetPaginatedClientsGrpc(GetPaginatedClientsGrpcQuery) returns (GetPaginatedClientsGrpcQueryResult){}
     rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (ClientGrpcResult){}
 
-    rpc AddMemberGrpc(AddMemberGrpcCommand) returns (ClientGrpcCommandResult){}
+    rpc AddMemberGrpc(AddMemberGrpcCommand) returns (MemberGrpcCommandResult){}
+    rpc EditMemberGrpc(EditMemberGrpcCommand) returns (MemberGrpcCommandResult){}
     rpc GetPaginatedMembersGrpc(GetPaginatedMembersGrpcQuery)returns(GetPaginatedMembersGrpcQueryResult){}
     rpc GetMemberByIdGrpc(GetMemberByIdGrpcQuery)returns(MemberGrpcResult){}
 }
@@ -51,9 +52,30 @@ message AddMemberGrpcCommand {
     string clientId = 14;
 }
 
+message EditMemberGrpcCommand {
+    string nameSuffix = 1;
+    string phoneNumber = 2;
+    string email = 3;
+    string address = 4;
+    string occupation = 5;
+    string facebook = 6;
+    string linkedIn = 7;
+    string instagram = 8;
+    string pinterest = 9;
+    string twitter = 10;
+    string clientId = 11;
+    string subscription = 12;
+    int32 subscriptionLevel = 13;
+    string cardKey = 14;
+    string id = 15;
+    string firstName = 16;
+    string middleName = 17;
+    string lastName = 18;
+}
+
 
 message ClientGrpcCommandResult {
-    string id = 1;
+    string clientId = 1;
 }
 
 message GetPaginatedClientsGrpcQuery {
@@ -126,4 +148,8 @@ message MemberGrpcResult {
     string middleName = 17;
     string lastName = 18;
     string nameSuffix = 19;
+}
+
+message MemberGrpcCommandResult {
+    string memberId = 1;
 }

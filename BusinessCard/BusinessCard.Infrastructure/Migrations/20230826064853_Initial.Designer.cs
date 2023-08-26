@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessCard.Infrastructure.Migrations
 {
     [DbContext(typeof(LokiContext))]
-    [Migration("20230821023725_test")]
-    partial class test
+    [Migration("20230826064853_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -181,9 +181,6 @@ namespace BusinessCard.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CardId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
@@ -239,13 +236,15 @@ namespace BusinessCard.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("_memberTierId")
+                    b.Property<Guid>("_cardId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("MemberTierId");
+                        .HasColumnName("CardId");
+
+                    b.Property<Guid>("_subscriptionId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("SubscriptionId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CardId");
 
                     b.HasIndex("ClientId");
 
@@ -255,7 +254,9 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.HasIndex("PhoneNumber")
                         .IsUnique();
 
-                    b.HasIndex("_memberTierId");
+                    b.HasIndex("_cardId");
+
+                    b.HasIndex("_subscriptionId");
 
                     b.ToTable("people", "kardibee");
                 });
@@ -271,25 +272,27 @@ namespace BusinessCard.Infrastructure.Migrations
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Person", b =>
                 {
-                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Card", "Card")
-                        .WithMany()
-                        .HasForeignKey("CardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", null)
                         .WithMany("Persons")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.MemberTier", null)
+                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Card", "Card")
                         .WithMany()
-                        .HasForeignKey("_memberTierId")
+                        .HasForeignKey("_cardId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.MemberTier", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("_subscriptionId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Card");
+
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", b =>
