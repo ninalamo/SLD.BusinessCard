@@ -20,11 +20,8 @@ public class AddClientCommandHandler : IRequestHandler<AddClientCommand, Command
     public async Task<CommandResult> Handle(AddClientCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation($"Starting {nameof(AddClientCommandHandler)}.");
-        _logger.LogInformation($"Fetching tier id from database...");
-        var tier = MemberTier.GetLevels().First(i => i.Level == request.MemberTierLevel).Id;
-        
         _logger.LogInformation($"Creating {nameof(Client)}. Request:{JsonSerializer.Serialize(request)}");
-        var id = (await _repository.CreateAsync(request.CompanyName, request.IsDiscreet,tier)).Id;
+        var id = (await _repository.CreateAsync(request.CompanyName, request.IsDiscreet,request.MemberTierLevel)).Id;
         
         return CommandResult.Success(id);
     }

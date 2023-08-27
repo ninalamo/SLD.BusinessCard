@@ -18,6 +18,8 @@ public class ClientsRepositoryTests
         public string Pinterest { get; init; }
         public string Twitter { get; init; }
     }
+
+    
     
     [Fact]
     public async Task GetEntityByIdAsync_ReturnsClient_WhenClientExists()
@@ -25,7 +27,7 @@ public class ClientsRepositoryTests
         // Arrange
         var context = await CreateInMemoryDbContext();
 
-        var existingClient = new Client("Existing Client", true, Guid.NewGuid());
+        var existingClient = new Client("Existing Client", true, 1);
         var existingClientId = context.Clients.Add(existingClient).Entity.Id;
         await context.SaveChangesAsync(); 
 
@@ -41,6 +43,30 @@ public class ClientsRepositoryTests
     }
     
     [Fact]
+    public async Task GetWithPropertiesByIdAsync_ShouldReturnClientWithProperties()
+    {
+        // Arrange
+        var context = await CreateInMemoryDbContext();
+        var repository = new ClientsRepository(context);
+
+        
+        // Act
+        var client = await repository.CreateAsync("SonicLynx", true, 1);
+        await repository.UnitOfWork.SaveChangesAsync(new CancellationToken());
+
+
+        // Act
+        var result = await repository.GetEntityByIdAsync(client.Id);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(client.Id, result.Id);
+        Assert.Equal(client.CompanyName, result.CompanyName);
+    }
+
+  
+    
+    [Fact]
     public async Task AddClientAsync_ReturnsId_AfterSaveChanges()
     {
         // Arrange
@@ -49,7 +75,7 @@ public class ClientsRepositoryTests
         const string name = "New Client";
 
         // Act
-        var client = await repository.CreateAsync(name, true, Guid.NewGuid());
+        var client = await repository.CreateAsync(name, true, 1);
         await repository.UnitOfWork.SaveChangesAsync(new CancellationToken());
 
         // Assert
@@ -100,7 +126,7 @@ public class ClientsRepositoryTests
             Pinterest = "pinterest.com",
             Twitter = "twitter.com",
         };
-        var person = await client.AddMemberAsync("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
+        var person = client.AddMemberAsync("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
             "Encoder",
             JsonSerializer.Serialize(json));
         
@@ -118,6 +144,30 @@ public class ClientsRepositoryTests
     }
 
 
+    [Fact]
+    public void TestCurrentUser()
+    {
+        var currentUserMock = new Mock<ICurrentUser>();
+        currentUserMock.Setup(x => x.Email).Returns("testing@soniclynx.digital");
+        currentUserMock.Setup(x => x.Name).Returns("Testing Account");
+        currentUserMock.Setup(x => x.IdentityId).Returns(Guid.NewGuid().ToString());
+        currentUserMock.Setup(x => x.Roles).Returns(new[]{"admin"});
+
+        var roles = currentUserMock.Object.Roles;
+        Assert.Equal( "admin",roles[0]);
+    }
+
+    [Fact]
+    public async Task TestDbContext()
+    {
+        // Arrange
+        var context =  await CreateInMemoryDbContext();
+
+        //Assert
+        Assert.NotNull(context);
+        Assert.NotNull(context.Clients);
+        Assert.Equal("KMC",context.Clients.First().CompanyName);
+    }
 
     private static async Task<LokiContext> CreateInMemoryDbContext()
     {

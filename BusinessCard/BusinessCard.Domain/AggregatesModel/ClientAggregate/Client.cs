@@ -46,7 +46,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
         }
         
 
-        public async Task<Person> AddMemberAsync(string firstName,
+        public Person AddMemberAsync(string firstName,
             string lastName,
             string middleName,
             string nameSuffix,

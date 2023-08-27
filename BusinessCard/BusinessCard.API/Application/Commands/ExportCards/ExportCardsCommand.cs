@@ -61,7 +61,7 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
 
         for (int i = 0; i < request.Count; i++)
         {
-            await entity.AddMemberAsync(
+            entity.AddMemberAsync(
                 "N/A", 
                 "N/A", 
                 "N/A",
