@@ -14,7 +14,7 @@ namespace BusinessCard.Tests.Domain
         public void ClientShouldBeCreated()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, Guid.Empty);
+            Client company = new(companyName, false, 1);
             company.CompanyName.ShouldBe(companyName);
 
             var assembly = Assembly.GetAssembly(typeof(LokiContext))?.GetName().Name;
@@ -25,7 +25,7 @@ namespace BusinessCard.Tests.Domain
         public void ClientShouldBeAbleToRename()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false,Guid.Empty);
+            Client company = new(companyName, false,1);
             company.CompanyName = "GMA";
             company.CompanyName.ShouldBe("GMA");
         }
@@ -34,7 +34,7 @@ namespace BusinessCard.Tests.Domain
         public void PersonShouldHaveEmptyButNotNullContacts()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, Guid.Empty);
+            Client company = new(companyName, false, 1);
             company.Persons.ShouldBeEmpty();
             company.Persons.ShouldNotBeNull();
         }
@@ -43,12 +43,9 @@ namespace BusinessCard.Tests.Domain
         public async Task ClientShouldBeAbleToGenerateMultiplePlaceholders()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, Guid.Empty);
+            Client company = new(companyName, false, 1);
             int count = 1000;
             
-            var tasks = new List<Task<Tuple<Guid, Guid>>>(); 
-            // Using Tuple to store result and loop index
-
             for (int i = 0; i < count; i++)
             {
                 company.AddMemberAsync(
@@ -74,7 +71,7 @@ namespace BusinessCard.Tests.Domain
         public void ClientCanBeDiscreet()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, Guid.Empty);
+            Client company = new(companyName, false, 1);
             company.IsDiscreet = false;
 
             company.IsDiscreet.ShouldBeFalse();
