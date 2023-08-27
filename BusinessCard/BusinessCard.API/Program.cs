@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 //Add Serilog
 builder.Host.UseSerilog((ctx, lc) => lc
     .Enrich.FromLogContext()
-    .MinimumLevel.Information()
+    .MinimumLevel.Verbose()
     .WriteTo.Console()
     .WriteTo.Debug()
     .WriteTo.Seq("http://localhost:5341"));

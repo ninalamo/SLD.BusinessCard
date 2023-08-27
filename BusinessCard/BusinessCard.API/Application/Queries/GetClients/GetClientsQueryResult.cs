@@ -22,8 +22,8 @@ public record ClientsResult
     public Guid ClientId { get; init; }
     public string CompanyName {get;  init; }
     public bool IsDiscreet { get; init; }
-    public int SubscriptionLevel { get;init; }
-    public string Subscription { get; init; }
+    public int? SubscriptionLevel { get;init; }
+    public string? Subscription { get; init; }
     public int CardHolders { get; init; }
     public int NonCardHolders { get; init; }
     public string? CreatedBy { get; init; }
