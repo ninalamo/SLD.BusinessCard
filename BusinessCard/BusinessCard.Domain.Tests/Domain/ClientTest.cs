@@ -51,7 +51,7 @@ namespace BusinessCard.Tests.Domain
 
             for (int i = 0; i < count; i++)
             {
-                var task = company.AddMemberAsync(
+                company.AddMemberAsync(
                     "N/A", 
                     "N/A", 
                     "N/A",
@@ -61,12 +61,9 @@ namespace BusinessCard.Tests.Domain
                     "N/A",
                     "N/A",
                     "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
-
-                tasks.Add(task.ContinueWith(resultTask => Tuple.Create(resultTask.Result.Id, resultTask.Result.Card.Id)));
             }
 
-            await Task.WhenAll(tasks);
-            
+        
             company.Persons.ShouldNotBeEmpty();
             company.Persons.Count.ShouldBe(1000);
             company.Persons.All(p => p.Card.HasKey()).ShouldBeFalse();
