@@ -13,9 +13,10 @@ public abstract class Enumeration : IComparable
 
     public Guid Id { get; }
 
-    public int CompareTo(object? other)
+    public int CompareTo(object? obj)
     {
-        return Id.CompareTo(((Enumeration)other).Id);
+        if (obj == null) throw new ArgumentNullException(nameof(obj));
+        return Id.CompareTo(((Enumeration)obj).Id);
     }
 
     public override string ToString()

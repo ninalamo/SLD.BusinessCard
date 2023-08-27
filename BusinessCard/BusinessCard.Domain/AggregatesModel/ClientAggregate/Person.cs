@@ -52,8 +52,8 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public string Address { get; private set; }
         public string SocialMedia { get; private set; }
         public string Occupation { get; set; }
-        public Card Card { get; private set; }
-        public MemberTier Subscription { get; private set; }
+        public Card? Card { get; private set; }
+        public MemberTier? Subscription { get; private set; }
 
         public void SetSubscription(int level)
         {
@@ -87,11 +87,11 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             IsActive = true;
         }
 
-        public void RemoveCard() => Card = null;
+        public void RemoveCard() => Card = default;
 
         public bool HasCard() => Card != default(Card);
 
-        public bool HasKeylessCard() => Card.HasKey(); 
+        public bool HasKeylessCard() => Card == default || !Card.HasKey(); 
 
         public void EnableCard()
         {
