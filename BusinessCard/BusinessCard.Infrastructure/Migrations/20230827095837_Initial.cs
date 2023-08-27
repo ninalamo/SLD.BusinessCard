@@ -55,8 +55,8 @@ namespace BusinessCard.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDiscreet = table.Column<bool>(type: "bit", nullable: false),
-                    MemberTierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -67,8 +67,8 @@ namespace BusinessCard.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_client", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_client_membertier_MemberTierId",
-                        column: x => x.MemberTierId,
+                        name: "FK_client_membertier_SubscriptionId",
+                        column: x => x.SubscriptionId,
                         principalSchema: "kardibee",
                         principalTable: "membertier",
                         principalColumn: "Id");
@@ -146,10 +146,10 @@ namespace BusinessCard.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_client_MemberTierId",
+                name: "IX_client_SubscriptionId",
                 schema: "kardibee",
                 table: "client",
-                column: "MemberTierId");
+                column: "SubscriptionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_membertier_Level",

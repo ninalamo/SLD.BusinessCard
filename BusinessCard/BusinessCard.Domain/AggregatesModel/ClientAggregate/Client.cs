@@ -6,7 +6,8 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
     public class Client : Entity, IAggregateRoot
     {
         public string CompanyName { get; set; }
-        private Guid _memberTierId;
+        private Guid _subscriptionId;
+        public MemberTier Subscription { get; private set; }
         public bool IsDiscreet { get; set; }
 
         private readonly List<Person> _persons;
@@ -16,11 +17,11 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
         
         private Client() =>_persons = new List<Person>();
         
-        public Client(string name, bool isDiscreet, Guid memberTierId) : this()
+        public Client(string name, bool isDiscreet, Guid subscriptionId) : this()
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
-            _memberTierId = memberTierId;
+            _subscriptionId = subscriptionId;
         }
         
         public Client(string name, bool isDiscreet, int level) : this()
@@ -32,7 +33,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
             if(!tier.HasValue) throw BusinessCardDomainException.Create(new ArgumentException(nameof(level)));
             if (tier.Value == Guid.Empty) throw BusinessCardDomainException.Create(new ArgumentException(nameof(level)));
 
-            _memberTierId = tier.Value;
+            _subscriptionId = tier.Value;
 
         }
         #endregion
@@ -41,7 +42,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
-            _memberTierId = MemberTier.GetLevels().First(i => i.Level == subscription).Id;
+            _subscriptionId = MemberTier.GetLevels().First(i => i.Level == subscription).Id;
         }
         
 

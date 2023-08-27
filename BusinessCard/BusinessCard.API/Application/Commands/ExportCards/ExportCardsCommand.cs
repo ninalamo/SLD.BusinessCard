@@ -53,7 +53,7 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
         {
             _logger.LogInformation($"{nameof(request.ClientId)} does not exists. {DateTime.UtcNow}");
             throw BusinessCardDomainException.Create(new ValidationException("Validation error.",
-                new ValidationFailure[] { new ValidationFailure("Id", "Id does not exist.") }));
+                new ValidationFailure[] { new ValidationFailure("Id", "Client not found.") }));
         }
 
       
@@ -79,7 +79,7 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
 
         return new ExportCardsCommandResult()
         {
-            Urls = entity.Persons.Where(p => p.IsActive == false).Select(p => p.Id.ToString()).ToArray()
+            Urls = entity.Persons.Where(p => p.IsActive == false).Select(p => $"ext/v1/tenants/{entity.Id}/members/{p.Id}/external").ToArray()
         };
     }
 }

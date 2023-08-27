@@ -259,7 +259,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             IsDiscreet = c.IsDiscreet,
             NonCardHolders = c.NonCardHolders,
             Subscription = c.Subscription,
-            SubscriptionLevel = c.SubscriptionLevel,
+            SubscriptionLevel = c.SubscriptionLevel.Value,
             CreatedBy = c.CreatedBy,
             CreatedOn = c.CreatedOn?.ToString("yyyy-MMM-dd"),
             ModifiedBy = c.ModifiedBy,

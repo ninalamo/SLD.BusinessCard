@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessCard.Infrastructure.Migrations
 {
     [DbContext(typeof(LokiContext))]
-    [Migration("20230826064853_Initial")]
+    [Migration("20230827095837_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -89,16 +89,16 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("_memberTierId")
+                    b.Property<Guid>("_subscriptionId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("MemberTierId");
+                        .HasColumnName("SubscriptionId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyName")
                         .IsUnique();
 
-                    b.HasIndex("_memberTierId");
+                    b.HasIndex("_subscriptionId");
 
                     b.ToTable("client", "kardibee");
                 });
@@ -263,11 +263,13 @@ namespace BusinessCard.Infrastructure.Migrations
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", b =>
                 {
-                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.MemberTier", null)
+                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.MemberTier", "Subscription")
                         .WithMany()
-                        .HasForeignKey("_memberTierId")
+                        .HasForeignKey("_subscriptionId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Person", b =>
