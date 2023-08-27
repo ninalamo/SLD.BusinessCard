@@ -27,15 +27,15 @@ public class ClientsRepository : IClientsRepository
         return entity.Entity;
     }
 
-    public async Task<Client> GetEntityByIdAsync(Guid id) =>  _context.Clients.FirstOrDefault(c => c.Id == id);
+    public async Task<Client> GetEntityByIdAsync(Guid id) =>  await _context.Clients.FirstOrDefaultAsync(c => c.Id == id);
 
     public async Task<Client> GetWithPropertiesByIdAsync(Guid id)
     {
-        var entity =  _context.Clients
+        var entity =  await _context.Clients
             .Include(c => c.Persons)
                 .ThenInclude(p => p.Card)
             .Include(c => c.Persons).ThenInclude(p => p.Subscription)
-            .FirstOrDefault(c => c.Id == id);
+            .FirstOrDefaultAsync(c => c.Id == id);
         return entity;
     }
 
