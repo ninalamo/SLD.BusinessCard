@@ -1,5 +1,7 @@
 ﻿using BusinessCard.API.Application.Commands;
+using BusinessCard.API.Application.Commands.EditClient;
 using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.API.Extensions;
 using BusinessCard.API.Grpc;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using ClientService;
@@ -29,7 +31,9 @@ public class ClientServiceTest
         // Arrange
         var request = new AddClientGrpcCommand();
         var expectedResult = CommandResult.Success(Guid.NewGuid());
-        _mediatorMock.Setup(mediator => mediator.Send(It.IsAny<AddClientCommand>(), CancellationToken.None))
+        
+        _mediatorMock
+            .Setup(mediator => mediator.Send(It.IsAny<AddClientCommand>(), CancellationToken.None))
             .ReturnsAsync(expectedResult);
 
         // Act
@@ -38,6 +42,32 @@ public class ClientServiceTest
         // Assert
         Assert.NotNull(result);
         Assert.Equal(expectedResult.Id.ToString(), result.ClientId);
+    }
+    
+    [Fact]
+    public async Task EditClientGrpc_ValidCommand_ReturnsClientCommandResult()
+    {
+        // Arrange
+        var request = new EditClientGrpcCommand()
+        {
+            Id = Guid.NewGuid().ToString(),
+            CompanyName = "SonicLynx",
+            IsDiscreet = true,
+            Subscription = 1
+        };
+
+        var expectedResult = request.Id.ToGuid();
+        
+        _mediatorMock
+            .Setup( mediator => mediator.Send(It.IsAny<EditClientCommand>(), CancellationToken.None))
+            .ReturnsAsync(expectedResult);
+
+        // Act
+        var result = await _clientsService.EditClientGrpc(request, Mock.Of<ServerCallContext>());
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equivalent(expectedResult.ToString(), result.ClientId);
     }
 
 }
