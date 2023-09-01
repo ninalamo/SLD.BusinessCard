@@ -1,3 +1,4 @@
+using BusinessCard.API.Application.Commands.AddClient;
 using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.API.Application.Common.Interfaces.Helpers;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
