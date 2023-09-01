@@ -80,7 +80,7 @@ using (var scope = app.Services.CreateAsyncScope())
 app.MapGrpcService<ClientsService>();
 app.MapGrpcService<KardsService>();
 
-app.UseCors();
+app.UseCors(b=> b.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 app.MapGet("/", () => "");
 

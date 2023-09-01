@@ -1,10 +1,9 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using MediatR;
 
-
-namespace BusinessCard.API.Application.Commands.UpsertClient;
+namespace BusinessCard.API.Application.Commands.AddClient;
 
 public class AddClientCommandHandler : IRequestHandler<AddClientCommand, CommandResult>
 {
