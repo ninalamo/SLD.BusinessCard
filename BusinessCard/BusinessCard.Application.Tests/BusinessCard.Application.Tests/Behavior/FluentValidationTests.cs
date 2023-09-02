@@ -1,5 +1,6 @@
 using BusinessCard.API.Application.Behaviors;
 using BusinessCard.API.Application.Commands;
+using BusinessCard.API.Application.Commands.AddClient;
 using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.Domain.Exceptions;
 using FluentValidation;

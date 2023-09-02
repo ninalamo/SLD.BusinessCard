@@ -1,6 +1,7 @@
+using BusinessCard.API.Application.Commands.UpsertClient;
 using FluentValidation;
 
-namespace BusinessCard.API.Application.Commands.UpsertClient;
+namespace BusinessCard.API.Application.Commands.AddClient;
 
 public class AddClientCommandValidator : AbstractValidator<AddClientCommand>
 {
@@ -12,6 +13,6 @@ public class AddClientCommandValidator : AbstractValidator<AddClientCommand>
             .NotEqual(0)
             .Must(x => x > 0 && x <= 7)
             .WithMessage("Invalid Member Tier Level");
-        RuleFor(c => c.IsDiscreet).NotEmpty();
+        // RuleFor(c => c.IsDiscreet).NotEmpty();
     }
 }
