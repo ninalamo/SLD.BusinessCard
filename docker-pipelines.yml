@@ -1,0 +1,40 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- docker-build
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      name: Default
+    steps:
+#    - task: DockerInstaller@0
+#      inputs:
+#        dockerVersion: '17.09.0-ce'
+
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        command: build
+        dockerfile: '$(Build.SourcesDirectory)/BusinessCard/BusinessCard.API/Dockerfile'
+        tags: |
+          $(tag)
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Canister Businesscard'
+        repository: 'tuldok/soniclynx.businesscard'
+        command: 'push'
+        dockerfile: '$(Build.SourcesDirectory)/BusinessCard/BusinessCard.API/Dockerfile'
