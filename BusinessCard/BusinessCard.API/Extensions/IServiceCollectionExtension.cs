@@ -22,7 +22,6 @@ public static class IServiceCollectionExtension
         services
             .AddDbContext<LokiContext>(options =>
                 {
-                    options.UseSqlServer(connectionString);
                     options.UseSqlServer(connectionString,
                         sqlOptions =>
                         {

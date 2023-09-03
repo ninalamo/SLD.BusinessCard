@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  businesscard.api:
+    ports:
+      - 80
+      - 443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/businesscard.api.orb.local.pfx
+    volumes:
+      - ./businesscard.api.orb.local.pfx:/app/businesscard.api.orb.local.pfx
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    labels:
+      - dev.orbstack.domains=businesscard.api.orb.local,bizcard.local
+  api_db:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    container_name: "sqlserver2019"
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=y
+      - SA_PASSWORD=someThingComplicated1234
