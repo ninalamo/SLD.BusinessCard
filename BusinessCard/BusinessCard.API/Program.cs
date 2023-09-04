@@ -45,7 +45,12 @@ builder.Services.AddScoped<IClientQueries,ClientQueries>();
 builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
 builder.Services.AddSingleton<IDbConnectionFactory>(i =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    var defaultConnection =  "DefaultConnection";
+    if (System.OperatingSystem.IsMacOS() || System.OperatingSystem.IsLinux())
+    {
+        defaultConnection = "DockerConnection";
+    }
+    var connectionString = builder.Configuration.GetConnectionString(defaultConnection);
     return new DbConnectionFactory(connectionString);
 });
 
