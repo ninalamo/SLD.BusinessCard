@@ -3,8 +3,8 @@ version: '3.4'
 services:
   businesscard.api:
     ports:
-      - 80
-      - 443
+      - "5000:80"
+      -  "8000:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     labels:
-      - dev.orbstack.domains=businesscard.api.orb.local,bizcard.local
+      - dev.orbstack.domains=businesscard.api.orb.local,bizcard.local,businesscard.local
   api_db:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     container_name: "sqlserver2019"
