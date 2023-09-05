@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessCard.Tests", "Busin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessCard.Infrastructure", "BusinessCard.Infrastructure\BusinessCard.Infrastructure.csproj", "{9D73A02E-CF4D-40D3-840A-F67C0E72668E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCard.API", "BusinessCard.API\BusinessCard.API.csproj", "{FF2F5CA0-B3F0-4017-BE00-41D56135C27F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCard.Application", "BusinessCard.Application\BusinessCard.Application.csproj", "{FF2F5CA0-B3F0-4017-BE00-41D56135C27F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{627161FF-58E4-4126-9B54-8F5C2EC7CD04}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCard.Infrastructure.Tests", "BusinessCard.Infrastructure.Tests\BusinessCard.Infrastructure.Tests\BusinessCard.Infrastructure.Tests.csproj", "{18E23917-801C-49B1-9D74-D4DAE0F9EA19}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A8B21CA6-74EC-43EC-AEC0-370A1EE0974D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessCard.API", "BusinessCard.GrpcServices\BusinessCard.API\BusinessCard.API.csproj", "{EFD90574-E545-4F50-9283-AC544405CE27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{18E23917-801C-49B1-9D74-D4DAE0F9EA19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18E23917-801C-49B1-9D74-D4DAE0F9EA19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18E23917-801C-49B1-9D74-D4DAE0F9EA19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFD90574-E545-4F50-9283-AC544405CE27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFD90574-E545-4F50-9283-AC544405CE27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFD90574-E545-4F50-9283-AC544405CE27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFD90574-E545-4F50-9283-AC544405CE27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,5 +71,6 @@ Global
 		{11A5E053-4D08-4542-B61F-2009DFE8E79A} = {5EBE7200-0198-4CD5-92E2-22ABB07BE2D8}
 		{89ACC537-A638-46A1-AF82-CB19C3B9243A} = {5EBE7200-0198-4CD5-92E2-22ABB07BE2D8}
 		{18E23917-801C-49B1-9D74-D4DAE0F9EA19} = {5EBE7200-0198-4CD5-92E2-22ABB07BE2D8}
+		{EFD90574-E545-4F50-9283-AC544405CE27} = {627161FF-58E4-4126-9B54-8F5C2EC7CD04}
 	EndGlobalSection
 EndGlobal

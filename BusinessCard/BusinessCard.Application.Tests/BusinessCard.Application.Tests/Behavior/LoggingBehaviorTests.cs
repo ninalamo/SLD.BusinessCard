@@ -1,6 +1,6 @@
-// using BusinessCard.API.Application.Behaviors;
-// using BusinessCard.API.Extensions;
-// using BusinessCard.API.Logging;
+// using BusinessCard.Application.Application.Behaviors;
+// using BusinessCard.Application.Extensions;
+// using BusinessCard.Application.Logging;
 // using MediatR;
 // using Microsoft.Extensions.Logging;
 // using Moq;
