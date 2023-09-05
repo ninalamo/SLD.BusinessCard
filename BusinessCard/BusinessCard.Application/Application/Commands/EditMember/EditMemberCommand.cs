@@ -1,6 +1,5 @@
 using System.Text.Json;
 using BusinessCard.API.Application.Common.Models;
-using MediatR;
 
 namespace BusinessCard.API.Application.Commands.EditMember;
 

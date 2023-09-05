@@ -3,10 +3,6 @@ using BusinessCard.API.Application.Behaviors;
 using BusinessCard.API.Application.Commands;
 using BusinessCard.API.Application.Commands.AddClient;
 using BusinessCard.API.Application.Commands.UpsertClient;
-using BusinessCard.Infrastructure;
-using FluentValidation;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace BusinessCard.API;

@@ -1,8 +1,7 @@
 using System.Text.Json;
 using BusinessCard.API.Application.Common.Models;
-using MediatR;
 
-namespace BusinessCard.API.Application.Commands.AddMemberWithIdentityKey;
+namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
 
 
 public class AddMemberWithIdentityKeyCommand : IRequest<Guid>
@@ -31,16 +30,16 @@ public class AddMemberWithIdentityKeyCommand : IRequest<Guid>
         });
 
     }
-    public Guid ClientId { get; init; }
-    public string IdentityId { get; init; }
-    public string FirstName { get; init; }
-    public string LastName { get; init; }
-    public string MiddleName { get; init; }
-    public string NameSuffix { get; init; }
-    public string PhoneNumber { get; init; }
-    public string Email { get; init; }
-    public string Address { get; init; }
-    public string Occupation { get; init; }
+    public Guid ClientId { get; }
+    public string IdentityId { get; }
+    public string FirstName { get; }
+    public string LastName { get; }
+    public string MiddleName { get; }
+    public string NameSuffix { get; }
+    public string PhoneNumber { get; }
+    public string Email { get; }
+    public string Address { get; }
+    public string Occupation { get; }
     public string SocialMedia { get; private set; }
     
 }

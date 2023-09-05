@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace BusinessCard.API.Application.Commands.UpsertClient;

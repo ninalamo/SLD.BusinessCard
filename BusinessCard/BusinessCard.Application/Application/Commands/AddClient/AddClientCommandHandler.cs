@@ -1,7 +1,6 @@
 using System.Text.Json;
 using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using MediatR;
 
 namespace BusinessCard.API.Application.Commands.AddClient;
 

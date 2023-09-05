@@ -11,14 +11,14 @@ using BusinessCard.API.Application.Queries.GetClients;
 using BusinessCard.API.Application.Queries.GetMemberId;
 using BusinessCard.API.Application.Queries.GetMembers;
 using BusinessCard.API.Extensions;
+using BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
+using BusinessCard.Application.Application.Queries.GetMemberByUid;
 using BusinessCard.Domain.Exceptions;
 using ClientService;
-using FluentValidation;
 using FluentValidation.Results;
 using Grpc.Core;
-using MediatR;
 
-namespace BusinessCard.GrpcServices.Services;
+namespace BusinessCard.API.Services;
 
 public class ClientsService : ClientGrpc.ClientGrpcBase
 {
@@ -46,11 +46,27 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             ClientId = result.Id?.ToString(),
         };
     }
+    
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    public override async Task<MemberGrpcCommandResult> AddMemberWithIdentityGrpc(AddMemberWithIdentityGrpcCommand request, ServerCallContext context)
+    {
+        var command = await _mediator.Send(ToAddMemberWithIdentityKeyCommand(request));
+        return new MemberGrpcCommandResult()
+        {
+            MemberId = command.ToString()
+        };
+    }
 
     /// <summary>
     /// Updates client (company) details.
     /// 'gRPC' implementation
-    /// </summary>
+    /// </summary>d
     /// <param name="request"></param>
     /// <param name="context"></param>
     /// <returns></returns>
@@ -196,6 +212,13 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return ToMemberGrpcResult(result);
     }
 
+    public override async Task<MemberGrpcResult> GetMemberByUidGrpc(GetMemberByUidGrpcQuery request, ServerCallContext context)
+    {
+        var result = await _mediator.Send(new GetMemberByUidQuery(request.Uid));
+
+        return result == null ? null : ToMemberGrpcResult(result);
+    }
+
     #region Transform
     
     private static SocialMediaObject? GetSocialMedia(MembersResult member)
@@ -293,6 +316,32 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         };
     }
     
+    private static MemberGrpcResult ToMemberGrpcResult(GetMemberByUidQueryResult c)
+    {
+        return new MemberGrpcResult()
+        {
+            Address = c.Address,
+            ClientId = c.ClientId.ToString(),
+            Subscription = c.Subscription,
+            SubscriptionLevel = c.SubscriptionLevel,
+            FullName = NameBuilder(c.FirstName,c.LastName, c.MiddleName,c.NameSuffix),
+            FirstName = c.FirstName,
+            LastName = c.LastName,
+            MiddleName = c.MiddleName,
+            NameSuffix = c.NameSuffix,
+            Email = c.Email,
+            Facebook = c.Facebook,
+            Id = c.Id.ToString(),
+            Instagram = c.Instagram,
+            Occupation = c.Occupation,
+            Pinterest =  c.Pinterest,
+            Twitter =  c.Twitter,
+            LinkedIn =  c.LinkedIn,
+            CardKey = c.CardKey,
+            PhoneNumber = c.PhoneNumber,
+        };
+    }
+    
     private static MemberGrpcResult ToMemberGrpcResult(MembersResult c)
     {
         return new MemberGrpcResult()
@@ -307,13 +356,13 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             SubscriptionLevel = c.SubscriptionLevel,
             FullName = NameBuilder(c),
             Email = c.Email,
-            Facebook = GetSocialMedia(c).Facebook,
+            Facebook = GetSocialMedia(c)?.Facebook ?? "N/A",
             Id = c.Id.ToString(),
-            Instagram = GetSocialMedia(c).Instagram,
+            Instagram = GetSocialMedia(c)?.Instagram ?? "N/A",
             Occupation = c.Occupation,
-            Pinterest =  GetSocialMedia(c).Pinterest,
-            Twitter =  GetSocialMedia(c).Twitter,
-            LinkedIn =  GetSocialMedia(c).LinkedIn,
+            Pinterest =  GetSocialMedia(c)?.Pinterest ?? "N/A",
+            Twitter =  GetSocialMedia(c)?.Twitter ?? "N/A",
+            LinkedIn =  GetSocialMedia(c)?.LinkedIn ?? "N/A",
             CardKey = c.CardKey,
             PhoneNumber = c.PhoneNumber,
         };
@@ -336,6 +385,14 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             request.MiddleName, request.NameSuffix, request.PhoneNumber, request.Email, request.Address,
             request.Occupation, request.Facebook, request.LinkedIn, request.Instagram, request.Pinterest,
             request.Twitter);
+    }
+    
+    private static AddMemberWithIdentityKeyCommand ToAddMemberWithIdentityKeyCommand(AddMemberWithIdentityGrpcCommand request)
+    {
+        return new AddMemberWithIdentityKeyCommand(request.ClientId.ToGuid(), request.FirstName, request.LastName,
+            request.MiddleName, request.NameSuffix, request.PhoneNumber, request.Email, request.Address,
+            request.Occupation, request.Facebook, request.LinkedIn, request.Instagram, request.Pinterest,
+            request.Twitter, request.Identity);
     }
     
     

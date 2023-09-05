@@ -2,7 +2,6 @@ using BusinessCard.API.Extensions;
 using BusinessCard.Domain.Exceptions;
 using FluentValidation;
 using FluentValidationException = FluentValidation.ValidationException;
-using MediatR;
 
 namespace BusinessCard.API.Application.Behaviors;
 

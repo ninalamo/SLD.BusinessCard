@@ -1,6 +1,5 @@
 using BusinessCard.API.Application.Common.Interfaces;
 using BusinessCard.Application.Application.Common.Interfaces;
-using MediatR;
 
 namespace BusinessCard.API.Application.Queries.GetMembers;
 

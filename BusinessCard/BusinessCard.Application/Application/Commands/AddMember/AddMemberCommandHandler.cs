@@ -4,7 +4,6 @@ using BusinessCard.API.Application.Common.Interfaces.Helpers;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using FluentValidation;
 using FluentValidation.Results;
-using MediatR;
 
 namespace BusinessCard.API.Application.Commands.AddMember;
 
