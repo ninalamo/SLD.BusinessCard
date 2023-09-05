@@ -3,6 +3,7 @@ using BusinessCard.API.Application.Behaviors;
 using BusinessCard.API.Application.Commands;
 using BusinessCard.API.Application.Commands.AddClient;
 using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.API.Application.Common.Interfaces;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Infrastructure;
 using BusinessCard.Infrastructure.Repositories;
@@ -22,7 +23,6 @@ public static class IServiceCollectionExtension
         services
             .AddDbContext<LokiContext>(options =>
                 {
-                    options.UseSqlServer(connectionString);
                     options.UseSqlServer(connectionString,
                         sqlOptions =>
                         {
@@ -31,6 +31,8 @@ public static class IServiceCollectionExtension
                         });
                 } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
             );
+        
+        services.AddSingleton<IDbConnectionFactory>(i => new DbConnectionFactory(connectionString));
         return services;
     }
     
