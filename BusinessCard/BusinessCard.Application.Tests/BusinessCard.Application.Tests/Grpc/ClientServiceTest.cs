@@ -2,8 +2,7 @@
 using BusinessCard.API.Application.Commands.EditClient;
 using BusinessCard.API.Application.Commands.UpsertClient;
 using BusinessCard.API.Extensions;
-using BusinessCard.API.Grpc;
-using BusinessCard.Domain.AggregatesModel.ClientAggregate;
+using BusinessCard.GrpcServices.Services;
 using ClientService;
 using Grpc.Core;
 using MediatR;
