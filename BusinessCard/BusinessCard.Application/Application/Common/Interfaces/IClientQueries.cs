@@ -1,8 +1,7 @@
 using BusinessCard.API.Application.Queries.GetClients;
 using BusinessCard.API.Application.Queries.GetMembers;
-using ClientService;
 
-namespace BusinessCard.API.Application.Common.Interfaces;
+namespace BusinessCard.Application.Application.Common.Interfaces;
 public interface IClientQueries
 {
     Task<(int,IEnumerable<ClientsResult>)> GetClientsWithPagination(int pageSize, int pageNumber, string? name);

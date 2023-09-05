@@ -196,10 +196,16 @@ namespace BusinessCard.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IdentityUserId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsSubsriptionOverride")
+                    b.Property<bool>("IsSubscriptionOverride")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")

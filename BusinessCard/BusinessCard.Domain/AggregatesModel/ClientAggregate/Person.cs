@@ -33,13 +33,16 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 
         public Person()
         {
-            IsSubsriptionOverride = false;
+            IsSubscriptionOverride = false;
             _subscriptionId = MemberTier.GetLevels().First(i => i.Level == 1).Id;
             Card = new Card();
             IsActive = false;
         }
 
-        public bool IsSubsriptionOverride { get; private set; }
+        public bool IsSubscriptionOverride { get; private set; }
+        public string IdentityUserId { get; private set; } = string.Empty;
+
+        public void SetIdentity(string key) => IdentityUserId = Guid.Parse(key).ToString();
 
 
         public string FirstName { get; private set; }

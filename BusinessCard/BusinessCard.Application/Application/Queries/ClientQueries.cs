@@ -1,13 +1,12 @@
-using System.Runtime.InteropServices.JavaScript;
 using BusinessCard.API.Application.Common.Interfaces;
 using BusinessCard.API.Application.Common.SQLScripts;
 using BusinessCard.API.Application.Queries.GetClients;
 using BusinessCard.API.Application.Queries.GetMembers;
-using ClientService;
+using BusinessCard.Application.Application.Common.Interfaces;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace BusinessCard.API.Application.Queries;
+namespace BusinessCard.Application.Application.Queries;
 
 public class ClientQueries : IClientQueries
 {

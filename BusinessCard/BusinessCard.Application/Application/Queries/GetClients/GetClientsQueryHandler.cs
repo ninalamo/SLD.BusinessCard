@@ -1,12 +1,8 @@
-using BusinessCard.API.Application.Common.Interfaces;
-using BusinessCard.Infrastructure;
-using Dapper;
+using BusinessCard.API.Application.Queries.GetClients;
+using BusinessCard.Application.Application.Common.Interfaces;
 using MediatR;
-using Microsoft.CodeAnalysis.Elfie.Serialization;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 
-namespace BusinessCard.API.Application.Queries.GetClients;
+namespace BusinessCard.Application.Application.Queries.GetClients;
 
 public class GetClientsQueryHandler : IRequestHandler<GetClientsQuery, GetClientsQueryResult>
 {

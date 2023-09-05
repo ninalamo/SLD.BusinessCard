@@ -12,6 +12,8 @@ service ClientGrpc {
     rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (ClientGrpcResult){}
 
     rpc AddMemberGrpc(AddMemberGrpcCommand) returns (MemberGrpcCommandResult){}
+    rpc AddMemberWithIdentityGrpc(AddMemberGrpcCommand) returns (MemberGrpcCommandResult){}
+    
     rpc EditMemberGrpc(EditMemberGrpcCommand) returns (MemberGrpcCommandResult){}
     rpc GetPaginatedMembersGrpc(GetPaginatedMembersGrpcQuery)returns(GetPaginatedMembersGrpcQueryResult){}
     rpc GetMemberByIdGrpc(GetMemberByIdGrpcQuery)returns(MemberGrpcResult){}
@@ -50,6 +52,24 @@ message AddMemberGrpcCommand {
     string pinterest = 12;
     string twitter = 13;
     string clientId = 14;
+}
+
+message AddMemberWithIdentityGrpcCommand {
+    string firstName = 1;
+    string lastName = 2;
+    string middleName = 3;
+    string nameSuffix = 4;
+    string phoneNumber = 5;
+    string email = 6;
+    string address = 7;
+    string occupation = 8;
+    string facebook = 9;
+    string linkedIn = 10;
+    string instagram = 11;
+    string pinterest = 12;
+    string twitter = 13;
+    string clientId = 14;
+    string identity = 15;
 }
 
 message EditMemberGrpcCommand {

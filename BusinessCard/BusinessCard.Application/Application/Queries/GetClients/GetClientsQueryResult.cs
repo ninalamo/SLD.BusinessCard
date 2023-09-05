@@ -2,19 +2,12 @@ using System.Text.Json.Serialization;
 
 namespace BusinessCard.API.Application.Queries.GetClients;
 
-public record GetClientsQueryResult
+public record GetClientsQueryResult(int PageSize, int PageNumber, int TotalCount, IEnumerable<ClientsResult> Clients)
 {
-    public GetClientsQueryResult(int pageSize, int pageNumber, int totalCount, IEnumerable<ClientsResult> clients)
-    {
-        PageSize = pageSize;
-        PageNumber = pageNumber;
-        TotalCount = totalCount;
-        Clients = clients;
-    }
-    public int PageSize { get; private set; }
-    public int PageNumber { get; private set; }
-    public int TotalCount { get; private set; }
-    public IEnumerable<ClientsResult> Clients { get; private set; }
+    public int PageSize { get; private set; } = PageSize;
+    public int PageNumber { get; private set; } = PageNumber;
+    public int TotalCount { get; private set; } = TotalCount;
+    public IEnumerable<ClientsResult> Clients { get; private set; } = Clients;
 }
 
 public record ClientsResult

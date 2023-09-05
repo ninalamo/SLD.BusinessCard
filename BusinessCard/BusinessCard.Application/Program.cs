@@ -1,9 +1,8 @@
 using BusinessCard.API;
 using BusinessCard.API.Application.Common.Interfaces;
-using BusinessCard.API.Application.Queries;
 using BusinessCard.API.Extensions;
-using BusinessCard.API.Grpc;
-using BusinessCard.API.Interceptors;
+using BusinessCard.Application.Application.Common.Interfaces;
+using BusinessCard.Application.Application.Queries;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
 using BusinessCard.Infrastructure;

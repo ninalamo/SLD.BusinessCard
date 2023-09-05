@@ -3,17 +3,15 @@ using BusinessCard.API.Application.Behaviors;
 using BusinessCard.API.Application.Commands;
 using BusinessCard.API.Application.Commands.AddClient;
 using BusinessCard.API.Application.Commands.UpsertClient;
-using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Infrastructure;
-using BusinessCard.Infrastructure.Repositories;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-namespace BusinessCard.API.Extensions;
+namespace BusinessCard.API;
 
-public static class IServiceCollectionExtension
+public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
     {
@@ -43,7 +41,7 @@ public static class IServiceCollectionExtension
             {
                 Version = "V1",
                 Title = "WebAPI",
-                Description = "Loki WebAPI"
+                Description = "Business Card Grpc Web API"
             });
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
@@ -77,7 +75,7 @@ public static class IServiceCollectionExtension
     {
 
         //register mediatr and pipelines
-        services.AddMediatR(c => c.RegisterServicesFromAssemblies(typeof(Program).Assembly));
+        services.AddMediatR(c => c.RegisterServicesFromAssemblies(typeof(AddClientCommand).Assembly));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
