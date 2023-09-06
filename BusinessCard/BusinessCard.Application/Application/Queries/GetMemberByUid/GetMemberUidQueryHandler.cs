@@ -3,6 +3,7 @@ using BusinessCard.API.Application.Common.Models;
 using BusinessCard.API.Application.Queries.GetMemberId;
 using BusinessCard.Application.Application.Common.Interfaces;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
+using BusinessCard.Domain.Exceptions;
 
 namespace BusinessCard.Application.Application.Queries.GetMemberByUid;
 
@@ -28,7 +29,8 @@ public class GetMemberUidQueryHandler : IRequestHandler<GetMemberByUidQuery, Get
 
         var member = client.Persons.FirstOrDefault(c => c.Card.Key == request.Uid);
 
-        if (member == null) throw new KeyNotFoundException("Member not found.");
+        if (member == null)
+            throw new BusinessCardDomainException("Member not found.", new KeyNotFoundException("Card Key not found."));
 
 
         var result = new GetMemberByUidQueryResult

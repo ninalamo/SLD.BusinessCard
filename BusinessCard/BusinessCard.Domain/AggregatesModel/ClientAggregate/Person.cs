@@ -98,13 +98,13 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 
         public void EnableCard()
         {
-            if (Card == default) throw BusinessCardDomainException.CreateArgumentNullException(nameof(Card));
+           
             Card.IsActive = true;
         }
 
         public void DisableCard()
         {
-            if (Card == default) throw BusinessCardDomainException.CreateArgumentNullException(nameof(Card));
+          
             Card.Deactivate();
         }
 

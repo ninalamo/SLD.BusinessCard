@@ -27,8 +27,8 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
     public ClientsService(IMediator mediator, ILogger<ClientsService> logger)
     {
-        _mediator = mediator ?? throw BusinessCardDomainException.CreateArgumentNullException(nameof(mediator));
-        _logger = logger ?? throw BusinessCardDomainException.CreateArgumentNullException(nameof(logger));
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     /// <summary>
@@ -393,7 +393,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return new AddMemberWithIdentityKeyCommand(request.ClientId.ToGuid(), request.FirstName, request.LastName,
             request.MiddleName, request.NameSuffix, request.PhoneNumber, request.Email, request.Address,
             request.Occupation, request.Facebook, request.LinkedIn, request.Instagram, request.Pinterest,
-            request.Twitter, request.Identity);
+            request.Twitter, request.Identity, request.CardKey);
     }
     
     

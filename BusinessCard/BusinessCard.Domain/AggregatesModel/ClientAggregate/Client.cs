@@ -30,8 +30,8 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
             IsDiscreet = isDiscreet;
             var tier = MemberTier.GetLevels().FirstOrDefault(i => i.Level == level)?.Id;
             
-            if(!tier.HasValue) throw BusinessCardDomainException.Create(new ArgumentException(nameof(level)));
-            if (tier.Value == Guid.Empty) throw BusinessCardDomainException.Create(new ArgumentException(nameof(level)));
+            if(!tier.HasValue) throw new ArgumentNullException(nameof(level));
+            if (tier.Value == Guid.Empty) throw new ArgumentNullException(nameof(level));
 
             _subscriptionId = tier.Value;
 
