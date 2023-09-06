@@ -37,7 +37,7 @@ internal static class SqlScript
 
     public const string SelectMembers = @"SELECT
     		P.[Id] 
-	      ,P.[IsSubsriptionOverride]
+	      ,P.[IsSubscriptionOverride]
 	      ,P.[FirstName]
 	      ,P.[LastName]
 	      ,P.[MiddleName]

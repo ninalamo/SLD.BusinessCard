@@ -70,21 +70,23 @@ public class ClientQueries : IClientQueries
 	    return clientsResults.FirstOrDefault();
     }
     
-    public async Task<MembersResult> GetClientByUid(string uid)
+    public async Task<IEnumerable<MembersResult>> GetClientByUid(string uid)
     {
 	    DynamicParameters parameters = new();
 	    parameters.Add("uid", uid);
 
 	    string query = SqlScript.SelectMembers;
-	    query += " WHERE C.Key = @uid ";
+	    query += " WHERE C.[Key] = @uid ";
 
 	    await using SqlConnection connection =_dbConnectionFactory.CreateConnection(); 
         
 	    await connection.OpenAsync(CancellationToken.None);
 
 	    var result = await connection.QueryAsync<MembersResult>(query, parameters);
-	    
-	    return result.FirstOrDefault();
+
+	    if (result == null) throw new KeyNotFoundException("Uid not found.");
+
+	    return result.Any() ? result : Array.Empty<MembersResult>();
     }
 
     public async Task<(int,IEnumerable<MembersResult>)> GetMembersWithPagination(int pageSize, int pageNumber, Guid clientId)

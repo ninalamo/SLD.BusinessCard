@@ -17,7 +17,7 @@ service ClientGrpc {
     rpc EditMemberGrpc(EditMemberGrpcCommand) returns (MemberGrpcCommandResult){}
     rpc GetPaginatedMembersGrpc(GetPaginatedMembersGrpcQuery)returns(GetPaginatedMembersGrpcQueryResult){}
     rpc GetMemberByIdGrpc(GetMemberByIdGrpcQuery)returns(MemberGrpcResult){}
-    rpc GetMemberByUidGrpc(GetMemberByUidGrpcQuery) returns (MemberGrpcResult){}
+    rpc GetMemberByUidGrpc(GetMemberByUidGrpcQuery) returns (GetMemberByUidGrpcResult){}
 }
 
 
@@ -178,7 +178,9 @@ message MemberGrpcResult {
     string identity = 20;
 }
 
-
+message GetMemberByUidGrpcResult {
+    repeated MemberGrpcResult members = 1;
+}
 
 message MemberGrpcCommandResult {
     string memberId = 1;

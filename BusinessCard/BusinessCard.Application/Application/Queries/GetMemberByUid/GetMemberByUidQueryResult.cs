@@ -2,6 +2,11 @@ namespace BusinessCard.Application.Application.Queries.GetMemberByUid;
 
 public record GetMemberByUidQueryResult
 {
+   public IEnumerable<MemberUid> Members { get; init; }
+}
+
+public record MemberUid
+{
     public Guid Id { get; init; }
     public Guid ClientId { get; init; }
     public string FirstName { get; init; }

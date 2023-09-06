@@ -212,11 +212,39 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return ToMemberGrpcResult(result);
     }
 
-    public override async Task<MemberGrpcResult> GetMemberByUidGrpc(GetMemberByUidGrpcQuery request, ServerCallContext context)
+    public override async Task<GetMemberByUidGrpcResult> GetMemberByUidGrpc(GetMemberByUidGrpcQuery request, ServerCallContext context)
     {
         var result = await _mediator.Send(new GetMemberByUidQuery(request.Uid));
 
-        return result == null ? null : ToMemberGrpcResult(result);
+        return new GetMemberByUidGrpcResult()
+        {
+            Members =
+            {
+                result.Members.Select(c => new MemberGrpcResult
+                {
+                    Address = c.Address,
+                    ClientId = c.ClientId.ToString(),
+                    Subscription = c.Subscription,
+                    SubscriptionLevel = c.SubscriptionLevel,
+                    FullName = NameBuilder(c.FirstName, c.LastName, c.MiddleName, c.NameSuffix),
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    MiddleName = c.MiddleName,
+                    NameSuffix = c.NameSuffix,
+                    Email = c.Email,
+                    Facebook = c.Facebook,
+                    Id = c.Id.ToString(),
+                    Instagram = c.Instagram,
+                    Occupation = c.Occupation,
+                    Pinterest = c.Pinterest,
+                    Twitter = c.Twitter,
+                    LinkedIn = c.LinkedIn,
+                    CardKey = c.CardKey,
+                    PhoneNumber = c.PhoneNumber,
+                    Identity = c.IdentityUserId
+                })
+            }
+        };
     }
 
     #region Transform
@@ -316,8 +344,12 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         };
     }
     
-    private static MemberGrpcResult ToMemberGrpcResult(GetMemberByUidQueryResult c)
+    private static MemberGrpcResult ToMemberGrpcResult(GetMemberByUidQueryResult result)
     {
+        var c = result.Members.FirstOrDefault();
+
+        if (c == null) return null;
+        
         return new MemberGrpcResult()
         {
             Address = c.Address,

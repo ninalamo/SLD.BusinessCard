@@ -22,37 +22,49 @@ public class GetMemberUidQueryHandler : IRequestHandler<GetMemberByUidQuery, Get
         _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberIdQueryHandler),
             DateTimeOffset.Now);
 
-        var member = await _clientQueries.GetClientByUid(request.Uid);
+        var members = await _clientQueries.GetClientByUid(request.Uid);
+
+        if (members == null) return null;
+
+        //there should only be one instance..
+        var member = members.FirstOrDefault();
 
         if (member == null) return null;
 
-        return new GetMemberByUidQueryResult
+        var result = new GetMemberByUidQueryResult
         {
-            ClientId = member.ClientId,
-            Subscription = member.Subscription,
-            SubscriptionLevel = member.SubscriptionLevel,
-            Address = member.Address,
-            CardKey = member.CardKey,
-            CreatedBy = member.CreatedBy,
-            CreatedOn = member.CreatedOn,
-            Email = member.Email,
-            Facebook = ToSocialMediaObject(member.SocialMedia).Facebook,
-            FirstName = member.FirstName,
-            LastName = member.LastName,
-            NameSuffix = member.NameSuffix,
-            MiddleName = member.MiddleName,
-            Id = member.Id,
-            Instagram = ToSocialMediaObject(member.SocialMedia).Instagram,
-            Pinterest = ToSocialMediaObject(member.SocialMedia).Pinterest,
-            Occupation = member.Occupation,
-            Twitter = ToSocialMediaObject(member.SocialMedia).Twitter,
-            IsActive = member.IsActive,
-            PhoneNumber = member.PhoneNumber,
-            ModifiedBy = member.ModifiedBy,
-            ModifiedOn = member.ModifiedOn,
-            LinkedIn = ToSocialMediaObject(member.SocialMedia).LinkedIn,
-            IdentityUserId = member.IdentityUserId,
+            Members = members.Any() ? members.Select(x => new MemberUid()
+            {
+                ClientId = member.ClientId,
+                Subscription = member.Subscription,
+                SubscriptionLevel = member.SubscriptionLevel,
+                Address = member.Address,
+                CardKey = member.CardKey,
+                CreatedBy = member.CreatedBy,
+                CreatedOn = member.CreatedOn,
+                Email = member.Email,
+                Facebook = ToSocialMediaObject(member.SocialMedia).Facebook,
+                FirstName = member.FirstName,
+                LastName = member.LastName,
+                NameSuffix = member.NameSuffix,
+                MiddleName = member.MiddleName,
+                Id = member.Id,
+                Instagram = ToSocialMediaObject(member.SocialMedia).Instagram,
+                Pinterest = ToSocialMediaObject(member.SocialMedia).Pinterest,
+                Occupation = member.Occupation,
+                Twitter = ToSocialMediaObject(member.SocialMedia).Twitter,
+                IsActive = member.IsActive,
+                PhoneNumber = member.PhoneNumber,
+                ModifiedBy = member.ModifiedBy,
+                ModifiedOn = member.ModifiedOn,
+                LinkedIn = ToSocialMediaObject(member.SocialMedia).LinkedIn,
+                IdentityUserId = member.IdentityUserId,
+            }) : Array.Empty<MemberUid>()
         };
+
+        return result;
+
+
     }
 
     private static SocialMediaObject ToSocialMediaObject(string json)
