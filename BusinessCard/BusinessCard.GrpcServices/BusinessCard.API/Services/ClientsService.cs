@@ -212,38 +212,35 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return ToMemberGrpcResult(result);
     }
 
-    public override async Task<GetMemberByUidGrpcResult> GetMemberByUidGrpc(GetMemberByUidGrpcQuery request, ServerCallContext context)
+    public override async Task<MemberGrpcResult> GetMemberByUidGrpc(GetMemberByUidGrpcQuery request, ServerCallContext context)
     {
-        var result = await _mediator.Send(new GetMemberByUidQuery(request.Uid));
-
-        return new GetMemberByUidGrpcResult()
+        var result = await _mediator.Send(new GetMemberByUidQuery(request.ClientId.ToGuid(), request.Uid));
+        
+        return new MemberGrpcResult()
         {
-            Members =
-            {
-                result.Members.Select(c => new MemberGrpcResult
-                {
-                    Address = c.Address,
-                    ClientId = c.ClientId.ToString(),
-                    Subscription = c.Subscription,
-                    SubscriptionLevel = c.SubscriptionLevel,
-                    FullName = NameBuilder(c.FirstName, c.LastName, c.MiddleName, c.NameSuffix),
-                    FirstName = c.FirstName,
-                    LastName = c.LastName,
-                    MiddleName = c.MiddleName,
-                    NameSuffix = c.NameSuffix,
-                    Email = c.Email,
-                    Facebook = c.Facebook,
-                    Id = c.Id.ToString(),
-                    Instagram = c.Instagram,
-                    Occupation = c.Occupation,
-                    Pinterest = c.Pinterest,
-                    Twitter = c.Twitter,
-                    LinkedIn = c.LinkedIn,
-                    CardKey = c.CardKey,
-                    PhoneNumber = c.PhoneNumber,
-                    Identity = c.IdentityUserId
-                })
-            }
+            
+                    Address = result.Address,
+                    ClientId = result.ClientId.ToString(),
+                    Subscription = result.Subscription,
+                    SubscriptionLevel = result.SubscriptionLevel,
+                    FullName = NameBuilder(result.FirstName, result.LastName, result.MiddleName, result.NameSuffix),
+                    FirstName = result.FirstName,
+                    LastName = result.LastName,
+                    MiddleName = result.MiddleName,
+                    NameSuffix = result.NameSuffix,
+                    Email = result.Email,
+                    Facebook = result.Facebook,
+                    Id = result.Id.ToString(),
+                    Instagram = result.Instagram,
+                    Occupation = result.Occupation,
+                    Pinterest = result.Pinterest,
+                    Twitter = result.Twitter,
+                    LinkedIn = result.LinkedIn,
+                    CardKey = result.CardKey,
+                    PhoneNumber = result.PhoneNumber,
+                    Identity = result.IdentityUserId
+                
+            
         };
     }
 
@@ -344,35 +341,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         };
     }
     
-    private static MemberGrpcResult ToMemberGrpcResult(GetMemberByUidQueryResult result)
-    {
-        var c = result.Members.FirstOrDefault();
-
-        if (c == null) return null;
-        
-        return new MemberGrpcResult()
-        {
-            Address = c.Address,
-            ClientId = c.ClientId.ToString(),
-            Subscription = c.Subscription,
-            SubscriptionLevel = c.SubscriptionLevel,
-            FullName = NameBuilder(c.FirstName,c.LastName, c.MiddleName,c.NameSuffix),
-            FirstName = c.FirstName,
-            LastName = c.LastName,
-            MiddleName = c.MiddleName,
-            NameSuffix = c.NameSuffix,
-            Email = c.Email,
-            Facebook = c.Facebook,
-            Id = c.Id.ToString(),
-            Instagram = c.Instagram,
-            Occupation = c.Occupation,
-            Pinterest =  c.Pinterest,
-            Twitter =  c.Twitter,
-            LinkedIn =  c.LinkedIn,
-            CardKey = c.CardKey,
-            PhoneNumber = c.PhoneNumber,
-        };
-    }
+ 
     
     private static MemberGrpcResult ToMemberGrpcResult(MembersResult c)
     {
