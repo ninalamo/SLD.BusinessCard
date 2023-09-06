@@ -1,6 +1,5 @@
 using BusinessCard.API.Extensions;
 using BusinessCard.Infrastructure;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog.Context;
 

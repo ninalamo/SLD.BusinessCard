@@ -1,6 +1,4 @@
 using System.Reflection;
-using BusinessCard.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace BusinessCard.API.Infrastructure;

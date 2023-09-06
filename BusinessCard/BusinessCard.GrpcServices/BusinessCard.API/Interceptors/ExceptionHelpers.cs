@@ -1,8 +1,6 @@
 using BusinessCard.Domain.Exceptions;
-using FluentValidation;
 using Grpc.Core;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 
 namespace BusinessCard.API.Interceptors;
 

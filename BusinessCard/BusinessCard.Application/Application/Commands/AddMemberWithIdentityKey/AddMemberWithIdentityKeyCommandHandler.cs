@@ -1,8 +1,7 @@
 using BusinessCard.API.Application.Common.Interfaces.Helpers;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using MediatR;
 
-namespace BusinessCard.API.Application.Commands.AddMemberWithIdentityKey;
+namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
 
 public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberWithIdentityKeyCommand, Guid>
 {
@@ -27,7 +26,10 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
 
         _logger.LogInformation($"Adding {nameof(Person)}-{DateTimeOffset.Now}");
         var person = client.AddMemberAsync(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,request.SocialMedia);
-
+        
+        _logger.LogInformation($"Setting subscription level for {nameof(Person)}-{DateTimeOffset.Now}");
+        person.SetSubscription(client.Subscription.Level);
+        
         _logger.LogInformation($"Adding IdentityId to {nameof(Person)}-{DateTimeOffset.Now}");
         person.SetIdentity(request.IdentityId);
         

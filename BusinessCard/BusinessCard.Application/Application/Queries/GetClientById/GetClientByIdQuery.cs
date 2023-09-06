@@ -1,6 +1,5 @@
 using BusinessCard.API.Application.Queries.GetClients;
 using FluentValidation;
-using MediatR;
 
 namespace BusinessCard.API.Application.Queries.GetClientById;
 

@@ -1,3 +1,4 @@
+using BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
 using FluentValidation;
 
 namespace BusinessCard.API.Application.Commands.AddMemberWithIdentityKey;

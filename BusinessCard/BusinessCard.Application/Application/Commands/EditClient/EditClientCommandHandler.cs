@@ -2,7 +2,6 @@ using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Exceptions;
 using FluentValidation;
 using FluentValidation.Results;
-using MediatR;
 
 namespace BusinessCard.API.Application.Commands.EditClient;
 

@@ -1,7 +1,6 @@
 using BusinessCard.API.Application.Common.Interfaces.Helpers;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using FluentValidation;
-using MediatR;
 
 namespace BusinessCard.API.Application.Commands.EditMember;
 

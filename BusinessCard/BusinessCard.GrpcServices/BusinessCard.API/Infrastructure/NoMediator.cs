@@ -1,6 +1,4 @@
 #nullable enable
-using MediatR;
-
 namespace BusinessCard.API.Infrastructure;
 
 public class NoMediator : IMediator

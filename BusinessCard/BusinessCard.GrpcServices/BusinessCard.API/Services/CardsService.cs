@@ -1,11 +1,9 @@
 ﻿using BusinessCard.API.Application.Commands.ExportCards;
 using BusinessCard.API.Application.Queries.GetMembers;
 using BusinessCard.API.Extensions;
-using FluentValidation;
 using FluentValidation.Results;
 using Grpc.Core;
 using KardService;
-using MediatR;
 
 namespace BusinessCard.GrpcServices.Services;
 

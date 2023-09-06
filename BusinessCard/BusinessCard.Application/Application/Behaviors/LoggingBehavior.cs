@@ -1,5 +1,4 @@
 using BusinessCard.API.Extensions;
-using MediatR;
 
 namespace BusinessCard.API.Application.Behaviors;
 

@@ -1,15 +1,10 @@
-using BusinessCard.API;
 using BusinessCard.API.Application.Common.Interfaces;
 using BusinessCard.API.Extensions;
-using BusinessCard.API.Interceptors;
 using BusinessCard.Application.Application.Common.Interfaces;
 using BusinessCard.Application.Application.Queries;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.Seedwork;
 using BusinessCard.GrpcServices.Services;
-using BusinessCard.Infrastructure;
 using BusinessCard.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -72,7 +67,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/V1/swagger.json", "BusinessCard Grpc Web API"); });
 }
 
-using (var scope = app.Services.CreateAsyncScope())
+await using var scope = app.Services.CreateAsyncScope();
 {
     var ctx = scope.ServiceProvider.GetRequiredService<LokiContext>();
     await ctx.Database.MigrateAsync();

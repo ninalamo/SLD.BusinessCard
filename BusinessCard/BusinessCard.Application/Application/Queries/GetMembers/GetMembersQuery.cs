@@ -1,5 +1,3 @@
-using MediatR;
-
 namespace BusinessCard.API.Application.Queries.GetMembers;
 
 public class GetMembersQuery : IRequest<GetMembersQueryResult>
