@@ -53,7 +53,7 @@ public class FluentValidationTests
         var behavior = new ValidatorBehavior<SampleRequest, SampleResponse>(validators, loggerMock.Object);
 
         // Act & Assert
-        await Assert.ThrowsAsync<BusinessCardDomainException>(() =>
+        await Assert.ThrowsAsync<ValidationException>(() =>
             behavior.Handle(request, nextHandlerMock.Object, CancellationToken.None));
         nextHandlerMock.Verify(h => h(), Times.Never);
     }
