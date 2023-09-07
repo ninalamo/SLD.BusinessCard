@@ -86,9 +86,10 @@ Important to note that `TrustCertificate=true;MultiSubNetFailover=True` must be 
 
 ```
 
-### Setting up Docker (on Mac)
+### Setting up (on Mac)
 <br/>
 
+#### Docker
 See link: https://www.twilio.com/blog/using-sql-server-on-macos-with-docker
 
 <br/>
@@ -117,6 +118,25 @@ docker run -d --name sql_server -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=someThingComp
 `mcr.microsoft.com/mssql/server:2019-latest` is the image we wish to run. I have used the latest version of 2019, however, if you need a different version you can check out the Microsoft SQL Server page on Docker Hub.
 
 <br/>
+
+### Debugging on Mac
+
+Read this: https://learn.microsoft.com/en-us/aspnet/core/grpc/troubleshoot?view=aspnetcore-7.0#unable-to-start-aspnet-core-grpc-app-on-macos
+
+This will allow to debug locally on Mac but had to run only on HTTP only.
+
+#### Code snippet 
+
+```
+if (System.OperatingSystem.IsMacOS())
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        // Setup a HTTP/2 endpoint without TLS.
+        options.ListenLocalhost(5050, o => o.Protocols = HttpProtocols.Http2);
+    });
+}
+```
 
 ### Note on Password Strength
 If you find your image starts but then immediately stops or you get an error such as setup failed with error code 1`, then it may be you haven't created a strong enough password. SQL Server really means it when it requests a strong password. Ensure good length with a mixture of upper and lower case, and a mix of alphanumeric characters. For more information on password requirements take a look at the Microsoft documentation.
