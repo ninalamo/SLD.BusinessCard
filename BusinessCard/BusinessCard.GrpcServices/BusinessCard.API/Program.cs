@@ -52,7 +52,7 @@ builder.Services.AddScoped<IClientQueries,ClientQueries>();
 builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
 builder.Services.AddSingleton<IDbConnectionFactory>(i =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    var connectionString = builder.Configuration.GetConnectionString("DevServerConnection");
     return new DbConnectionFactory(connectionString);
 });
 
