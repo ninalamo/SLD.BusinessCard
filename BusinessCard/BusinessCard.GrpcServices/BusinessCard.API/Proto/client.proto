@@ -17,7 +17,7 @@ service ClientGrpc {
     rpc EditMemberGrpc(EditMemberGrpcCommand) returns (MemberGrpcCommandResult){}
     rpc GetPaginatedMembersGrpc(GetPaginatedMembersGrpcQuery)returns(GetPaginatedMembersGrpcQueryResult){}
     rpc GetMemberByIdGrpc(GetMemberByIdGrpcQuery)returns(MemberGrpcResult){}
-    rpc GetMemberByUidGrpc(GetMemberByUidGrpcQuery) returns (GetMemberByUidGrpcResult){}
+    rpc GetMemberByUidGrpc(GetMemberByUidGrpcQuery) returns (MemberGrpcResult){}
 }
 
 
@@ -71,6 +71,7 @@ message AddMemberWithIdentityGrpcCommand {
     string twitter = 13;
     string clientId = 14;
     string identity = 15;
+    string cardKey = 16;
 }
 
 message EditMemberGrpcCommand {
@@ -146,6 +147,7 @@ message GetMemberByIdGrpcQuery{
 
 message GetMemberByUidGrpcQuery {
     string uid = 1;
+    string clientId = 2;
 }
 
 message GetPaginatedMembersGrpcQueryResult {

@@ -33,6 +33,8 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
         _logger.LogInformation($"Adding IdentityId to {nameof(Person)}-{DateTimeOffset.Now}");
         person.SetIdentity(request.IdentityId);
         
+        person.AddKeyToCard(request.CardKey);
+        
         _logger.LogInformation($"Update {nameof(Client)}-{DateTimeOffset.Now}");
         _repository.Update(client);
 

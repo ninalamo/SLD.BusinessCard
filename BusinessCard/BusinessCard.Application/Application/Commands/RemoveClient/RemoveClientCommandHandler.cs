@@ -27,8 +27,8 @@ public class RemoveClientCommandHandler : IRequestHandler<RemoveClientCommand>
         if (entity == null)
         {
             _logger.LogInformation($"{nameof(request.Id)} does not exists. {DateTime.UtcNow}");
-            throw BusinessCardDomainException.Create(new ValidationException("Validation error.",
-                new ValidationFailure[] { new ValidationFailure("Id", "Id does not exist.") }));
+            throw new ValidationException("Validation error.",
+                new ValidationFailure[] { new ValidationFailure("Id", "Id does not exist.") });
         }
 
         entity.IsActive = false;

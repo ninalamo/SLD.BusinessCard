@@ -70,7 +70,7 @@ public class ClientQueries : IClientQueries
 	    return clientsResults.FirstOrDefault();
     }
     
-    public async Task<IEnumerable<MembersResult>> GetClientByUid(string uid)
+    public async Task<MembersResult> GetClientByUid(string uid)
     {
 	    DynamicParameters parameters = new();
 	    parameters.Add("uid", uid);
@@ -83,10 +83,12 @@ public class ClientQueries : IClientQueries
 	    await connection.OpenAsync(CancellationToken.None);
 
 	    var result = await connection.QueryAsync<MembersResult>(query, parameters);
+	    
+	    var memberResults = result as MembersResult[] ?? result.ToArray();
+	    
+	    if (!memberResults.Any()) throw new KeyNotFoundException("Id not found.");
 
-	    if (result == null) throw new KeyNotFoundException("Uid not found.");
-
-	    return result.Any() ? result : Array.Empty<MembersResult>();
+	    return memberResults.FirstOrDefault();
     }
 
     public async Task<(int,IEnumerable<MembersResult>)> GetMembersWithPagination(int pageSize, int pageNumber, Guid clientId)

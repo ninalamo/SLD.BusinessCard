@@ -51,8 +51,8 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
         if (entity == null)
         {
             _logger.LogInformation($"{nameof(request.ClientId)} does not exists. {DateTime.UtcNow}");
-            throw BusinessCardDomainException.Create(new ValidationException("Validation error.",
-                new ValidationFailure[] { new ValidationFailure("Id", "Client not found.") }));
+            throw new ValidationException("Validation error.",
+                new ValidationFailure[] { new ValidationFailure("Id", "Client not found.") });
         }
 
       

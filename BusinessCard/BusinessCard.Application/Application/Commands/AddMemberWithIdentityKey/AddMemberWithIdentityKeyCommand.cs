@@ -7,7 +7,7 @@ namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey
 public class AddMemberWithIdentityKeyCommand : IRequest<Guid>
 {
     public AddMemberWithIdentityKeyCommand(Guid clientId, string firstName, string lastName, string middleName, string nameSuffix, string phoneNumber, string email, string address, string occupation, 
-        string facebook, string linkedIn, string instagram, string pinterest, string twitter, string identityId)
+        string facebook, string linkedIn, string instagram, string pinterest, string twitter, string identityId, string cardKey)
     {
         ClientId = clientId;
         FirstName = firstName;
@@ -19,6 +19,7 @@ public class AddMemberWithIdentityKeyCommand : IRequest<Guid>
         Address = address;
         Occupation = occupation;
         IdentityId = identityId;
+        CardKey = cardKey;
 
         SocialMedia = JsonSerializer.Serialize(new SocialMediaObject()
         {
@@ -41,5 +42,5 @@ public class AddMemberWithIdentityKeyCommand : IRequest<Guid>
     public string Address { get; }
     public string Occupation { get; }
     public string SocialMedia { get; private set; }
-    
+    public string CardKey { get; }
 }

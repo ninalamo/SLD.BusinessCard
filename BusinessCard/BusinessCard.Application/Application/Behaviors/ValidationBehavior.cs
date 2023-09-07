@@ -36,9 +36,9 @@ public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest
             _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}",
                 typeName, request, failures);
 
-            throw new BusinessCardDomainException(
+            throw new ValidationException(
                 $"Command Validation Errors for type {typeof(TRequest).Name}",
-                new FluentValidationException("Validation exception", failures));
+                failures);
         }
 
         return await next();

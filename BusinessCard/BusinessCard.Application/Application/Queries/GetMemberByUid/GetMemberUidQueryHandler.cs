@@ -2,44 +2,45 @@ using System.Text.Json;
 using BusinessCard.API.Application.Common.Models;
 using BusinessCard.API.Application.Queries.GetMemberId;
 using BusinessCard.Application.Application.Common.Interfaces;
+using BusinessCard.Domain.AggregatesModel.ClientAggregate;
+using BusinessCard.Domain.Exceptions;
 
 namespace BusinessCard.Application.Application.Queries.GetMemberByUid;
 
 public class GetMemberUidQueryHandler : IRequestHandler<GetMemberByUidQuery, GetMemberByUidQueryResult>
 {
-    private readonly IClientQueries _clientQueries;
-    private readonly ILogger<GetMemberUidQueryHandler> _logger;
+    private readonly IClientsRepository _repository;
+    private readonly ILogger<GetMemberIdQueryHandler> _logger;
 
-    public GetMemberUidQueryHandler(IClientQueries clientQueries, ILogger<GetMemberUidQueryHandler> logger)
+    public GetMemberUidQueryHandler(IClientsRepository repository, ILogger<GetMemberIdQueryHandler> logger)
     {
-        _clientQueries = clientQueries;
+        _repository = repository;
         _logger = logger;
     }
 
     public async Task<GetMemberByUidQueryResult> Handle(GetMemberByUidQuery request,
         CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberIdQueryHandler),
-            DateTimeOffset.Now);
+        _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberIdQueryHandler), DateTimeOffset.Now);
 
-        var members = await _clientQueries.GetClientByUid(request.Uid);
+        var client = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
+        
+        if (client == null) throw new KeyNotFoundException("Client not found.");
 
-        if (members == null) return null;
+        var member = client.Persons.FirstOrDefault(c => c.Card.Key == request.Uid);
 
-        //there should only be one instance..
-        var member = members.FirstOrDefault();
+        if (member == null)
+            throw new BusinessCardDomainException("Member not found.", new KeyNotFoundException("Card Key not found."));
 
-        if (member == null) return null;
 
         var result = new GetMemberByUidQueryResult
         {
-            Members = members.Any() ? members.Select(x => new MemberUid()
-            {
-                ClientId = member.ClientId,
-                Subscription = member.Subscription,
-                SubscriptionLevel = member.SubscriptionLevel,
+           
+                ClientId = request.ClientId,
+                Subscription = member.Subscription.Name,
+                SubscriptionLevel = member.Subscription.Level,
                 Address = member.Address,
-                CardKey = member.CardKey,
+                CardKey = member.Card.Key,
                 CreatedBy = member.CreatedBy,
                 CreatedOn = member.CreatedOn,
                 Email = member.Email,
@@ -59,7 +60,7 @@ public class GetMemberUidQueryHandler : IRequestHandler<GetMemberByUidQuery, Get
                 ModifiedOn = member.ModifiedOn,
                 LinkedIn = ToSocialMediaObject(member.SocialMedia).LinkedIn,
                 IdentityUserId = member.IdentityUserId,
-            }) : Array.Empty<MemberUid>()
+           
         };
 
         return result;
