@@ -5,6 +5,7 @@ using BusinessCard.Application.Application.Queries;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.GrpcServices.Services;
 using BusinessCard.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,16 @@ builder
         o.EnableDetailedErrors = true;
         o.Interceptors.Add<ServerInterceptor>();
     });
+
+if (System.OperatingSystem.IsMacOS())
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        // Setup a HTTP/2 endpoint without TLS.
+        //5050 -- see launchsettings.json for http URL
+        options.ListenLocalhost(5050, o => o.Protocols = HttpProtocols.Http2);
+    });
+}
 
 builder.Services
     .AddCustomDbContext(builder.Configuration)
