@@ -52,6 +52,7 @@
     <None Remove="docker-compose.debug.yml" />
     <None Remove="Dockerfile" />
     <None Remove="..\.dockerignore" />
+    <None Remove="Properties\launchSettings.json" />
   </ItemGroup>
 
   <ItemGroup>
