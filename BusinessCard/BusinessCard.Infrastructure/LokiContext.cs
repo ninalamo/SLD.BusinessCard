@@ -29,7 +29,7 @@ namespace BusinessCard.Infrastructure
         public  DbSet<Client> Clients { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Card> Cards { get; set; }
-        public DbSet<MemberTier> Subscriptions { get; set; }
+        //public DbSet<Subscription> Subscriptions { get; set; }
 
 
 

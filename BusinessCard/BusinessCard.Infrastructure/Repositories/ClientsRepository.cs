@@ -33,8 +33,8 @@ public class ClientsRepository : IClientsRepository
     {
         var entity =  await _context.Clients
             .Include(c => c.Persons).ThenInclude(p => p.Card)
-            .Include(c => c.Persons).ThenInclude(p => p.Subscription)
-            .Include(c => c.Subscription)
+            .Include(c => c.Persons)//.ThenInclude(p => p.MemberTier)
+           // .Include(c => c.MembershipTier)
             .FirstOrDefaultAsync(c => c.Id == id);
         return entity;
     }

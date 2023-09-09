@@ -17,14 +17,14 @@ internal class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
             .FindNavigation(nameof(Client.Persons))
             .SetPropertyAccessMode(PropertyAccessMode.Field);
         
-        builder.Property<Guid>("_subscriptionId")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("SubscriptionId")
-            .IsRequired();
-
-        builder.HasOne(b => b.Subscription)
-            .WithMany()
-            .HasForeignKey("_subscriptionId")
-            .OnDelete(DeleteBehavior.NoAction);
+        // builder.Property<Guid>("_subscriptionId")
+        //     .UsePropertyAccessMode(PropertyAccessMode.Field)
+        //     .HasColumnName("SubscriptionId")
+        //     .IsRequired();
+        //
+        // builder.HasOne(b => b.MembershipTier)
+        //     .WithMany()
+        //     .HasForeignKey("_subscriptionId")
+        //     .OnDelete(DeleteBehavior.NoAction);
     }
 }

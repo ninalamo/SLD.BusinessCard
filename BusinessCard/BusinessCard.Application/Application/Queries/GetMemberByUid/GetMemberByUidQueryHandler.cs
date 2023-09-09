@@ -53,8 +53,8 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
         var member = new MemberUidResult()
         {
             ClientId = request.ClientId,
-            Subscription = person?.Subscription?.Name,
-            SubscriptionLevel = person.Subscription.Level,
+            Subscription = "To remove",//person?.Subscription?.Name,
+            SubscriptionLevel = 1, //person.Subscription.Level,
             Address = person.Address,
             CardKey = person.Card.Key,
             CreatedBy = person.CreatedBy,

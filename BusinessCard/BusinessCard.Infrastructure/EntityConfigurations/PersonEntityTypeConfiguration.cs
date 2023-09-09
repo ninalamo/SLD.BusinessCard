@@ -27,15 +27,15 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 
         builder.Property<Guid>("ClientId").IsRequired();
         
-        builder.Property<Guid>("_subscriptionId")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("SubscriptionId")
-            .IsRequired();
-
-        builder.HasOne(b => b.Subscription)
-            .WithMany()
-            .HasForeignKey("_subscriptionId")
-            .OnDelete(DeleteBehavior.NoAction);
+        // builder.Property<Guid>("_subscriptionId")
+        //     .UsePropertyAccessMode(PropertyAccessMode.Field)
+        //     .HasColumnName("SubscriptionId")
+        //     .IsRequired();
+        //
+        // builder.HasOne(b => b.MemberTier)
+        //     .WithMany()
+        //     .HasForeignKey("_subscriptionId")
+        //     .OnDelete(DeleteBehavior.NoAction);
        
         builder.Property<Guid>("_cardId")
             .UsePropertyAccessMode(PropertyAccessMode.Field)

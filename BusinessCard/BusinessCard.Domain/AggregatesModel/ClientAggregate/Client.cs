@@ -6,8 +6,9 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
     public class Client : Entity, IAggregateRoot
     {
         public string CompanyName { get; set; }
-        private Guid _subscriptionId;
-        public MemberTier Subscription { get; private set; }
+        //TODO: Remove these
+        // private Guid _membershipTierId;
+        // public MembershipTier MembershipTier { get; private set; }
         public bool IsDiscreet { get; set; }
 
         private readonly List<Person> _persons;
@@ -17,23 +18,23 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
         
         private Client() =>_persons = new List<Person>();
         
-        public Client(string name, bool isDiscreet, Guid subscriptionId) : this()
+        public Client(string name, bool isDiscreet, Guid membershipTierId) : this()
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
-            _subscriptionId = subscriptionId;
+            //_membershipTierId = membershipTierId;
         }
         
         public Client(string name, bool isDiscreet, int level) : this()
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
-            var tier = MemberTier.GetLevels().FirstOrDefault(i => i.Level == level)?.Id;
+            //var tier = MembershipTier.GetLevels().FirstOrDefault(i => i.Level == level)?.Id;
             
-            if(!tier.HasValue) throw new ArgumentNullException(nameof(level));
-            if (tier.Value == Guid.Empty) throw new ArgumentNullException(nameof(level));
-
-            _subscriptionId = tier.Value;
+            // if(!tier.HasValue) throw new ArgumentNullException(nameof(level));
+            // if (tier.Value == Guid.Empty) throw new ArgumentNullException(nameof(level));
+            //
+            // _membershipTierId = tier.Value;
 
         }
         #endregion
@@ -42,7 +43,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
-            _subscriptionId = MemberTier.GetLevels().First(i => i.Level == subscription).Id;
+           // _membershipTierId = MembershipTier.GetLevels().First(i => i.Level == subscription).Id;
         }
         
 

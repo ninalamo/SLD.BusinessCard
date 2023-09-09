@@ -5,7 +5,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
     public class Person : Entity
     {
-        private Guid _subscriptionId;
+        // private Guid _membershipTierId;
         private Guid _cardId;
 
         public Person(
@@ -34,7 +34,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public Person()
         {
             IsSubscriptionOverride = false;
-            _subscriptionId = MemberTier.GetLevels().First(i => i.Level == 1).Id;
+            // _membershipTierId = MembershipTier.GetLevels().First(i => i.Level == 1).Id;
             Card = new Card();
             IsActive = false;
         }
@@ -56,11 +56,11 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public string SocialMedia { get; private set; }
         public string Occupation { get; set; }
         public Card? Card { get; private set; }
-        public MemberTier? Subscription { get; private set; }
+        // public MembershipTier? MemberTier { get; private set; }
 
         public void SetSubscription(int level)
         {
-            _subscriptionId = MemberTier.GetTier(level).Id;
+            // _membershipTierId = MembershipTier.GetTier(level).Id;
         }
 
         public void SetName(string firstname,string lastname, string middlename, string nameSuffix)

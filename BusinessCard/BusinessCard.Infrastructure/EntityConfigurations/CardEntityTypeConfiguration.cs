@@ -11,19 +11,21 @@ internal class CardEntityTypeConfiguration : IEntityTypeConfiguration<Card>
         builder.ToTable("card", LokiContext.DEFAULT_SCHEMA);
         builder.HasKey(b => b.Id);
         builder.Property(b => b.IsActive).HasDefaultValue(false);
+        builder.Property(b => b.Type).IsRequired();
+
     }
 }
 
-internal class MemberTierEntityTypeConfiguration : IEntityTypeConfiguration<MemberTier>
-{
-    public void Configure(EntityTypeBuilder<MemberTier> builder)
-    {
-        builder.ToTable("membertier", LokiContext.DEFAULT_SCHEMA);
-        builder.HasKey(b => b.Id);
-        builder.HasIndex(b => b.Level).IsUnique();
-        builder.Property(b => b.Level).IsRequired();
-        builder.HasIndex(b => b.Name).IsUnique();
-
-        builder.HasData(MemberTier.GetLevels());
-    }
-}
+// internal class MemberTierEntityTypeConfiguration : IEntityTypeConfiguration<MemberTier>
+// {
+//     public void Configure(EntityTypeBuilder<MemberTier> builder)
+//     {
+//         builder.ToTable("membertier", LokiContext.DEFAULT_SCHEMA);
+//         builder.HasKey(b => b.Id);
+//         builder.HasIndex(b => b.Level).IsUnique();
+//         builder.Property(b => b.Level).IsRequired();
+//         builder.HasIndex(b => b.Name).IsUnique();
+//
+//         builder.HasData(MemberTier.GetLevels());
+//     }
+// }
