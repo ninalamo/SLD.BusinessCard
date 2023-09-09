@@ -27,7 +27,7 @@ public class GetMemberUidQueryHandler : IRequestHandler<GetMemberByUidQuery, Get
         
         if (client == null) throw new KeyNotFoundException("Client not found.");
 
-        var member = client.Persons.FirstOrDefault(c => c.Card.Key == request.Uid);
+        var member = client.Persons.FirstOrDefault(c => c.Card.Key == request.Uid && c.Id == request.MemberId);
 
         if (member == null)
             throw new BusinessCardDomainException("Member not found.", new KeyNotFoundException("Card Key not found."));
@@ -35,7 +35,6 @@ public class GetMemberUidQueryHandler : IRequestHandler<GetMemberByUidQuery, Get
 
         var result = new GetMemberByUidQueryResult
         {
-           
                 ClientId = request.ClientId,
                 Subscription = member.Subscription.Name,
                 SubscriptionLevel = member.Subscription.Level,
@@ -60,7 +59,7 @@ public class GetMemberUidQueryHandler : IRequestHandler<GetMemberByUidQuery, Get
                 ModifiedOn = member.ModifiedOn,
                 LinkedIn = ToSocialMediaObject(member.SocialMedia).LinkedIn,
                 IdentityUserId = member.IdentityUserId,
-           
+                Company = client.CompanyName
         };
 
         return result;

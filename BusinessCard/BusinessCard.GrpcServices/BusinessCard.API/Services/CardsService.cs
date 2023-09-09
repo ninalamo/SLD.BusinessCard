@@ -40,7 +40,7 @@ public class KardsService : KardGrpc.KardGrpcBase
         var response = new DownloadUrlsGrpcCommandResult();
         response.Urls.AddRange(data.Members
             .Where(p => !p.IsActive && p.CardKey == "")
-            .Select(p => $"ext/v1/tenants/{p.ClientId}/members/{p.Id}/external")
+            .Select(p => $"ext/v1/tenants/{p.ClientId}/members/{p.Id}")
             .ToArray());
 
         return response;
