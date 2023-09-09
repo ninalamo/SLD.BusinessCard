@@ -67,4 +67,7 @@ internal static class SqlScript
     public const string ClientCount = @"SELECT COUNT(Id) FROM kardb.kardibee.client";
     
     public const string MemberCount = @"SELECT COUNT(Id) FROM kardb.kardibee.people WHERE ClientId = @ClientId";
+
+    public const string CheckIfCardKeyExists = @"SELECT COUNT([Key]) [Count] FROM [kardb].[kardibee].[card] WHERE [Key] = @key";
+    
 }

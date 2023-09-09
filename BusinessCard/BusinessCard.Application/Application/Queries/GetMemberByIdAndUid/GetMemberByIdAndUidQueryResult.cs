@@ -31,7 +31,7 @@ public record MemberIdAndUidResult
     public string Pinterest { get; init; }
     public string Twitter { get; init; }
     public string CardKey { get; init; }
-    public string Subscription { get; init; }
+    public string? Subscription { get; init; }
     public int SubscriptionLevel { get; init; }
     public string? CreatedBy { get; init; }
     public string? ModifiedBy { get; init; }

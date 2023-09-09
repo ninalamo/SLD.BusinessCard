@@ -1,5 +1,5 @@
 ﻿
-using BusinessCard.Domain.Exceptions;
+
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
