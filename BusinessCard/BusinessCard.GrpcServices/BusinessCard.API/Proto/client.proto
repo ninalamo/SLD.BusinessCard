@@ -17,7 +17,8 @@ service ClientGrpc {
     rpc EditMemberGrpc(EditMemberGrpcCommand) returns (MemberGrpcCommandResult){}
     rpc GetPaginatedMembersGrpc(GetPaginatedMembersGrpcQuery)returns(GetPaginatedMembersGrpcQueryResult){}
     rpc GetMemberByIdGrpc(GetMemberByIdGrpcQuery)returns(MemberGrpcResult){}
-    rpc GetMemberByUidGrpc(GetMemberByUidGrpcQuery) returns (MemberGrpcResult){}
+    rpc GetMemberByIdAndUidGrpc(GetMemberByIdAndUidGrpcQuery) returns (GetMemberWithUidGrpcResult){}
+    rpc GetMemberByUidGrpc(GetMemberByUidGrpcQuery) returns (GetMemberWithUidGrpcResult){}
 }
 
 
@@ -145,10 +146,15 @@ message GetMemberByIdGrpcQuery{
     string memberId = 2;
 }
 
-message GetMemberByUidGrpcQuery {
+message GetMemberByIdAndUidGrpcQuery {
     string uid = 1;
     string clientId = 2;
     string memberId = 3;
+}
+
+message GetMemberByUidGrpcQuery {
+    string uid = 1;
+    string clientId = 2;
 }
 
 message GetPaginatedMembersGrpcQueryResult {
@@ -182,8 +188,10 @@ message MemberGrpcResult {
     string company = 21;
 }
 
-message GetMemberByUidGrpcResult {
+message GetMemberWithUidGrpcResult {
     repeated MemberGrpcResult members = 1;
+    string message = 2;
+    bool isValid = 3;
 }
 
 message MemberGrpcCommandResult {

@@ -1,34 +1,32 @@
 using System.Text.Json;
 using BusinessCard.API.Application.Common.Models;
 using BusinessCard.API.Application.Queries.GetMemberId;
-using BusinessCard.Application.Application.Common.Interfaces;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.Exceptions;
 
-namespace BusinessCard.Application.Application.Queries.GetMemberByUid;
+namespace BusinessCard.Application.Application.Queries.GetMemberByIdAndUid;
 
-public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, GetMemberByUidQueryResult>
+public class GetMemberIdAndUidQueryHandler : IRequestHandler<GetMemberByIdAndUidQuery, GetMemberByIdAndUidQueryResult>
 {
     private readonly IClientsRepository _repository;
     private readonly ILogger<GetMemberIdQueryHandler> _logger;
 
-    public GetMemberByUidQueryHandler(IClientsRepository repository, ILogger<GetMemberIdQueryHandler> logger)
+    public GetMemberIdAndUidQueryHandler(IClientsRepository repository, ILogger<GetMemberIdQueryHandler> logger)
     {
         _repository = repository;
         _logger = logger;
     }
 
-    public async Task<GetMemberByUidQueryResult> Handle(GetMemberByUidQuery request,
+    public async Task<GetMemberByIdAndUidQueryResult> Handle(GetMemberByIdAndUidQuery request,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberIdQueryHandler), DateTimeOffset.Now);
 
-        var result = new GetMemberByUidQueryResult(); 
+        var result = new GetMemberByIdAndUidQueryResult(); 
         result.SetMessage("");
         result.IsValid = true;
         
         var client = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
-        if (client is null)
+        if (client == null)
         {
             result.SetMember(null);
             result.SetMessage("Client id not found.");
@@ -37,11 +35,11 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
             return result;
         }
 
-        var person = client.Persons.FirstOrDefault(c =>  c.Card?.Key == request.Uid);
+        var person = client.Persons.FirstOrDefault(c =>  c.Id == request.MemberId);
         if (person == null)
         {
             result.SetMember(null);
-            result.SetMessage("Card key not found.");
+            result.SetMessage("Member id not found.");
             result.IsValid = false;
 
             return result;
@@ -54,18 +52,20 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
             result.SetMessage("");
             return result;
         }
-      
-        if (person.Card?.Key != request.Uid)
+        else
         {
-            result.IsValid = false;
-            result.SetMessage("Member already assigned.");
-            return result;
+            if (person.Card.Key != request.Uid)
+            {
+                result.IsValid = false;
+                result.SetMessage("Member already assigned.");
+                return result;
+            }
         }
 
-        var member = new MemberUidResult()
+        var member = new MemberIdAndUidResult()
         {
                 ClientId = request.ClientId,
-                Subscription = person.Subscription?.Name,
+                Subscription = person.Subscription.Name,
                 SubscriptionLevel = person.Subscription.Level,
                 Address = person.Address,
                 CardKey = person.Card.Key,

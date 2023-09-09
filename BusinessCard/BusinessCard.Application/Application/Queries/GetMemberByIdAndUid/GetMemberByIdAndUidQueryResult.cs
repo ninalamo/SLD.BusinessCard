@@ -1,19 +1,19 @@
-namespace BusinessCard.Application.Application.Queries.GetMemberByUid;
+namespace BusinessCard.Application.Application.Queries.GetMemberByIdAndUid;
 
-public record GetMemberByUidQueryResult
+public record GetMemberByIdAndUidQueryResult
 {
-    public MemberUidResult? Member { get; private set; }
+    public MemberIdAndUidResult? Member { get; private set; }
 
     public string Message { get; private set; }
     public bool IsValid { get;  set; }
 
     
-    public void SetMember(MemberUidResult? member) => Member = member;
+    public void SetMember(MemberIdAndUidResult? member) => Member = member;
     public void SetMessage(string message) => Message = message;
 
 }
 
-public record MemberUidResult
+public record MemberIdAndUidResult
 {
     public Guid Id { get; init; }
     public Guid ClientId { get; init; }
