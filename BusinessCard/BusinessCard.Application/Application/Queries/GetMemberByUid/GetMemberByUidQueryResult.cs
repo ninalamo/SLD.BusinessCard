@@ -27,6 +27,7 @@ public record GetMemberByUidQueryResult
    public bool IsActive { get; init; }
    public string SocialMedia { get; init; }
    public string IdentityUserId { get; init; }
+   public string Company { get; init; }
 }
 
 public record MemberUid

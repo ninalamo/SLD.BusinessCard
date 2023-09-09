@@ -214,7 +214,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
     public override async Task<MemberGrpcResult> GetMemberByUidGrpc(GetMemberByUidGrpcQuery request, ServerCallContext context)
     {
-        var result = await _mediator.Send(new GetMemberByUidQuery(request.ClientId.ToGuid(), request.Uid));
+        var result = await _mediator.Send(new GetMemberByUidQuery(request.ClientId.ToGuid(),  request.MemberId.ToGuid(), request.Uid));
         
         return new MemberGrpcResult()
         {
@@ -238,8 +238,8 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
                     LinkedIn = result.LinkedIn,
                     CardKey = result.CardKey,
                     PhoneNumber = result.PhoneNumber,
-                    Identity = result.IdentityUserId
-                
+                    Identity = result.IdentityUserId,
+                    Company = result.Company,
             
         };
     }

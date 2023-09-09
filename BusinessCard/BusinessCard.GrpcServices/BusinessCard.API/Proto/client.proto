@@ -148,6 +148,7 @@ message GetMemberByIdGrpcQuery{
 message GetMemberByUidGrpcQuery {
     string uid = 1;
     string clientId = 2;
+    string memberId = 3;
 }
 
 message GetPaginatedMembersGrpcQueryResult {
@@ -178,6 +179,7 @@ message MemberGrpcResult {
     string lastName = 18;
     string nameSuffix = 19;
     string identity = 20;
+    string company = 21;
 }
 
 message GetMemberByUidGrpcResult {

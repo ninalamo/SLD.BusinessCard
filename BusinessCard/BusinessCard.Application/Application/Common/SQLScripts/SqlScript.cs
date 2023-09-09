@@ -50,6 +50,7 @@ internal static class SqlScript
 	      ,P.[CardId]
 		  ,C.[Key] [CardKey]
 	      ,P.[ClientId]
+		  ,CL.[CompanyName] [Company]
 		  ,M.[Name] [Subscription]
 		  ,M.[Level] [SubscriptionLevel]
 	      ,P.[CreatedBy]
@@ -59,6 +60,7 @@ internal static class SqlScript
 	      ,P.[IsActive]
     	  ,P.[IdentityUserId]
 	FROM [kardb].[kardibee].[people] P
+	LEFT JOIN kardb.kardibee.client CL ON CL.Id = P.ClientId
 	LEFT JOIN kardb.kardibee.card C ON C.Id = P.CardId
 	LEFT JOIN kardb.kardibee.membertier M ON M.Id = P.[SubscriptionId] ";
 
