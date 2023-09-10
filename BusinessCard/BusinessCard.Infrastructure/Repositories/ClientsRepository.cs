@@ -1,7 +1,6 @@
 ﻿using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Exceptions;
 using BusinessCard.Domain.Seedwork;
-using Microsoft.EntityFrameworkCore;
 
 namespace BusinessCard.Infrastructure.Repositories;
 

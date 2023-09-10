@@ -1,5 +1,4 @@
 ﻿using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusinessCard.Infrastructure.EntityConfigurations;

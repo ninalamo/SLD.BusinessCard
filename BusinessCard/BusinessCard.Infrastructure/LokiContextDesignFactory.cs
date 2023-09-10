@@ -1,6 +1,5 @@
 using System.Reflection;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace BusinessCard.Infrastructure;

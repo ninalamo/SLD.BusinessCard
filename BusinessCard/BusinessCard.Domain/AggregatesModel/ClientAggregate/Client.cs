@@ -6,9 +6,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
     public class Client : Entity, IAggregateRoot
     {
         public string CompanyName { get; set; }
-        //TODO: Remove these
-        // private Guid _membershipTierId;
-        // public MembershipTier MembershipTier { get; private set; }
         public bool IsDiscreet { get; set; }
 
         private readonly List<Person> _persons;
@@ -43,7 +40,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
         {
             CompanyName = name;
             IsDiscreet = isDiscreet;
-           // _membershipTierId = MembershipTier.GetLevels().First(i => i.Level == subscription).Id;
         }
         
 
