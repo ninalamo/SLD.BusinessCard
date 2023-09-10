@@ -88,8 +88,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 
         public void RemoveCard() => Card = default;
 
-        public bool HasCard() => _cardId != Guid.Empty;
-
         public bool HasKeylessCard() => Card == default || !Card.HasKey();
 
         public void EnableCard()
