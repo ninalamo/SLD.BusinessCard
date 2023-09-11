@@ -7,7 +7,7 @@ internal class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
 {
     public void Configure(EntityTypeBuilder<Client> builder)
     {
-        builder.ToTable("client", LokiContext.DEFAULT_SCHEMA);
+        builder.ToTable("client", LokiContext.DefaultSchema);
         builder.HasKey(b => b.Id);
         builder.Property(b => b.CompanyName).IsRequired();
         builder.HasIndex(b => b.CompanyName).IsUnique();

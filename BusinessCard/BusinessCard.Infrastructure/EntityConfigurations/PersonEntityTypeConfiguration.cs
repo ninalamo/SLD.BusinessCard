@@ -7,7 +7,7 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 {
     public void Configure(EntityTypeBuilder<Person> builder)
     {
-        builder.ToTable("people", LokiContext.DEFAULT_SCHEMA);
+        builder.ToTable("people", LokiContext.DefaultSchema);
         builder.HasKey(b => b.Id);
         builder.Property(b => b.FirstName).IsRequired();
         builder.Property(b => b.LastName).IsRequired();
