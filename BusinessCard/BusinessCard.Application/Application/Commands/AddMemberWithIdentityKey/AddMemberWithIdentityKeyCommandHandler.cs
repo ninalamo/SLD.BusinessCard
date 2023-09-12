@@ -28,7 +28,7 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
         var person = client.AddMemberAsync(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,request.SocialMedia);
         
         _logger.LogInformation($"Setting subscription level for {nameof(Person)}-{DateTimeOffset.Now}");
-        person.SetSubscription(client.Subscription.Level);
+       // person.SetSubscription(client.MembershipTier.Level);
         
         _logger.LogInformation($"Adding IdentityId to {nameof(Person)}-{DateTimeOffset.Now}");
         person.SetIdentity(request.IdentityId);

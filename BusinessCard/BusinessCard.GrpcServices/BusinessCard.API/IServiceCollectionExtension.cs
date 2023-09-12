@@ -3,6 +3,7 @@ using BusinessCard.API.Application.Behaviors;
 using BusinessCard.API.Application.Commands;
 using BusinessCard.API.Application.Commands.AddClient;
 using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.API.Application.Common.Interfaces;
 using Microsoft.OpenApi.Models;
 
 namespace BusinessCard.API;
@@ -11,8 +12,11 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var option = OperatingSystem.IsWindows() ? "WinDefaultConnection" : "DefaultConnection";
+        var connectionString = configuration.GetConnectionString(option);
 
+        if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
+        
         services
             .AddDbContext<LokiContext>(options =>
                 {
@@ -24,6 +28,10 @@ public static class ServiceCollectionExtension
                         });
                 } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
             );
+        
+        
+        services.AddSingleton<IDbConnectionFactory>(i => new DbConnectionFactory(connectionString));
+        
         return services;
     }
     

@@ -71,7 +71,7 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
                 "N/A",
                 "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
 
-            person.SetSubscription(entity.Subscription.Level);
+            //person.SetSubscription(entity.MembershipTier.Level);
             person.DisableCard();
             person.Deactivate();
             

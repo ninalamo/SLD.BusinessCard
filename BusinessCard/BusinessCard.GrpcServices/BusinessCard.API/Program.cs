@@ -50,11 +50,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 //register queries and repositories
 builder.Services.AddScoped<IClientQueries,ClientQueries>();
 builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
-builder.Services.AddSingleton<IDbConnectionFactory>(i =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    return new DbConnectionFactory(connectionString);
-});
+
 
 // reverse proxy headers forwarding config
 builder.Services.Configure<ForwardedHeadersOptions>(options =>

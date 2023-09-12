@@ -76,7 +76,7 @@ public class ClientsRepositoryTests
         const string name = "New Client";
 
         // Act
-        var client = await repository.CreateAsync(name, true, 1);
+        var client = await repository.CreateAsync(name, true, (Int32)1);
         await repository.UnitOfWork.SaveChangesAsync(new CancellationToken());
 
         // Assert
@@ -177,7 +177,7 @@ public class ClientsRepositoryTests
         Assert.True(client.Persons.Any());
         Assert.True(client.Persons.Any(i => i.Email == "nin.alamo@outlook.com"));
         Assert.True(client.Persons.Any(i => i.Id == person.Id));
-        Assert.NotNull(person.Subscription);
+        //Assert.NotNull(person.MemberTier);
     }
 
 
@@ -222,10 +222,10 @@ public class ClientsRepositoryTests
         
         var context = new LokiContext(dbContextOptions, mediatorMock.Object, currentUserMock.Object);
 
-        if (!context.Subscriptions.Any())
-        {
-            await context.Subscriptions.AddRangeAsync(MemberTier.GetLevels());
-        }
+        // if (!context.Subscriptions.Any())
+        // {
+        //     await context.Subscriptions.AddRangeAsync(Subscription.GetLevels());
+        // }
         
         if (!context.Clients.Any())
             await context.Clients.AddAsync(new Client("KMC", true, 1));

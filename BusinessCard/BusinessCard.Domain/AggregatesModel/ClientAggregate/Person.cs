@@ -5,17 +5,16 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
     public class Person : Entity
     {
-        private Guid _subscriptionId;
         private Guid _cardId;
 
         public Person(
-            string firstName, 
-            string lastName, 
-            string middleName, 
+            string firstName,
+            string lastName,
+            string middleName,
             string nameSuffix,
             string phoneNumber,
-            string email, 
-            string address, 
+            string email,
+            string address,
             string occupation,
             string socialMedia) : this()
         {
@@ -27,14 +26,13 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             Email = email;
             Address = address;
             Occupation = occupation;
-            
+
             SetSocialMedia(socialMedia);
         }
 
         public Person()
         {
             IsSubscriptionOverride = false;
-            _subscriptionId = MemberTier.GetLevels().First(i => i.Level == 1).Id;
             Card = new Card();
             IsActive = false;
         }
@@ -56,18 +54,16 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public string SocialMedia { get; private set; }
         public string Occupation { get; set; }
         public Card? Card { get; private set; }
-        public MemberTier? Subscription { get; private set; }
 
         public void SetSubscription(int level)
         {
-            _subscriptionId = MemberTier.GetTier(level).Id;
         }
 
-        public void SetName(string firstname,string lastname, string middlename, string nameSuffix)
+        public void SetName(string firstname, string lastname, string middlename, string nameSuffix)
         {
             FirstName = firstname;
             LastName = lastname;
-            MiddleName = middlename; 
+            MiddleName = middlename;
             NameSuffix = nameSuffix;
         }
 
@@ -92,19 +88,15 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 
         public void RemoveCard() => Card = default;
 
-        public bool HasCard() => Card != default(Card);
-
-        public bool HasKeylessCard() => Card == default || !Card.HasKey(); 
+        public bool HasKeylessCard() => Card == default || !Card.HasKey();
 
         public void EnableCard()
         {
-           
             Card.IsActive = true;
         }
 
         public void DisableCard()
         {
-          
             Card.Deactivate();
         }
 

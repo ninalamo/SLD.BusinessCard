@@ -7,4 +7,12 @@
   </PropertyGroup>
 
 
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+  </ItemGroup>
+
+
+
+
 </Project>

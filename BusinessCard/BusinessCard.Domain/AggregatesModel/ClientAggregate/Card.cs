@@ -1,4 +1,5 @@
 ﻿using BusinessCard.Domain.Exceptions;
+using FluentValidation;
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
@@ -6,13 +7,16 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
     {
         public string Key { get; private set; }
 
-        public Card() => Key = string.Empty;
-        
+        public Card()
+        {
+            Key = string.Empty;
+        }
+
         public void SetKey(string key)
         {
             if(Key != string.Empty)
             {
-                throw new Exception("Business validation error. NFC Key is immutable");
+                throw  new ValidationException("Business validation error. NFC Key is immutable");
             }
             Key = key;
 
