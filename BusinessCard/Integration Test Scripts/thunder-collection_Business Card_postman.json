@@ -1,0 +1,360 @@
+{
+    "info": {
+        "_postman_id": "74e745ea-e360-468a-a6f5-e1b7fc8c08d0",
+        "name": "Business Card",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "POST Client",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://localhost:7204/api/clients/",
+                    "path": [
+                        "api",
+                        "clients"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"company_name\": \"Sonic Lynx Digital\",\n  \"is_discreet\": false,\n  \"subscription\": 7\n}"
+                }
+            }
+        },
+        {
+            "name": "PUT Client",
+            "request": {
+                "method": "PUT",
+                "url": {
+                    "raw": "https://localhost:7204/api/clients/",
+                    "path": [
+                        "api",
+                        "clients"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"company_name\": \"KMC Savills Inc\",\n  \"is_discreet\": true,\n  \"subscription\": 1,\n  \"id\": \"b4fa615a-e82e-476b-a045-08dbad2156e0\"\n}"
+                }
+            }
+        },
+        {
+            "name": "GET Client",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://localhost:7204/api/Clients",
+                    "path": [
+                        "api",
+                        "Clients"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                }
+            }
+        },
+        {
+            "name": "POST Member",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://localhost:7204/api/clients/0bf443ba-b461-4c0c-c757-08dba54c99eb/members",
+                    "path": [
+                        "api",
+                        "clients",
+                        "0bf443ba-b461-4c0c-c757-08dba54c99eb",
+                        "members"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"client_id\": \"0bf443ba-b461-4c0c-c757-08dba54c99eb\",\n  \"first_name\": \"Chrisdan\",\n  \"last_name\": \"Evalla\",\n  \"middle_name\": \"Rivera\",\n  \"name_suffix\": \"\",\n  \"phone_number\": \"11112222\",\n  \"email\": \"chridan.evalla@gmail.com\",\n  \"address\": \"Bicutan\",\n  \"occupation\": \"CTO / CIO\",\n  \"facebook\": \"https://www.facebook.com/chrisbrown\",\n  \"linkedin\": \"https://www.linkedin.com/in/pasupuleti-varshitha-1a1084189/\",\n  \"instagram\": \"\",\n  \"pinterest\": \"\",\n  \"twitter\": \"\"\n}"
+                }
+            }
+        },
+        {
+            "name": "GET Client By Id",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://localhost:7204/api/Clients/e10e9cba-8994-453d-91ff-08dba4803f3f",
+                    "path": [
+                        "api",
+                        "Clients",
+                        "e10e9cba-8994-453d-91ff-08dba4803f3f"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                }
+            }
+        },
+        {
+            "name": "GET Members",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://localhost:7204/api/Clients/5ca77305-943c-49e9-e68f-08dbae9b60da/members",
+                    "path": [
+                        "api",
+                        "Clients",
+                        "5ca77305-943c-49e9-e68f-08dbae9b60da",
+                        "members"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                }
+            }
+        },
+        {
+            "name": "DELETE Client",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "https://localhost:7204/api/Clients/32c950e1-bb56-4b5a-a044-08dbad2156e0",
+                    "path": [
+                        "api",
+                        "Clients",
+                        "32c950e1-bb56-4b5a-a044-08dbad2156e0"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                }
+            }
+        },
+        {
+            "name": "GET Export Card",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://localhost:7204/ext/v1/clients/8e646c2e-63bf-445e-03b0-08dbad4f7acb/kards/create/10",
+                    "path": [
+                        "ext",
+                        "v1",
+                        "clients",
+                        "8e646c2e-63bf-445e-03b0-08dbad4f7acb",
+                        "kards",
+                        "create",
+                        "10"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                }
+            }
+        },
+        {
+            "name": "GET Download Urls",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://localhost:7204/ext/v1/clients/8e646c2e-63bf-445e-03b0-08dbad4f7acb/kards/download-urls",
+                    "path": [
+                        "ext",
+                        "v1",
+                        "clients",
+                        "8e646c2e-63bf-445e-03b0-08dbad4f7acb",
+                        "kards",
+                        "download-urls"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                }
+            }
+        },
+        {
+            "name": "GET Member By Id",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://localhost:7204/api/Clients/aff3f981-98dd-465e-008b-08dbae986428/members/9a07aa63-959e-4e49-28b9-08dba575bedf",
+                    "path": [
+                        "api",
+                        "Clients",
+                        "aff3f981-98dd-465e-008b-08dbae986428",
+                        "members",
+                        "9a07aa63-959e-4e49-28b9-08dba575bedf"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                }
+            }
+        },
+        {
+            "name": "POST Register",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://localhost:7204/ext/v1/tenants/8e646c2e-63bf-445e-03b0-08dbad4f7acb/members/99ddaa9a-e6e0-402a-e3da-08dbad5231e1/external",
+                    "path": [
+                        "ext",
+                        "v1",
+                        "tenants",
+                        "8e646c2e-63bf-445e-03b0-08dbad4f7acb",
+                        "members",
+                        "99ddaa9a-e6e0-402a-e3da-08dbad5231e1",
+                        "external"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"client_id\": \"8e646c2e-63bf-445e-03b0-08dbad4f7acb\",\n  \"member_id\": \"99ddaa9a-e6e0-402a-e3da-08dbad5231e1\",\n  \"first_name\": \"Denver\",\n  \"last_name\": \"Gazo\",\n  \"middle_name\": \"\",\n  \"name_suffix\": \"\",\n  \"phone_number\": \"123213124123\",\n  \"email\": \"user@example.com\",\n  \"address\": \"string\",\n  \"occupation\": \"string\",\n  \"facebook\": \"string\",\n  \"linkedin\": \"string\",\n  \"instagram\": \"string\",\n  \"pinterest\": \"string\",\n  \"twitter\": \"string\",\n  \"card_key\": \"string\",\n  \"subscription_level\": 3,\n  \"identity\": {\n    \"email\": \"user@example.com\",\n    \"password\": \"Password123$\"\n  }\n}"
+                }
+            }
+        },
+        {
+            "name": "POST Login (GetTOken)",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://localhost:7204/identity/v1/login",
+                    "path": [
+                        "identity",
+                        "v1",
+                        "login"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Password123$\"\n}"
+                }
+            }
+        },
+        {
+            "name": "GET Member by Card Key (Uid)",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://localhost:7204/ext/v1/tenants/5ca77305-943c-49e9-e68f-08dbae9b60da/members?uid=adsfasdf",
+                    "query": [
+                        {
+                            "key": "uid",
+                            "value": "adsfasdf"
+                        }
+                    ],
+                    "variable": [],
+                    "path": [
+                        "ext",
+                        "v1",
+                        "tenants",
+                        "5ca77305-943c-49e9-e68f-08dbae9b60da",
+                        "members"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                }
+            }
+        },
+        {
+            "name": "POST Member External",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "https://localhost:7204/ext/v1/tenants/ef6f0c2d-f42d-4850-493a-08dbae7c20ce/members?uid=adsfasdf",
+                    "query": [
+                        {
+                            "key": "uid",
+                            "value": "adsfasdf"
+                        }
+                    ],
+                    "variable": [],
+                    "path": [
+                        "ext",
+                        "v1",
+                        "tenants",
+                        "ef6f0c2d-f42d-4850-493a-08dbae7c20ce",
+                        "members"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "7204"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"client_id\": \"ef6f0c2d-f42d-4850-493a-08dbae7c20ce\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"middle_name\": \"string\",\n  \"name_suffix\": \"string\",\n  \"phone_number\": \"string\",\n  \"email\": \"user@example.com\",\n  \"address\": \"string\",\n  \"occupation\": \"string\",\n  \"facebook\": \"string\",\n  \"linkedin\": \"string\",\n  \"instagram\": \"string\",\n  \"pinterest\": \"string\",\n  \"twitter\": \"string\",\n  \"card_key\": \"string\",\n  \"subscription_level\": 0,\n  \"identity\": {\n    \"email\": \"user@example.com\",\n    \"password\": \"string\"\n  }\n}"
+                }
+            }
+        }
+    ]
+}

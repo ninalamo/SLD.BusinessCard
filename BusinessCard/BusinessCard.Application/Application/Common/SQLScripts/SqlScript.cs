@@ -24,11 +24,9 @@ internal static class SqlScript
       		,C.[ModifiedBy] 
       		,C.[ModifiedOn] 
       		,C.[IsActive] 
-	  		,M.[Name] [Subscription] 
 	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 1)  [Cardholders] 
 	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 0)  [NonCardholders] 
   		FROM [kardb].[kardibee].[client] C 
-  			LEFT JOIN kardb.kardibee.membertier M ON M.Id = C.[SubscriptionId] 
   		WHERE C.[Id] = @Id ";
 
     public const string SelectMembers = @"SELECT
