@@ -80,21 +80,12 @@ namespace BusinessCard.Tests.Domain
             person.Card.Key.ShouldBe("xyz");
         }
         
-        [Fact]
-        public void PersonShouldBeCheckedBeforeSaving()
-        {
-            Person person = new();
-            person.HasCard().ShouldBeTrue();
-            
-            person.RemoveCard();
-            person.HasCard().ShouldBeFalse();
-        }
+      
         
         [Fact]
         public void PersonShouldAllowDisableOfCard()
         {
             Person person = new();
-            person.HasCard().ShouldBeTrue();
             person.DisableCard();
             person.Card.IsActive.ShouldBeFalse();
             

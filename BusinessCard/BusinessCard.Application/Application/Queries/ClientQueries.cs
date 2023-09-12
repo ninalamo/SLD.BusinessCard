@@ -125,4 +125,21 @@ public class ClientQueries : IClientQueries
 
 	    return (count.First(), result ?? Array.Empty<MembersResult>());
     }
+
+    public async Task<bool> IsCardExists(string uid)
+    {
+	    var query = SqlScript.CheckIfCardKeyExists;
+
+	    DynamicParameters parameters = new();
+	    parameters.Add("key", uid);
+
+	    await using var connection = _dbConnectionFactory.CreateConnection();
+
+	    await connection.OpenAsync(CancellationToken.None);
+
+	    var count = await connection.QueryAsync<int>(query, parameters);
+
+	    return count.FirstOrDefault() == 1;
+
+    }
 }

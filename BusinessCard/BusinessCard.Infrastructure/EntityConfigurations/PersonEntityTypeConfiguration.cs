@@ -1,5 +1,4 @@
 ﻿using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusinessCard.Infrastructure.EntityConfigurations;
@@ -8,7 +7,7 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 {
     public void Configure(EntityTypeBuilder<Person> builder)
     {
-        builder.ToTable("people", LokiContext.DEFAULT_SCHEMA);
+        builder.ToTable("people", LokiContext.DefaultSchema);
         builder.HasKey(b => b.Id);
         builder.Property(b => b.FirstName).IsRequired();
         builder.Property(b => b.LastName).IsRequired();
@@ -27,15 +26,15 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
 
         builder.Property<Guid>("ClientId").IsRequired();
         
-        builder.Property<Guid>("_subscriptionId")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("SubscriptionId")
-            .IsRequired();
-
-        builder.HasOne(b => b.Subscription)
-            .WithMany()
-            .HasForeignKey("_subscriptionId")
-            .OnDelete(DeleteBehavior.NoAction);
+        // builder.Property<Guid>("_subscriptionId")
+        //     .UsePropertyAccessMode(PropertyAccessMode.Field)
+        //     .HasColumnName("SubscriptionId")
+        //     .IsRequired();
+        //
+        // builder.HasOne(b => b.MemberTier)
+        //     .WithMany()
+        //     .HasForeignKey("_subscriptionId")
+        //     .OnDelete(DeleteBehavior.NoAction);
        
         builder.Property<Guid>("_cardId")
             .UsePropertyAccessMode(PropertyAccessMode.Field)

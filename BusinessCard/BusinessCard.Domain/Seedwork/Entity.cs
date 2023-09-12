@@ -41,7 +41,7 @@
         return base.GetHashCode();
     }
 
-    public static bool operator ==(Entity left, Entity? right)
+    public static bool operator ==(Entity? left, Entity? right)
     {
         if (Equals(left, null))
             return Equals(right, null) ? true : false;

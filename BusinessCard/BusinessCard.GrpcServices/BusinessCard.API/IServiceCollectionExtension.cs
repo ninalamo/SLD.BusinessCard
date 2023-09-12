@@ -13,6 +13,8 @@ public static class ServiceCollectionExtension
     {
         var connectionString = configuration.GetConnectionString("DevServerConnection");
 
+        if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
+        
         services
             .AddDbContext<LokiContext>(options =>
                 {

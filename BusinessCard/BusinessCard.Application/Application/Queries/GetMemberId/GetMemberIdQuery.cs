@@ -45,8 +45,8 @@ public class GetMemberIdQueryHandler : IRequestHandler<GetMemberIdQuery, GetMemb
         return new GetMemberByIdQueryResult()
         {
             ClientId = request.ClientId,
-            Subscription = member.Subscription.Name,
-            SubscriptionLevel = member.Subscription.Level,
+            Subscription = "To remove",//member.MemberTier.Name,
+            SubscriptionLevel = 1,//member.MemberTier.Level,
             Address = member.Address,
             CardKey = member.Card?.Key ?? "",
             CreatedBy = member.CreatedBy,
@@ -104,7 +104,7 @@ public record GetMemberByIdQueryResult
     public string Pinterest { get; init; }
     public string Twitter { get; init; }
     public string CardKey { get; init; }
-    public string Subscription { get; init; }
+    public string? Subscription { get; init; }
     public int SubscriptionLevel { get; init; }
     public string? CreatedBy { get; init; }
     public string? ModifiedBy { get; init; }

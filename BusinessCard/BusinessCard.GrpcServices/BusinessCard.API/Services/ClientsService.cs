@@ -12,10 +12,12 @@ using BusinessCard.API.Application.Queries.GetMemberId;
 using BusinessCard.API.Application.Queries.GetMembers;
 using BusinessCard.API.Extensions;
 using BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
+using BusinessCard.Application.Application.Queries.GetMemberByIdAndUid;
 using BusinessCard.Application.Application.Queries.GetMemberByUid;
 using BusinessCard.Domain.Exceptions;
 using ClientService;
 using FluentValidation.Results;
+using Google.Protobuf.Collections;
 using Grpc.Core;
 
 namespace BusinessCard.API.Services;
@@ -212,36 +214,111 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return ToMemberGrpcResult(result);
     }
 
-    public override async Task<MemberGrpcResult> GetMemberByUidGrpc(GetMemberByUidGrpcQuery request, ServerCallContext context)
+    
+    /// <summary>
+    /// Get member information using MemberId and Uid. This to be used when credentials are pre-generated as dummy person objects in the database.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    public override async Task<GetMemberWithUidGrpcResult> GetMemberByIdAndUidGrpc(GetMemberByIdAndUidGrpcQuery request, ServerCallContext context)
     {
-        var result = await _mediator.Send(new GetMemberByUidQuery(request.ClientId.ToGuid(), request.Uid));
-        
-        return new MemberGrpcResult()
+        var response = await _mediator.Send(new GetMemberByIdAndUidQuery(request.ClientId.ToGuid(),  request.MemberId.ToGuid(), request.Uid));
+
+
+        var result = new GetMemberWithUidGrpcResult();
+        result.IsValid = response.IsValid;
+        result.Message = response.Message;
+
+        if (response.Member == null)
         {
-            
-                    Address = result.Address,
-                    ClientId = result.ClientId.ToString(),
-                    Subscription = result.Subscription,
-                    SubscriptionLevel = result.SubscriptionLevel,
-                    FullName = NameBuilder(result.FirstName, result.LastName, result.MiddleName, result.NameSuffix),
-                    FirstName = result.FirstName,
-                    LastName = result.LastName,
-                    MiddleName = result.MiddleName,
-                    NameSuffix = result.NameSuffix,
-                    Email = result.Email,
-                    Facebook = result.Facebook,
-                    Id = result.Id.ToString(),
-                    Instagram = result.Instagram,
-                    Occupation = result.Occupation,
-                    Pinterest = result.Pinterest,
-                    Twitter = result.Twitter,
-                    LinkedIn = result.LinkedIn,
-                    CardKey = result.CardKey,
-                    PhoneNumber = result.PhoneNumber,
-                    Identity = result.IdentityUserId
-                
-            
-        };
+            result.Members.AddRange(Array.Empty<MemberGrpcResult>());
+            return result;
+        }
+        
+        result.Members.AddRange(new [] {
+            new MemberGrpcResult()
+            {
+                Address = response.Member.Address,
+                ClientId = response.Member.ClientId.ToString(),
+                Subscription = response.Member.Subscription,
+                SubscriptionLevel = response.Member.SubscriptionLevel,
+                FullName = NameBuilder(response.Member.FirstName, response.Member.LastName, response.Member.MiddleName,
+                    response.Member.NameSuffix),
+                FirstName = response.Member.FirstName,
+                LastName = response.Member.LastName,
+                MiddleName = response.Member.MiddleName,
+                NameSuffix = response.Member.NameSuffix,
+                Email = response.Member.Email,
+                Facebook = response.Member.Facebook,
+                Id = response.Member.Id.ToString(),
+                Instagram = response.Member.Instagram,
+                Occupation = response.Member.Occupation,
+                Pinterest = response.Member.Pinterest,
+                Twitter = response.Member.Twitter,
+                LinkedIn = response.Member.LinkedIn,
+                CardKey = response.Member.CardKey,
+                PhoneNumber = response.Member.PhoneNumber,
+                Identity = response.Member.IdentityUserId,
+                Company = response.Member.Company,
+
+            }
+        });
+
+        return result;
+    }
+
+    /// <summary>
+    /// Get member using uid and client id only. This is when cards are pre-saved
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    public override async Task<GetMemberWithUidGrpcResult> GetMemberByUidGrpc(GetMemberByUidGrpcQuery request, ServerCallContext context)
+    {
+        var response = await _mediator.Send(new GetMemberByUidQuery(request.ClientId.ToGuid(), request.Uid));
+
+
+        var result = new GetMemberWithUidGrpcResult();
+        result.IsValid = response.IsValid;
+        result.Message = response.Message;
+
+        if (response.Member == null)
+        {
+            result.Members.AddRange(Array.Empty<MemberGrpcResult>());
+            return result;
+        }
+        
+        result.Members.AddRange(new [] {
+            new MemberGrpcResult()
+            {
+                Address = response.Member.Address,
+                ClientId = response.Member.ClientId.ToString(),
+                Subscription = response.Member.Subscription,
+                SubscriptionLevel = response.Member.SubscriptionLevel,
+                FullName = NameBuilder(response.Member.FirstName, response.Member.LastName, response.Member.MiddleName,
+                    response.Member.NameSuffix),
+                FirstName = response.Member.FirstName,
+                LastName = response.Member.LastName,
+                MiddleName = response.Member.MiddleName,
+                NameSuffix = response.Member.NameSuffix,
+                Email = response.Member.Email,
+                Facebook = response.Member.Facebook,
+                Id = response.Member.Id.ToString(),
+                Instagram = response.Member.Instagram,
+                Occupation = response.Member.Occupation,
+                Pinterest = response.Member.Pinterest,
+                Twitter = response.Member.Twitter,
+                LinkedIn = response.Member.LinkedIn,
+                CardKey = response.Member.CardKey,
+                PhoneNumber = response.Member.PhoneNumber,
+                Identity = response.Member.IdentityUserId,
+                Company = response.Member.Company,
+
+            }
+        });
+
+        return result;
     }
 
     #region Transform
@@ -305,8 +382,8 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             ClientId = c.ClientId.ToString(),
             IsDiscreet = c.IsDiscreet,
             NonCardHolders = c.NonCardHolders,
-            Subscription = c.Subscription,
-            SubscriptionLevel = c.SubscriptionLevel.Value,
+            Subscription = "",
+            SubscriptionLevel = 0,
             CreatedBy = c.CreatedBy,
             CreatedOn = c.CreatedOn?.ToString("yyyy-MMM-dd"),
             ModifiedBy = c.ModifiedBy,

@@ -44,7 +44,7 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
     {
         _logger.LogInformation($"Starting {nameof(Handle)} in {nameof(RemoveClientCommandHandler)} with request: {request}. {DateTime.UtcNow}");
 
-        var entity = await _repository.GetEntityByIdAsync(request.ClientId);
+        var entity = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
 
         _logger.LogInformation($"Checking if {nameof(request.ClientId)} exists. {DateTime.UtcNow}");
 
@@ -58,9 +58,9 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
       
         var guid = Guid.NewGuid().ToString();
 
-        for (int i = 0; i < request.Count; i++)
+        for (var i = 0; i < request.Count; i++)
         {
-            entity.AddMemberAsync(
+            var person = entity.AddMemberAsync(
                 "N/A", 
                 "N/A", 
                 "N/A",
@@ -70,6 +70,10 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
                 "N/A",
                 "N/A",
                 "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
+
+            //person.SetSubscription(entity.MembershipTier.Level);
+            person.DisableCard();
+            person.Deactivate();
             
             _repository.Update(entity);
 
@@ -78,7 +82,7 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
 
         return new ExportCardsCommandResult()
         {
-            Urls = entity.Persons.Where(p => p.IsActive == false).Select(p => $"ext/v1/tenants/{entity.Id}/members/{p.Id}/external").ToArray()
+            Urls = entity.Persons.Where(p => p.IsActive == false).Select(p => $"ext/v1/tenants/{entity.Id}/members/{p.Id}").ToArray()
         };
     }
 }
