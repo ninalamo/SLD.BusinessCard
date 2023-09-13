@@ -28,7 +28,7 @@ public class EditMemberCommandHandler : IRequestHandler<EditMemberCommand, Guid>
         _logger.LogInformation($"Getting {nameof(Person)}-{DateTimeOffset.Now}");
         var person = client.Persons.FirstOrDefault(p => p.Id == request.MemberId);
         
-        person.AddKeyToCard(request.CardKey);
+        // person.AddKeyToCard(request.CardKey);
         person.SetContactDetails(request.PhoneNumber, request.Email, request.Address);
         person.SetName(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix);
         person.Occupation = request.Occupation;

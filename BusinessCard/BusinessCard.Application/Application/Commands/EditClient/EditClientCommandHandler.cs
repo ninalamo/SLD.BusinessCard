@@ -30,8 +30,8 @@ public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Guid>
                 new ValidationFailure[] { new ValidationFailure("Id", "Id does not exist.") });
         }
         _logger.LogInformation($"Updating {nameof(entity)}. {DateTime.UtcNow}");
-        entity.Amend(request.CompanyName,request.IsDiscreet,request.MemberTierLevel);
-        
+        // entity.Amend(request.CompanyName,request.IsDiscreet,request.MemberTierLevel);
+        //
         _repository.Update(entity);
         
         _logger.LogInformation($"Exiting {nameof(Handle)} in {nameof(EditClientCommandHandler)} with request: {request}. {DateTime.UtcNow}");

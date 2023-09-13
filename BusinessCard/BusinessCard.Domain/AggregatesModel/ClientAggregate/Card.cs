@@ -6,6 +6,10 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
     public sealed class Card : Entity
     {
         public string Key { get; private set; }
+        public DateTimeOffset StartDate { get; private set; }
+        public DateTimeOffset ValidUntilDate { get; private set; }
+        public DateTimeOffset? RenewDate { get; private set; }
+        
 
         public Card()
         {
@@ -19,7 +23,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
                 throw  new ValidationException("Business validation error. NFC Key is immutable");
             }
             Key = key;
-
         }
 
         public bool HasKey() => !string.IsNullOrEmpty(Key);

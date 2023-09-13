@@ -5,43 +5,34 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
     public class Client : Entity, IAggregateRoot
     {
-        public string CompanyName { get; set; }
+        public string Name { get; set; }
         public bool IsDiscreet { get; set; }
+        public string Industry { get; set; }
+
+
+        private readonly List<Subscription> _subscriptions;
+        public IReadOnlyCollection<Subscription> Subscriptions => _subscriptions.AsReadOnly();
+        
 
         private readonly List<Person> _persons;
         public IReadOnlyCollection<Person> Persons => _persons.AsReadOnly();
 
         #region Constructors and Factory
         
-        private Client() =>_persons = new List<Person>();
-        
-        public Client(string name, bool isDiscreet, Guid membershipTierId) : this()
+        private Client()
         {
-            CompanyName = name;
-            IsDiscreet = isDiscreet;
-            //_membershipTierId = membershipTierId;
+            _persons = new List<Person>();
+            _subscriptions = new List<Subscription>();
         }
         
-        public Client(string name, bool isDiscreet, int level) : this()
+        public Client(string name, bool isDiscreet, string industry) : this()
         {
-            CompanyName = name;
+            Name = name;
             IsDiscreet = isDiscreet;
-            //var tier = MembershipTier.GetLevels().FirstOrDefault(i => i.Level == level)?.Id;
-            
-            // if(!tier.HasValue) throw new ArgumentNullException(nameof(level));
-            // if (tier.Value == Guid.Empty) throw new ArgumentNullException(nameof(level));
-            //
-            // _membershipTierId = tier.Value;
-
+            Industry = industry;
         }
         #endregion
 
-        public void Amend(string name, bool isDiscreet, int subscription)
-        {
-            CompanyName = name;
-            IsDiscreet = isDiscreet;
-        }
-        
 
         public Person AddMemberAsync(string firstName,
             string lastName,

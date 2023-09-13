@@ -7,6 +7,8 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <AssemblyName>BusinessCard.Domain.Tests</AssemblyName>
+    <RootNamespace>BusinessCard.Domain.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

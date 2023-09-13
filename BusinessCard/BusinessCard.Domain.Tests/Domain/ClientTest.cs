@@ -14,27 +14,28 @@ namespace BusinessCard.Tests.Domain
         public void ClientShouldBeCreated()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, 1);
-            company.CompanyName.ShouldBe(companyName);
+            Client company = new(companyName, false, "industry");
+            company.Name.ShouldBe(companyName);
+            company.IsDiscreet.ShouldBe(false);
+            company.Industry.ShouldBe("industry");
 
-            var assembly = Assembly.GetAssembly(typeof(LokiContext))?.GetName().Name;
-            assembly.ShouldNotBeNullOrEmpty(assembly);
+            
         }
 
         [Fact]
         public void ClientShouldBeAbleToRename()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false,1);
-            company.CompanyName = "GMA";
-            company.CompanyName.ShouldBe("GMA");
+            Client company = new(companyName, false,"");
+            company.Name = "GMA";
+            company.Name.ShouldBe("GMA");
         }
 
         [Fact]
         public void PersonShouldHaveEmptyButNotNullContacts()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, 1);
+            Client company = new(companyName, false, "");
             company.Persons.ShouldBeEmpty();
             company.Persons.ShouldNotBeNull();
         }
@@ -43,7 +44,7 @@ namespace BusinessCard.Tests.Domain
         public async Task ClientShouldBeAbleToGenerateMultiplePlaceholders()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, 1);
+            Client company = new(companyName, false, "");
             int count = 1000;
             
             for (int i = 0; i < count; i++)
@@ -63,15 +64,13 @@ namespace BusinessCard.Tests.Domain
         
             company.Persons.ShouldNotBeEmpty();
             company.Persons.Count.ShouldBe(1000);
-            company.Persons.All(p => p.Card.HasKey()).ShouldBeFalse();
-            company.Persons.All(p => p.Card.Key == string.Empty).ShouldBeTrue();
         }
 
         [Fact]
         public void ClientCanBeDiscreet()
         {
             string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, 1);
+            Client company = new(companyName, false, "");
             company.IsDiscreet = false;
 
             company.IsDiscreet.ShouldBeFalse();

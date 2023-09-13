@@ -14,9 +14,9 @@ public class ClientsRepository : IClientsRepository
         _context = context ?? throw BusinessCardDomainException.CreateArgumentNullException(nameof(context));
     }
     
-    public async Task<Client> CreateAsync(string name, bool isDiscreet, int tierId)
+    public async Task<Client> CreateAsync(string name, bool isDiscreet, string industry)
     {
-        var entity = await _context.Clients.AddAsync(new Client(name, isDiscreet, tierId));
+        var entity = await _context.Clients.AddAsync(new Client(name, isDiscreet, industry));
         return entity.Entity;
     }
 

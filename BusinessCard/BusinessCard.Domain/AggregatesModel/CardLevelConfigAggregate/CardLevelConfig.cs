@@ -2,16 +2,23 @@ using BusinessCard.Domain.Seedwork;
 
 namespace BusinessCard.Domain.AggregatesModel.SubscriptionAggregate;
 
-public class Subscription : Entity
+public class CardLevelConfig : Entity, IAggregateRoot
 {
     public int Level { get; private set; }
     public string Description { get; private set; }
     public int ExpiresInMonths { get; private set; }
 
-    public Subscription(int level, string description, int expiresInMonths)
+    public CardLevelConfig(int level, string description, int expiresInMonths)
     {
         Level = level;
         Description = description;
         ExpiresInMonths = expiresInMonths;
     }
+}
+
+public interface ICardLevelConfigRepository : IRepository<CardLevelConfig>
+{
+    CardLevelConfig Add(int level, int months, string description);
+    CardLevelConfig Update(Guid id,int level, int months, string description);
+    
 }

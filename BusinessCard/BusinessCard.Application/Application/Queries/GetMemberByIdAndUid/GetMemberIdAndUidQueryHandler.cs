@@ -45,22 +45,22 @@ public class GetMemberIdAndUidQueryHandler : IRequestHandler<GetMemberByIdAndUid
             return result;
         }
 
-        if (person.HasKeylessCard())
-        {
-            result.IsValid = true;
-            result.SetMember(null);
-            result.SetMessage("");
-            return result;
-        }
-        else
-        {
-            if (person.Card.Key != request.Uid)
-            {
-                result.IsValid = false;
-                result.SetMessage("Member already assigned.");
-                return result;
-            }
-        }
+        // if (person.HasKeylessCard())
+        // {
+        //     result.IsValid = true;
+        //     result.SetMember(null);
+        //     result.SetMessage("");
+        //     return result;
+        // }
+        // else
+        // {
+        //     if (person.Card.Key != request.Uid)
+        //     {
+        //         result.IsValid = false;
+        //         result.SetMessage("Member already assigned.");
+        //         return result;
+        //     }
+        // }
 
         var member = new MemberIdAndUidResult()
         {
@@ -68,7 +68,7 @@ public class GetMemberIdAndUidQueryHandler : IRequestHandler<GetMemberByIdAndUid
                 Subscription = "To remove",//person.Subscription.Name,
                 SubscriptionLevel = 1, //person.Subscription.Level,
                 Address = person.Address,
-                CardKey = person.Card.Key,
+                // CardKey = person.Card.Key,
                 CreatedBy = person.CreatedBy,
                 CreatedOn = person.CreatedOn,
                 Email = person.Email,
@@ -88,7 +88,7 @@ public class GetMemberIdAndUidQueryHandler : IRequestHandler<GetMemberByIdAndUid
                 ModifiedOn = person.ModifiedOn,
                 LinkedIn = ToSocialMediaObject(person.SocialMedia).LinkedIn,
                 IdentityUserId = person.IdentityUserId,
-                Company = client.CompanyName
+                Company = client.Name
         };
 
         result.SetMember(member);

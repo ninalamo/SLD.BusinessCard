@@ -38,8 +38,8 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
         var cardExists = await _queries.IsCardExists(request.Uid);
         message += cardExists ? string.Empty : $"{Environment.NewLine}Card key not found.";
 
-        var person = client?.Persons.FirstOrDefault(c =>  c.Card?.Key == request.Uid);
-        message +=  person == null ? string.Empty : $"{Environment.NewLine}Key no longer available.";
+        var person = client?.Persons.FirstOrDefault();//c =>  c.Card?.Key == request.Uid);
+        // message +=  person == null ? string.Empty : $"{Environment.NewLine}Key no longer available.";
         
         if (!string.IsNullOrEmpty(message))
         {
@@ -56,7 +56,7 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
             Subscription = "To remove",//person?.Subscription?.Name,
             SubscriptionLevel = 1, //person.Subscription.Level,
             Address = person.Address,
-            CardKey = person.Card.Key,
+            // CardKey = person.Card.Key,
             CreatedBy = person.CreatedBy,
             CreatedOn = person.CreatedOn,
             Email = person.Email,
@@ -76,7 +76,7 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
             ModifiedOn = person.ModifiedOn,
             LinkedIn = ToSocialMediaObject(person.SocialMedia).LinkedIn,
             IdentityUserId = person.IdentityUserId,
-            Company = client.CompanyName
+            Company = client.Name
         };
 
         result.SetMember(member);

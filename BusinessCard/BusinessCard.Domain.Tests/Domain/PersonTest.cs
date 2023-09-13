@@ -52,7 +52,6 @@ namespace BusinessCard.Tests.Domain
         {
             Person person = new();
             person.Card.ShouldNotBeNull();
-            person.Card.Key.ShouldBeEmpty();
         }
         
         
@@ -60,24 +59,12 @@ namespace BusinessCard.Tests.Domain
         public void PersonShouldBeAbleToLinkEmptyCard()
         {
             Person person = new();
-            person.AddKeyToCard("abc");
-
-            person.Card.Key.ShouldBe("abc");
         }
         
         [Fact]
         public void PersonShouldBeAbleToLinkToAnotherCard()
         {
             Person person = new();
-            person.AddKeyToCard("abc");
-            person.Card.Key.ShouldBe("abc");
-            
-            person.RemoveCard();
-            person.Card.ShouldBeNull();
-
-            person.AddKeyToCard("xyz");
-            person.Card.ShouldNotBeNull();
-            person.Card.Key.ShouldBe("xyz");
         }
         
       
@@ -86,11 +73,6 @@ namespace BusinessCard.Tests.Domain
         public void PersonShouldAllowDisableOfCard()
         {
             Person person = new();
-            person.DisableCard();
-            person.Card.IsActive.ShouldBeFalse();
-            
-            person.EnableCard();
-            person.Card.IsActive.ShouldBeTrue();
 
         }
     }

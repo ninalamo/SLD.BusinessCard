@@ -35,7 +35,7 @@ public class RemoveClientCommandHandler : IRequestHandler<RemoveClientCommand>
         entity.Persons.ToList().ForEach(p =>
         {
             p.IsActive = false;
-            p.DisableCard();
+            // p.DisableCard();
         });
         _logger.LogInformation($"Updating {nameof(entity)}. {DateTime.UtcNow}");
         _repository.Update(entity);

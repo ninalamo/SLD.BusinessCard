@@ -48,7 +48,7 @@ public class GetMemberIdQueryHandler : IRequestHandler<GetMemberIdQuery, GetMemb
             Subscription = "To remove",//member.MemberTier.Name,
             SubscriptionLevel = 1,//member.MemberTier.Level,
             Address = member.Address,
-            CardKey = member.Card?.Key ?? "",
+            // CardKey = member.Card?.Key ?? "",
             CreatedBy = member.CreatedBy,
             CreatedOn = member.CreatedOn,
             Email = member.Email,

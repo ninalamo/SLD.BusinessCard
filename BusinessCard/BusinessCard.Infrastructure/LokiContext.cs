@@ -32,7 +32,8 @@ namespace BusinessCard.Infrastructure
         public DbSet<Card> Cards { get; set; }
         
         public DbSet<BillingPlan> Plans { get; set; }
-        public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<CardLevelConfig> CardLevelConfigurations { get; set; }
+        public DbSet<Subscription> ClientSubscriptions { get; set; }
 
 
 

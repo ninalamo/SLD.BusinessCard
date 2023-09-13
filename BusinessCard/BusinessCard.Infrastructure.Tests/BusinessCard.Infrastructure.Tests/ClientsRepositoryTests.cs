@@ -28,7 +28,7 @@ public class ClientsRepositoryTests
         // Arrange
         var context = await CreateInMemoryDbContext();
 
-        var existingClient = new Client("Existing Client", true, 1);
+        var existingClient = new Client("Existing Client", true, "");
         var existingClientId = context.Clients.Add(existingClient).Entity.Id;
         await context.SaveChangesAsync(); 
 
@@ -40,7 +40,7 @@ public class ClientsRepositoryTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(existingClientId, result.Id);
-        Assert.Equal("Existing Client", result.CompanyName);
+        Assert.Equal("Existing Client", result.Name);
     }
     
     [Fact]
@@ -52,7 +52,7 @@ public class ClientsRepositoryTests
 
         
         // Act
-        var client = await repository.CreateAsync("SonicLynx", true, 1);
+        var client = await repository.CreateAsync("SonicLynx", true, "");
         await repository.UnitOfWork.SaveChangesAsync(new CancellationToken());
 
 
@@ -62,7 +62,7 @@ public class ClientsRepositoryTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(client.Id, result.Id);
-        Assert.Equal(client.CompanyName, result.CompanyName);
+        Assert.Equal(client.Name, result.Name);
     }
 
   
@@ -76,13 +76,13 @@ public class ClientsRepositoryTests
         const string name = "New Client";
 
         // Act
-        var client = await repository.CreateAsync(name, true, (Int32)1);
+        var client = await repository.CreateAsync(name, true, "");
         await repository.UnitOfWork.SaveChangesAsync(new CancellationToken());
 
         // Assert
         Assert.NotNull(client);
         Assert.NotEqual(client.Id, Guid.Empty);
-        Assert.Equal(name,client.CompanyName);
+        Assert.Equal(name,client.Name);
     }
     
     [Fact]
@@ -91,21 +91,24 @@ public class ClientsRepositoryTests
         // Arrange
         var context =  await CreateInMemoryDbContext();
         var repository = new ClientsRepository(context);
-        var client = await repository.CreateAsync("SonicLynxDigital", true, 7);
+        var client = await repository.CreateAsync("SonicLynxDigital", true, "");
         await repository.UnitOfWork.SaveChangesAsync();
         var id = client.Id;
         client = null;
 
         // Act
         var clientToUpdate = await repository.GetWithPropertiesByIdAsync(id);
-        clientToUpdate.Amend("Updated Client", false, 2);
+        clientToUpdate.Name = "Sonic Lynx";
+        clientToUpdate.IsDiscreet = true;
+        clientToUpdate.Industry = "Industry";
+        
         repository.Update(clientToUpdate);
         await repository.UnitOfWork.SaveChangesAsync(default);
 
         // Assert
         Assert.NotNull(clientToUpdate);
         Assert.Equal(id, clientToUpdate.Id);
-        Assert.Equal("Updated Client", clientToUpdate.CompanyName);
+        Assert.Equal("Updated Client", clientToUpdate.Name);
     }
     
     [Fact]
@@ -203,7 +206,7 @@ public class ClientsRepositoryTests
         //Assert
         Assert.NotNull(context);
         Assert.NotNull(context.Clients);
-        Assert.Equal("KMC",context.Clients.First().CompanyName);
+        Assert.Equal("KMC",context.Clients.First().Name);
         Assert.True(context.Clients.First().Id != Guid.Empty);
     }
 
@@ -228,7 +231,7 @@ public class ClientsRepositoryTests
         // }
         
         if (!context.Clients.Any())
-            await context.Clients.AddAsync(new Client("KMC", true, 1));
+            await context.Clients.AddAsync(new Client("KMC", true, ""));
 
         await context.SaveChangesAsync(default);
         

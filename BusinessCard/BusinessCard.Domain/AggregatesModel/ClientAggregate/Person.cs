@@ -1,11 +1,12 @@
-﻿
+﻿                          
 
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
     public class Person : Entity
     {
-        private Guid _cardId;
+        private List<Card> _cards;
+        public IReadOnlyCollection<Card> Card => _cards.AsReadOnly();
 
         public Person(
             string firstName,
@@ -33,7 +34,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public Person()
         {
             IsSubscriptionOverride = false;
-            Card = new Card();
+            _cards = new List<Card>();
             IsActive = false;
         }
 
@@ -53,7 +54,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public string Address { get; private set; }
         public string SocialMedia { get; private set; }
         public string Occupation { get; set; }
-        public Card? Card { get; private set; }
 
         public void SetSubscription(int level)
         {
@@ -79,26 +79,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             SocialMedia = links;
         }
 
-        public void AddKeyToCard(string key)
-        {
-            if (Card == default) Card = new();
-            Card.SetKey(key);
-            IsActive = true;
-        }
-
-        public void RemoveCard() => Card = default;
-
-        public bool HasKeylessCard() => Card == default || !Card.HasKey();
-
-        public void EnableCard()
-        {
-            Card.IsActive = true;
-        }
-
-        public void DisableCard()
-        {
-            Card.Deactivate();
-        }
+      
 
     }
 }

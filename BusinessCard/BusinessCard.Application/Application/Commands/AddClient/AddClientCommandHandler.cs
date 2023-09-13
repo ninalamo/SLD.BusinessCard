@@ -17,10 +17,10 @@ public class AddClientCommandHandler : IRequestHandler<AddClientCommand, Command
 
     public async Task<CommandResult> Handle(AddClientCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Starting {nameof(AddClientCommandHandler)}.");
-        _logger.LogInformation($"Creating {nameof(Client)}. Request:{JsonSerializer.Serialize(request)}");
-        var id = (await _repository.CreateAsync(request.CompanyName, request.IsDiscreet,request.MemberTierLevel)).Id;
-        
-        return CommandResult.Success(id);
+        // _logger.LogInformation($"Starting {nameof(AddClientCommandHandler)}.");
+        // _logger.LogInformation($"Creating {nameof(Client)}. Request:{JsonSerializer.Serialize(request)}");
+        // var id = (await _repository.CreateAsync(request.CompanyName, request.IsDiscreet,request.MemberTierLevel)).Id;
+        //
+         return CommandResult.Success(null);
     }
 }
