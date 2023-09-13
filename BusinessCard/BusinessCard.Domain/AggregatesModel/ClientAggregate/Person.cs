@@ -6,7 +6,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
     public class Person : Entity
     {
         private List<Card> _cards;
-        public IReadOnlyCollection<Card> Card => _cards.AsReadOnly();
+        public IReadOnlyCollection<Card> Cards => _cards.AsReadOnly();
 
         public Person(
             string firstName,
@@ -42,7 +42,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public string IdentityUserId { get; private set; } = string.Empty;
 
         public void SetIdentity(string key) => IdentityUserId = Guid.Parse(key).ToString();
-
+        public bool HasIdentity() => !string.IsNullOrEmpty(IdentityUserId);
 
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -57,6 +57,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 
         public void SetSubscription(int level)
         {
+            throw new NotImplementedException();
         }
 
         public void SetName(string firstname, string lastname, string middlename, string nameSuffix)
