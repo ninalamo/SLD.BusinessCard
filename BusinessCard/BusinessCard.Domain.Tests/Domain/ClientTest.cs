@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Infrastructure;
+using Faker.Resources;
 using Shouldly;
 using CompanyFaker = Faker.Company;
 using NameFaker = Faker.Name;
@@ -18,8 +19,6 @@ namespace BusinessCard.Tests.Domain
             company.Name.ShouldBe(companyName);
             company.IsDiscreet.ShouldBe(false);
             company.Industry.ShouldBe("industry");
-
-            
         }
 
         [Fact]
@@ -31,14 +30,6 @@ namespace BusinessCard.Tests.Domain
             company.Name.ShouldBe("GMA");
         }
 
-        [Fact]
-        public void PersonShouldHaveEmptyButNotNullContacts()
-        {
-            string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, "");
-            company.Persons.ShouldBeEmpty();
-            company.Persons.ShouldNotBeNull();
-        }
 
         [Fact]
         public async Task ClientShouldBeAbleToGenerateMultiplePlaceholders()
@@ -72,8 +63,40 @@ namespace BusinessCard.Tests.Domain
             string companyName = CompanyFaker.Name();
             Client company = new(companyName, false, "");
             company.IsDiscreet = false;
-
             company.IsDiscreet.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void ClientCanAddMembers()
+        {
+            Client company = new(CompanyFaker.Name(), false, "");
+            company.IsDiscreet = false;
+            company.IsDiscreet.ShouldBeFalse();
+            
+            company.AddMemberAsync(NameFaker.First(), NameFaker.Last(), NameFaker.Last(), NameFaker.Last(),
+                Faker.Phone.Number(), Internet.FreeMail, Address.Country, "", "");
+
+            Person person = company.Persons.FirstOrDefault();
+
+            company.Persons.ShouldNotBeEmpty();
+            company.Persons.FirstOrDefault().ShouldBeEquivalentTo(person);
+
+        }
+
+        [Fact]
+        public void ClientPersonListShouldNotBeNull()
+        {
+            Client client = new(CompanyFaker.Name(), false, "");
+            client.Persons.ShouldNotBeNull();
+            client.Persons.ShouldBeEmpty();
+        }
+        
+        [Fact]
+        public void ClientSubscriptionListShouldNotBeNull()
+        {
+            Client client = new(CompanyFaker.Name(), false, "");
+            client.Subscriptions.ShouldNotBeNull();
+            client.Subscriptions.ShouldBeEmpty();
         }
 
     }

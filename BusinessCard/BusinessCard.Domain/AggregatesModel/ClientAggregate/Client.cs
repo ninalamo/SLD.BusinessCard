@@ -27,6 +27,8 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
         
         public Client(string name, bool isDiscreet, string industry) : this()
         {
+            
+            
             Name = name;
             IsDiscreet = isDiscreet;
             Industry = industry;
