@@ -1,7 +1,6 @@
 ﻿using System.Data;
+using BusinessCard.Domain.AggregatesModel.CardSettingAggregate;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.AggregatesModel.ClientSubscriptionAggregate;
-using BusinessCard.Domain.AggregatesModel.SubscriptionAggregate;
 using BusinessCard.Domain.Seedwork;
 using MediatR;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -32,7 +31,7 @@ namespace BusinessCard.Infrastructure
         public DbSet<Card> Cards { get; set; }
         
         public DbSet<BillingPlan> Plans { get; set; }
-        public DbSet<CardLevelConfig> CardLevelConfigurations { get; set; }
+        public DbSet<CardSetting> CardSettings { get; set; }
         public DbSet<Subscription> ClientSubscriptions { get; set; }
 
 
