@@ -90,8 +90,22 @@ namespace BusinessCard.Domain.Tests.Domain
             Person person = new();
             Assert.Throws<NotImplementedException>(() => person.SetSubscription(0));
         }
-        
-        
+
+        [Fact]
+        public void CanSetSocialMediaAccountForPerson()
+        {
+            Person person = new();
+            person.SetSocialMedia("facebook.com/janinejams", "instagram.com/despicablenin", "n/a", "n/a", "n/a");
+            person.SocialMediaAccounts.ShouldNotBeNull();
+            person.SocialMediaAccounts.Facebook.ShouldBe("facebook.com/janinejams");
+            person.SocialMediaAccounts.Instagram.ShouldBe("instagram.com/despicablenin");
+            person.SocialMediaAccounts.Pinterest.ShouldBe("n/a");
+            person.SocialMediaAccounts.Twitter.ShouldBe("n/a");
+            person.SocialMediaAccounts.LinkedIn.ShouldBe("n/a");
+
+            var facebookCopy = person.SocialMediaAccounts.Facebook;
+            facebookCopy.ShouldBe(person.SocialMediaAccounts.Facebook);
+        }
 
     
     }

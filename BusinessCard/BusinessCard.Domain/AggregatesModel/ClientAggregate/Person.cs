@@ -82,7 +82,10 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             SocialMedia = links;
         }
 
-      
+        public void SetSocialMedia(string facebook, string instagram, string twitter, string pinterest, string linkedId)
+        {
+            SocialMediaAccounts = new SocialMedia(facebook, instagram, linkedId, pinterest, twitter);
+        }
 
     }
 }
