@@ -41,7 +41,7 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
             .HasColumnName("CardId")
             .IsRequired();
 
-        builder.HasOne( b => b.Card)
+        builder.HasOne( b => b.Cards)
             .WithMany()
             .HasForeignKey("_cardId")
             .OnDelete(DeleteBehavior.NoAction);

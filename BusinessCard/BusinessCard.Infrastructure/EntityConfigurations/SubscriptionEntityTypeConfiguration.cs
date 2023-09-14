@@ -1,11 +1,10 @@
+using BusinessCard.Domain.AggregatesModel.CardSettingAggregate;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.AggregatesModel.ClientSubscriptionAggregate;
-using BusinessCard.Domain.AggregatesModel.SubscriptionAggregate;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusinessCard.Infrastructure.EntityConfigurations;
 
-internal class ClientSubscriptionEntityTypeConfiguration : IEntityTypeConfiguration<Subscription>
+internal class SubscriptionEntityTypeConfiguration : IEntityTypeConfiguration<Subscription>
 {
     public void Configure(EntityTypeBuilder<Subscription> builder)
     {
@@ -38,7 +37,7 @@ internal class ClientSubscriptionEntityTypeConfiguration : IEntityTypeConfigurat
             .HasColumnName("ConfigId")
             .IsRequired();
 
-        builder.HasOne<CardLevelConfig>()
+        builder.HasOne<CardSetting>()
             .WithMany()
             .HasForeignKey("_configId")
             .OnDelete(DeleteBehavior.Restrict);

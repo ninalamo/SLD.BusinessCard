@@ -1,12 +1,14 @@
+using BusinessCard.Domain.AggregatesModel.CardSettingAggregate;
+
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
 public class Subscription : Entity
 {
-    public Subscription(Guid billingPlanId, Guid clientId, Guid configId, DateTimeOffset startDate, int numberOfMonthsToExpire)
+    public Subscription(Guid billingPlanId, Guid clientId, Guid cardSettingId, DateTimeOffset startDate, int numberOfMonthsToExpire)
     {
         _billingPlanId = billingPlanId;
         _clientId = clientId;
-        _configId = configId;
+        _cardSettingId = cardSettingId;
         StartDate = startDate;
         EndDate = startDate.AddMonths(numberOfMonthsToExpire);
     }
@@ -22,9 +24,12 @@ public class Subscription : Entity
 
     private Guid _billingPlanId;
     private Guid _clientId;
-    private Guid _configId;
+    private Guid _cardSettingId;
     
-    // public BillingPlan BillingPlan { get; private set; }
-    // public Person Person { get; private set; }
-    // public CardLevelConfig Config { get; private set; }
+    public BillingPlan BillingPlan { get; private set; }
+    public Person Person { get; private set; }
+    public CardSetting CardSetting { get; private set; }
+    
+    
+    
 }
