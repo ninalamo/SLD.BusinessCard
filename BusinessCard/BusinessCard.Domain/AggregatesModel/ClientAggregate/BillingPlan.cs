@@ -1,6 +1,6 @@
 using BusinessCard.Domain.Seedwork;
 
-namespace BusinessCard.Domain.AggregatesModel.ClientSubscriptionAggregate;
+namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
 public class BillingPlan : Enumeration
 {
