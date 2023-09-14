@@ -1,7 +1,7 @@
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using Shouldly;
 
-namespace BusinessCard.Tests.Domain;
+namespace BusinessCard.Domain.Tests.Domain;
 
 public class BillingPlanTest
 {

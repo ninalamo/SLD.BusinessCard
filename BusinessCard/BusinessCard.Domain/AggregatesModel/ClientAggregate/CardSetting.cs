@@ -1,8 +1,8 @@
 using BusinessCard.Domain.Seedwork;
 
-namespace BusinessCard.Domain.AggregatesModel.CardSettingAggregate;
+namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
-public class CardSetting : Entity, IAggregateRoot
+public class CardSetting : ValueObject
 {
     public int Level { get; private set; }
     public string Description { get; private set; }
@@ -14,11 +14,12 @@ public class CardSetting : Entity, IAggregateRoot
         Description = description;
         ExpiresInMonths = expiresInMonths;
     }
-}
-
-public interface ICardLevelConfigRepository : IRepository<CardSetting>
-{
-    CardSetting Add(int level, int months, string description);
-    CardSetting Update(Guid id,int level, int months, string description);
     
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Level;
+        yield return Description;
+        yield return ExpiresInMonths;
+    }
 }

@@ -29,6 +29,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             Occupation = occupation;
 
             SetSocialMedia(socialMedia);
+            SocialMediaAccounts = new SocialMedia("N/A", "N/A", "N/A", "N/A", "N/A");
         }
 
         public Person()
@@ -38,6 +39,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             IsActive = false;
         }
 
+        public SocialMedia SocialMediaAccounts { get; private set; }
         public bool IsSubscriptionOverride { get; private set; }
         public string IdentityUserId { get; private set; } = string.Empty;
 

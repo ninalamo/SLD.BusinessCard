@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using BusinessCard.Domain.AggregatesModel.CardSettingAggregate;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
 using MediatR;
@@ -9,7 +8,7 @@ namespace BusinessCard.Infrastructure
 {
     public class LokiContext : DbContext, IUnitOfWork
     {
-        public const string DefaultSchema = "kardibee";
+        public const string DefaultSchema = "dbo";
         private readonly ICurrentUser? _currentUser; //use in audit trail
         private readonly IMediator _mediator; //use in domain events
 
@@ -30,9 +29,8 @@ namespace BusinessCard.Infrastructure
         public DbSet<Person> People { get; set; }
         public DbSet<Card> Cards { get; set; }
         
-        public DbSet<BillingPlan> Plans { get; set; }
-        public DbSet<CardSetting> CardSettings { get; set; }
-        public DbSet<Subscription> ClientSubscriptions { get; set; }
+        public DbSet<BillingPlan> BillingPlans { get; set; }
+       public DbSet<Subscription> ClientSubscriptions { get; set; }
 
 
 

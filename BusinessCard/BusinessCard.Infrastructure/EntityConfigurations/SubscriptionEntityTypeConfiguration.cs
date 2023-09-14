@@ -1,4 +1,3 @@
-using BusinessCard.Domain.AggregatesModel.CardSettingAggregate;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,7 +7,7 @@ internal class SubscriptionEntityTypeConfiguration : IEntityTypeConfiguration<Su
 {
     public void Configure(EntityTypeBuilder<Subscription> builder)
     {
-        builder.ToTable("clientsubscription", LokiContext.DefaultSchema);
+        builder.ToTable("subscription", LokiContext.DefaultSchema);
         builder.HasKey(b => b.Id);
 
 
@@ -22,26 +21,14 @@ internal class SubscriptionEntityTypeConfiguration : IEntityTypeConfiguration<Su
             .HasForeignKey("_billingPlanId")
             .OnDelete(DeleteBehavior.Restrict);
         
-        builder.Property<Guid>("_clientId")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("ClientId")
-            .IsRequired();
-
-        builder.HasOne<Client>()
-            .WithMany()
-            .HasForeignKey("_clientId")
-            .OnDelete(DeleteBehavior.Restrict);
         
-        builder.Property<Guid>("_configId")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("ConfigId")
-            .IsRequired();
-
-        builder.HasOne<CardSetting>()
-            .WithMany()
-            .HasForeignKey("_configId")
-            .OnDelete(DeleteBehavior.Restrict);
-        
+        builder.OwnsOne(b => b.Setting, setting =>
+        {
+            setting.ToTable("cardsetting", LokiContext.DefaultSchema);
+            setting.Property(b => b.Level).IsRequired();
+            setting.Property(b => b.ExpiresInMonths).IsRequired().HasDefaultValue(12);
+            setting.Property(b => b.Description).HasMaxLength(50);
+        });
         
         
     }

@@ -1,7 +1,7 @@
-using BusinessCard.Domain.AggregatesModel.CardSettingAggregate;
+using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using Shouldly;
 
-namespace BusinessCard.Tests.Domain;
+namespace BusinessCard.Domain.Tests.Domain;
 
 public class CardSettingTests
 {
@@ -24,7 +24,10 @@ public class CardSettingTests
         setting.ExpiresInMonths.ShouldBe(12);
         var months = setting.ExpiresInMonths;
         months.ShouldBeEquivalentTo(setting.ExpiresInMonths);
+
+        CardSetting newSetting = setting;
+        (newSetting == setting).ShouldBeTrue();
+        newSetting.Description.ShouldBe(setting.Description);
         
-        setting.IsTransient().ShouldBeTrue();
     }
 }

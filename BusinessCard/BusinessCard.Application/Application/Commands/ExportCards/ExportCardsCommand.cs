@@ -60,7 +60,7 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
 
         for (var i = 0; i < request.Count; i++)
         {
-            var person = entity.AddMemberAsync(
+            var person = entity.AddMember(
                 "N/A", 
                 "N/A", 
                 "N/A",

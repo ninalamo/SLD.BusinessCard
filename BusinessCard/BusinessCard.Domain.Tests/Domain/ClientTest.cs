@@ -1,13 +1,10 @@
-﻿using System.Reflection;
-using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Infrastructure;
+﻿using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using Faker.Resources;
 using Shouldly;
 using CompanyFaker = Faker.Company;
 using NameFaker = Faker.Name;
-using Phone = Faker.Phone;
 
-namespace BusinessCard.Tests.Domain
+namespace BusinessCard.Domain.Tests.Domain
 {
     public class ClientTest
     {
@@ -40,7 +37,7 @@ namespace BusinessCard.Tests.Domain
             
             for (int i = 0; i < count; i++)
             {
-                company.AddMemberAsync(
+                company.AddMember(
                     "N/A", 
                     "N/A", 
                     "N/A",
@@ -53,6 +50,32 @@ namespace BusinessCard.Tests.Domain
             }
 
         
+            company.Persons.ShouldNotBeEmpty();
+            company.Persons.Count.ShouldBe(1000);
+        }
+        
+        [Fact]
+        public async Task CanAddMemberUsingEntityObject()
+        {
+            string companyName = CompanyFaker.Name();
+            Client company = new(companyName, false, "");
+            int count = 1000;
+
+            for (int i = 0; i < count; i++)
+            {
+                var person = new Person("N/A",
+                        "N/A",
+                        "N/A",
+                        "N/A",
+                        Guid.NewGuid().ToString(),
+                        $"{Guid.NewGuid().ToString()}@tuldok.co",
+                        "N/A",
+                        "N/A",
+                        "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
+    
+                company.AddMember(person);
+            }
+            
             company.Persons.ShouldNotBeEmpty();
             company.Persons.Count.ShouldBe(1000);
         }
@@ -73,7 +96,7 @@ namespace BusinessCard.Tests.Domain
             company.IsDiscreet = false;
             company.IsDiscreet.ShouldBeFalse();
             
-            company.AddMemberAsync(NameFaker.First(), NameFaker.Last(), NameFaker.Last(), NameFaker.Last(),
+            company.AddMember(NameFaker.First(), NameFaker.Last(), NameFaker.Last(), NameFaker.Last(),
                 Faker.Phone.Number(), Internet.FreeMail, Address.Country, "", "");
 
             Person person = company.Persons.FirstOrDefault();
@@ -97,6 +120,22 @@ namespace BusinessCard.Tests.Domain
             Client client = new(CompanyFaker.Name(), false, "");
             client.Subscriptions.ShouldNotBeNull();
             client.Subscriptions.ShouldBeEmpty();
+        }
+
+        [Fact]
+        public void CanAddSubscription()
+        {
+            Subscription subscription = new(
+                billingPlanId: Guid.NewGuid(),
+                startDate: DateTime.Today,
+                DateTime.Today.AddMonths(Faker.RandomNumber.Next(1, 12)));
+            
+            Client client = new(CompanyFaker.Name(), false, "");
+            var addedSubscription = client.AddSubscription(subscription.GetBillingPlanId(), 
+                subscription.StartDate, subscription.EndDate.Month - subscription.StartDate.Month);
+            
+            addedSubscription.StartDate.Date.ShouldBe(subscription.StartDate.Date);
+            
         }
 
     }

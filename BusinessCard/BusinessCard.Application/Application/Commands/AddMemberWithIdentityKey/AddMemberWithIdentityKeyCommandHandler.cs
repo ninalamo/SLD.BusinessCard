@@ -25,15 +25,15 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
         client.AdditionalValidation(request.PhoneNumber, request.Email);
 
         _logger.LogInformation($"Adding {nameof(Person)}-{DateTimeOffset.Now}");
-        var person = client.AddMemberAsync(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,request.SocialMedia);
+        var person = client.AddMember(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,request.SocialMedia);
         
         _logger.LogInformation($"Setting subscription level for {nameof(Person)}-{DateTimeOffset.Now}");
-       // person.SetSubscription(client.MembershipTier.Level);
+       //TODO: person.SetSubscription(client.MembershipTier.Level);
         
         _logger.LogInformation($"Adding IdentityId to {nameof(Person)}-{DateTimeOffset.Now}");
         person.SetIdentity(request.IdentityId);
         
-        // person.AddKeyToCard(request.CardKey);
+        //TODO: person.AddKeyToCard(request.CardKey);
         
         _logger.LogInformation($"Update {nameof(Client)}-{DateTimeOffset.Now}");
         _repository.Update(client);

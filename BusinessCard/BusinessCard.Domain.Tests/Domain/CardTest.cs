@@ -1,6 +1,7 @@
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using FluentValidation;
 using Shouldly;
+
+namespace BusinessCard.Domain.Tests.Domain;
 
 public class CardTest
 {

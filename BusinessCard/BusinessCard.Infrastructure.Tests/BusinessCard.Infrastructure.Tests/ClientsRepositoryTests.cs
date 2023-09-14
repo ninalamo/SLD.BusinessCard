@@ -129,7 +129,7 @@ public class ClientsRepositoryTests
             Pinterest = "pinterest.com",
             Twitter = "twitter.com",
         };
-        var person = client.AddMemberAsync("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
+        var person = client.AddMember("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
             "Encoder",
             JsonSerializer.Serialize(json));
         
@@ -162,7 +162,7 @@ public class ClientsRepositoryTests
             Pinterest = "pinterest.com",
             Twitter = "twitter.com",
         };
-        client.AddMemberAsync("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
+        client.AddMember("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
             "Encoder",
             JsonSerializer.Serialize(json));
         repository.Update(client);

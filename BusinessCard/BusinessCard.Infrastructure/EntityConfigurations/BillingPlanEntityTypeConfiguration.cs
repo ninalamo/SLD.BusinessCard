@@ -7,11 +7,12 @@ internal class BillingPlanEntityTypeConfiguration : IEntityTypeConfiguration<Bil
 {
     public void Configure(EntityTypeBuilder<BillingPlan> builder)
     {
+        builder.ToTable("billingplan", LokiContext.DefaultSchema);
         builder.HasKey(b => b.Id);
         builder.HasIndex(b => b.Name).IsUnique();
         builder.Property(b => b.Name).IsRequired();
-        builder.Property(b => b.Name).HasMaxLength(56);
-
-        builder.HasData(BillingPlan.Plans);
+        builder.Property(b => b.Name).HasMaxLength(50);
+        
+        builder.HasData(BillingPlan.SeededValue);
     }
 }

@@ -4,6 +4,7 @@ using BusinessCard.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessCard.Infrastructure.Migrations
 {
     [DbContext(typeof(LokiContext))]
-    partial class LokiContextModelSnapshot : ModelSnapshot
+    [Migration("20230914160339_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -313,47 +316,6 @@ namespace BusinessCard.Infrastructure.Migrations
                         .WithMany("Persons")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.SocialMedia", "SocialMediaAccounts", b1 =>
-                        {
-                            b1.Property<Guid>("PersonId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Facebook")
-                                .IsRequired()
-                                .HasMaxLength(56)
-                                .HasColumnType("nvarchar(56)");
-
-                            b1.Property<string>("Instagram")
-                                .IsRequired()
-                                .HasMaxLength(56)
-                                .HasColumnType("nvarchar(56)");
-
-                            b1.Property<string>("LinkedIn")
-                                .IsRequired()
-                                .HasMaxLength(56)
-                                .HasColumnType("nvarchar(56)");
-
-                            b1.Property<string>("Pinterest")
-                                .IsRequired()
-                                .HasMaxLength(56)
-                                .HasColumnType("nvarchar(56)");
-
-                            b1.Property<string>("Twitter")
-                                .IsRequired()
-                                .HasMaxLength(56)
-                                .HasColumnType("nvarchar(56)");
-
-                            b1.HasKey("PersonId");
-
-                            b1.ToTable("socialmedia", "dbo");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PersonId");
-                        });
-
-                    b.Navigation("SocialMediaAccounts")
                         .IsRequired();
                 });
 

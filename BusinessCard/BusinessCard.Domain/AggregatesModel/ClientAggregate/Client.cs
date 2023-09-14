@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using BusinessCard.Domain.Exceptions;
+﻿
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
@@ -8,8 +7,8 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
         public string Name { get; set; }
         public bool IsDiscreet { get; set; }
         public string Industry { get; set; }
-
-
+        public bool IsBlackList { get; private set; } = false;
+      
         private readonly List<Subscription> _subscriptions;
         public IReadOnlyCollection<Subscription> Subscriptions => _subscriptions.AsReadOnly();
         
@@ -27,16 +26,23 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
         
         public Client(string name, bool isDiscreet, string industry) : this()
         {
-            
-            
             Name = name;
             IsDiscreet = isDiscreet;
             Industry = industry;
+          
         }
+
+      
+        
         #endregion
 
-
-        public Person AddMemberAsync(string firstName,
+        public Person AddMember(Person person)
+        {
+            _persons.Add(person);
+            return person;
+        }
+        
+        public Person AddMember(string firstName,
             string lastName,
             string middleName,
             string nameSuffix,
@@ -54,4 +60,19 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
             _persons.Add(person);
             return person;
         }
+
+        public Subscription AddSubscription(Guid billingPlanId, DateTimeOffset startDate, int numberOfMonthsToExpire)
+        {
+            Subscription subscription =
+                new(billingPlanId: billingPlanId,
+                    // cardSettingId: cardSettingId,
+                    startDate: startDate, 
+                    startDate.AddMonths(numberOfMonthsToExpire));
+            
+            _subscriptions.Add(subscription);
+            return subscription;
+        }
+
+      
+        
     }

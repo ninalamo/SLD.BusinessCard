@@ -14,28 +14,23 @@ public class Subscription : Entity
         Renewed = 4,
         Deleted = 5,
     }
-    public Subscription(Guid billingPlanId, Guid cardSettingId, DateTimeOffset startDate, int numberOfMonthsToExpire)
+   
+    
+    public Subscription(Guid billingPlanId, DateTimeOffset startDate, DateTimeOffset endDate)
     {
         _billingPlanId = billingPlanId;
-        _cardSettingId = cardSettingId;
+        
         StartDate = startDate;
-        EndDate = startDate.AddMonths(numberOfMonthsToExpire);
+        EndDate = endDate;
         Reason = Enum.GetName(typeof(Status), Status.New);
         State = Status.New;
        
     }
 
-    private Subscription(Guid billingPlanId, Guid cardSettingId, DateTimeOffset startDate, int numberOfMonthsToExpire,
-        Status state)
-    {
-        _billingPlanId = billingPlanId;
-        _cardSettingId = cardSettingId;
-        StartDate = startDate;
-        EndDate = startDate.AddMonths(numberOfMonthsToExpire);
-        Reason = Enum.GetName(typeof(Status), state);
-        State = state;
-    }
-    
+   
+    public CardSetting Setting { get; private set; }
+
+
     public DateTimeOffset StartDate { get; private set; }
     public DateTimeOffset EndDate { get; private set; }
     public DateTimeOffset? ActualEndDate { get; private set; }
@@ -46,13 +41,11 @@ public class Subscription : Entity
     public string GetName() => Id.ToString().Replace("-", "").ToUpper();
 
     private Guid _billingPlanId;
-    private Guid _cardSettingId;
-
+  
     public Guid GetBillingPlanId() => _billingPlanId;
-    public Guid GetCardSettingId() => _cardSettingId;
 
     public Subscription CreateRenewal(DateTimeOffset renewDate, int numberOfMonthsToExpire) =>
-        new(_billingPlanId, _cardSettingId, renewDate, numberOfMonthsToExpire, state: Status.Renewed);
+        new(_billingPlanId, renewDate, renewDate.AddMonths(numberOfMonthsToExpire));
     
     public void PreTerminate(DateTimeOffset lastDay, string reason)
     {
@@ -92,7 +85,7 @@ public class Subscription : Entity
 
     public void ChangeCardSetting(Guid newId)
     {
-        _cardSettingId = newId;
+        // _cardSettingId = newId;
     }
 
     public void UpdateReminderInterval(int dayOfMonth) => PaymentScheduleReminderInterval = dayOfMonth;

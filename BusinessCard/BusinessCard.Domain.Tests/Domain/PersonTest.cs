@@ -1,11 +1,9 @@
 ﻿using System.Text.Json;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using Faker;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Shouldly;
 
-namespace BusinessCard.Tests.Domain
+namespace BusinessCard.Domain.Tests.Domain
 {
     public class PersonTest
     {
