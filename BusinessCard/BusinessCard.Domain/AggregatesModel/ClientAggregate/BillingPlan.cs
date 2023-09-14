@@ -4,7 +4,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
 public class BillingPlan : Enumeration
 {
-    public readonly IEnumerable<BillingPlan> SeededValue = new BillingPlan[]
+    public static IEnumerable<BillingPlan> SeededValue = new BillingPlan[]
     {
         new (Guid.Parse("00000000-0000-0000-0000-000000000001"), "Free Trial"),
         new (Guid.Parse("00000000-0000-0000-0000-000000000002"), "Monthly"),

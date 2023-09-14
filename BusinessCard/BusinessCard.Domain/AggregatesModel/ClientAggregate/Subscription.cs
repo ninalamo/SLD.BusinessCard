@@ -16,17 +16,16 @@ public class Subscription : Entity
     }
    
     
-    public Subscription(Guid billingPlanId, DateTimeOffset startDate, DateTimeOffset endDate)
+    public Subscription(Guid billingPlanId, DateTimeOffset startDate, DateTimeOffset endDate, Status? state = null)
     {
         _billingPlanId = billingPlanId;
         
         StartDate = startDate;
         EndDate = endDate;
         Reason = Enum.GetName(typeof(Status), Status.New);
-        State = Status.New;
-       
+        State = state ?? Status.New;
     }
-
+    
    
     public CardSetting Setting { get; private set; }
 
@@ -45,7 +44,7 @@ public class Subscription : Entity
     public Guid GetBillingPlanId() => _billingPlanId;
 
     public Subscription CreateRenewal(DateTimeOffset renewDate, int numberOfMonthsToExpire) =>
-        new(_billingPlanId, renewDate, renewDate.AddMonths(numberOfMonthsToExpire));
+        new(_billingPlanId, renewDate, renewDate.AddMonths(numberOfMonthsToExpire), Status.Renewed);
     
     public void PreTerminate(DateTimeOffset lastDay, string reason)
     {

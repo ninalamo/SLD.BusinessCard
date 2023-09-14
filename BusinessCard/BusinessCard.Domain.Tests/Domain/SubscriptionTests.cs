@@ -61,7 +61,6 @@ public class SubscriptionTests
     [Fact]
     public void CanPreTerminateASubscription()
     {
-       
 
         _subscription.PreTerminate(DateTime.Today, "Breech of contract");
         _subscription.ActualEndDate.HasValue.ShouldBeTrue();
@@ -101,4 +100,6 @@ public class SubscriptionTests
         var status = _subscription.State;
         status.ShouldBe(_subscription.State);
     }
+    
+  
 }
