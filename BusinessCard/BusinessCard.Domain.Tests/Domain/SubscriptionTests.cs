@@ -100,6 +100,20 @@ public class SubscriptionTests
         var status = _subscription.State;
         status.ShouldBe(_subscription.State);
     }
-    
-  
+
+    [Fact]
+    public void CanSetCardSettings()
+    {
+        _subscription.ChangeCardSetting(1, 12, "only_a_level_one_with_twelve_month_period");
+        _subscription.Setting.Level.ShouldBe(1);
+        _subscription.Setting.ExpiresInMonths.ShouldBe(12);
+        _subscription.Setting.Description.ShouldBe("only_a_level_one_with_twelve_month_period");
+    }
+
+    [Fact]
+    public void CanGetIdAsName()
+    {
+        var name = _subscription.GetName();
+        name.ShouldBe(_subscription.Id.ToString().Replace("-","").ToUpper());
+    }
 }

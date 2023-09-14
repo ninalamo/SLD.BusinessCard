@@ -82,9 +82,9 @@ public class Subscription : Entity
         _billingPlanId = newId;
     }
 
-    public void ChangeCardSetting(Guid newId)
+    public void ChangeCardSetting(int level, int expiresInMonths, string description)
     {
-        // _cardSettingId = newId;
+        Setting = new CardSetting(level, description, expiresInMonths);
     }
 
     public void UpdateReminderInterval(int dayOfMonth) => PaymentScheduleReminderInterval = dayOfMonth;
