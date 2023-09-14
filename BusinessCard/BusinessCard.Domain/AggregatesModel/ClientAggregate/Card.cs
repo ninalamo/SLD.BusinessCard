@@ -19,18 +19,11 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 
         private void SaveUid(string key)
         {
-            if(Uid != string.Empty)
-            {
-                throw  new ValidationException("Business validation error. NFC Key is immutable");
-            }
             Uid = key;
         }
 
         public void Activate(string uid, int monthsBeforeExpire)
         {
-            if (ActivatedDate.HasValue) throw new ValidationException("Already activated.");
-            if (monthsBeforeExpire <= 0) throw new ValidationException("Should expire at least after 1 month.");
-
             SaveUid(uid);
             
             ActivatedDate = DateTimeOffset.Now;
@@ -46,11 +39,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         
         public void Renew(int monthsBeforeExpire, DateTimeOffset? renewDateOptional)
         {
-            if (!ActivatedDate.HasValue) throw new ValidationException("Cannot renew. Card inactive.");
-            if (monthsBeforeExpire <= 0) throw new ValidationException("Should expire at least after 1 month.");
-            if (renewDateOptional.HasValue && renewDateOptional.Value.Date < DateTime.Today.Date)
-                throw new ValidationException("Invalid renew date");
-
             RenewDate = renewDateOptional ?? DateTimeOffset.Now;
             ExpireDate = RenewDate.Value.AddMonths(monthsBeforeExpire);
             IsActive = true;

@@ -45,16 +45,6 @@ public class CardTest
         card.RenewDate.ShouldBeNull();
     }
 
-    [Theory]
-    [InlineData("xxx",0)]
-    [InlineData("xxx",-100)]
-    public void CardShouldThrowErrorWhenActivatedIncorrectly(string uid, int months)
-    {
-        Card card = new();
-        Assert.Throws<ValidationException>(() => card.Activate(uid, months));
-        card.IsActive.ShouldBeFalse();
-        card.HasUid().ShouldBeFalse();
-    }
     
     [Fact]
     public void CardCanBeDeactivated()
