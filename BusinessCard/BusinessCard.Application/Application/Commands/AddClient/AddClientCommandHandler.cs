@@ -18,7 +18,7 @@ public class AddClientCommandHandler : IRequestHandler<AddClientCommand, Command
     {
         _logger.LogInformation($"Starting {nameof(AddClientCommandHandler)}.");
         _logger.LogInformation($"Creating {nameof(Client)}. Request:{JsonSerializer.Serialize(request)}");
-        var id = (await _repository.CreateAsync(request.Name, request.IsDiscreet,request.Industry)).Id;
+        var id = (await _repository.CreateAsync(request.Name,request.Industry)).Id;
         
          return CommandResult.Success(null);
     }

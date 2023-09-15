@@ -1,27 +1,14 @@
-using System.Text.Json;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Seedwork;
 using BusinessCard.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Moq;
 
 namespace BusinessCard.Infrastructure.Tests;
 
 public class ClientsRepositoryTests
 {
-    private record SocialMediaObject
-    {
-        public string Facebook { get; init; }
-        public string LinkedIn { get; init; }
-        public string Instagram { get; init; }
-        public string Pinterest { get; init; }
-        public string Twitter { get; init; }
-    }
 
-    
-    
     [Fact]
     public async Task GetEntityByIdAsync_ReturnsClient_WhenClientExists()
     {
@@ -52,7 +39,7 @@ public class ClientsRepositoryTests
 
         
         // Act
-        var client = await repository.CreateAsync("SonicLynx", true, "");
+        var client = await repository.CreateAsync("SonicLynx", "BPO");
         await repository.UnitOfWork.SaveChangesAsync(new CancellationToken());
 
 
@@ -76,7 +63,7 @@ public class ClientsRepositoryTests
         const string name = "New Client";
 
         // Act
-        var client = await repository.CreateAsync(name, true, "");
+        var client = await repository.CreateAsync(name, "");
         await repository.UnitOfWork.SaveChangesAsync(new CancellationToken());
 
         // Assert
@@ -91,15 +78,13 @@ public class ClientsRepositoryTests
         // Arrange
         var context =  await CreateInMemoryDbContext();
         var repository = new ClientsRepository(context);
-        var client = await repository.CreateAsync("SonicLynxDigital", true, "");
+        var client = await repository.CreateAsync("SonicLynxDigital", "");
         await repository.UnitOfWork.SaveChangesAsync();
         var id = client.Id;
-        client = null;
 
         // Act
         var clientToUpdate = await repository.GetWithPropertiesByIdAsync(id);
         clientToUpdate.Name = "Sonic Lynx";
-        clientToUpdate.IsDiscreet = true;
         clientToUpdate.Industry = "Industry";
         
         repository.Update(clientToUpdate);
@@ -110,79 +95,7 @@ public class ClientsRepositoryTests
         Assert.Equal(id, clientToUpdate.Id);
         Assert.Equal("Sonic Lynx", clientToUpdate.Name);
     }
-    
-    // [Fact]
-    // public async Task AddMemberAsync_ReturnsId_AfterSaveChanges()
-    // {
-    //     // Arrange
-    //     var context = await CreateInMemoryDbContext();
-    //     var guid = await context.Clients.AsNoTracking().Select(c => c.Id).FirstOrDefaultAsync();
-    //     var repository = new ClientsRepository(context);
-    //
-    //     //Act
-    //     var client = await repository.GetWithPropertiesByIdAsync(guid);
-    //     var json = new SocialMediaObject()
-    //     {
-    //         Facebook = "facebook.com",
-    //         LinkedIn = "Linkedin.com",
-    //         Instagram = "instagram.com",
-    //         Pinterest = "pinterest.com",
-    //         Twitter = "twitter.com",
-    //     };
-    //     var person = client.AddMember("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
-    //         "Encoder",
-    //         JsonSerializer.Serialize(json));
-    //     
-    //     repository.Update(client);
-    //  
-    //      await repository.UnitOfWork.SaveChangesAsync(CancellationToken.None);
-    //     
-    //     
-    //      // Assert
-    //      // Assert.Equal(json,JsonSerializer.Deserialize<SocialMediaObject>(person.SocialMedia));
-    //      Assert.NotEqual(Guid.Empty,person.Id);
-    //     //  Assert.NotNull(client.Persons);
-    //     //                                                                                                                                                                                                                                                                                        
-    //     // Assert.True(client.Persons.Any());
-    // }
-    
-    [Fact]
-    public async Task UpdateMemberAsync_ReturnsId_AfterSaveChanges()
-    {
-        // Arrange
-        var context = await CreateInMemoryDbContext();
-        var guid = await context.Clients.AsNoTracking().Select(c => c.Id).FirstOrDefaultAsync();
-        var repository = new ClientsRepository(context);
-        var client = await repository.GetWithPropertiesByIdAsync(guid);
-        var json = new SocialMediaObject()
-        {
-            Facebook = "facebook.com",
-            LinkedIn = "Linkedin.com",
-            Instagram = "instagram.com",
-            Pinterest = "pinterest.com",
-            Twitter = "twitter.com",
-        };
-        // client.AddMember("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
-        //     "Encoder",
-        //     JsonSerializer.Serialize(json));
-        repository.Update(client);
-        await repository.UnitOfWork.SaveChangesAsync(CancellationToken.None);
-        client = null;
-        
-        //Act
-        client = await repository.GetWithPropertiesByIdAsync(guid);
-        // var person = client.Persons.FirstOrDefault();
-        //
-        //
-        // // Assert
-        // Assert.Equal(json,JsonSerializer.Deserialize<SocialMediaObject>(person.SocialMedia));
-        // Assert.NotNull(client.Persons);
-        // Assert.True(client.Persons.Any());
-        // Assert.True(client.Persons.Any(i => i.Email == "nin.alamo@outlook.com"));
-        // Assert.True(client.Persons.Any(i => i.Id == person.Id));
-        //Assert.NotNull(person.MemberTier);
-    }
-
+ 
 
     [Fact]
     public void TestCurrentUser()
@@ -224,14 +137,9 @@ public class ClientsRepositoryTests
         currentUserMock.Setup(x => x.Roles).Returns(new[]{"admin"});
         
         var context = new LokiContext(dbContextOptions, mediatorMock.Object, currentUserMock.Object);
-
-        // if (!context.Subscriptions.Any())
-        // {
-        //     await context.Subscriptions.AddRangeAsync(Subscription.GetLevels());
-        // }
         
         if (!context.Clients.Any())
-            await context.Clients.AddAsync(new Client("KMC", true, ""));
+            await context.Clients.AddAsync(new Client("KMC", "Real Estate"));
 
         await context.SaveChangesAsync(default);
         

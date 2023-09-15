@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Moq;
 using Shouldly;
 
 namespace BusinessCard.Infrastructure.Tests.Factory;
