@@ -30,7 +30,7 @@ public class ClientServiceTest
     {
         // Arrange
         var request = new AddClientGrpcCommand();
-        var expectedResult = CommandResult.Success(Guid.NewGuid());
+        var expectedResult = Guid.NewGuid();
         
         _mediatorMock
             .Setup(mediator => mediator.Send(It.IsAny<AddClientCommand>(), CancellationToken.None))
@@ -41,7 +41,7 @@ public class ClientServiceTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(expectedResult.Data.ToString(), result.ClientId);
+        Assert.Equal(expectedResult.ToString(), result.ClientId);
     }
     
     [Fact]

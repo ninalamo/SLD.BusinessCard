@@ -23,8 +23,7 @@ service ClientGrpc {
 
 message AddClientGrpcCommand {
     string companyName = 1;
-    bool isDiscreet = 2;
-    string industry = 3;
+    string industry = 2;
 }
 
 message EditClientGrpcCommand {

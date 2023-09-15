@@ -32,19 +32,16 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         try
         {
 
-            //TODO: we might not need this but just in case we need to do transactions in SQL
-             if (_dbContext.HasActiveTransaction)
-             {
-                 return await next();
-             }
+            
+             if (_dbContext.HasActiveTransaction) return await next();
             
              var strategy = _dbContext.Database.CreateExecutionStrategy();
 
              await strategy.ExecuteAsync(async () =>
              {
                  Guid transactionId;
-            
-                 using var transaction = await _dbContext.BeginTransactionAsync();
+
+                 await using var transaction = await _dbContext.BeginTransactionAsync();
                  using (LogContext.PushProperty("TransactionContext", transaction.TransactionId))
                  {
                     _logger.LogInformation("----- Begin transaction {TransactionId} for {CommandName} ({@Command})", transaction.TransactionId, typeName, request);

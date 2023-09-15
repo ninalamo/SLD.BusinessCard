@@ -85,7 +85,7 @@ public static class ServiceCollectionExtension
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
 
         // Register command and query handlers
-        services.AddScoped<IRequestHandler<AddClientCommand, CommandResult>, AddClientCommandHandler>();
+        services.AddScoped<IRequestHandler<AddClientCommand, Guid>, AddClientCommandHandler>();
 
         // Register validators
         services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(AddClientCommandValidator)));

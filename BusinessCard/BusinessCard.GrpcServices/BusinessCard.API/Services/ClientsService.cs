@@ -42,10 +42,10 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
     /// <returns></returns>
     public override async Task<ClientGrpcCommandResult> AddClientGrpc(AddClientGrpcCommand request, ServerCallContext context)
     {
-        var result = await _mediator.Send(ToAddClientCommand(request));
+        var result = await _mediator.Send(new AddClientCommand(request.CompanyName, request.Industry));
         return new ClientGrpcCommandResult
         {
-            ClientId = result.Data.ToString(),
+            ClientId = result.ToString(),
         };
     }
     
@@ -444,11 +444,6 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             CardKey = c.CardKey,
             PhoneNumber = c.PhoneNumber,
         };
-    }
-    
-    private static AddClientCommand ToAddClientCommand(AddClientGrpcCommand request)
-    {
-        return new AddClientCommand(request.CompanyName, request.Industry, request.IsDiscreet);
     }
     
     private static EditClientCommand ToEditClientCommand(EditClientGrpcCommand request)
