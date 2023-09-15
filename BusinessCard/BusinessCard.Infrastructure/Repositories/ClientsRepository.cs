@@ -16,7 +16,7 @@ public class ClientsRepository : IClientsRepository
     
     public async Task<Client> CreateAsync(string name, bool isDiscreet, string industry)
     {
-        var entity = await _context.Clients.AddAsync(new Client(name, isDiscreet, industry));
+        var entity = await _context.Clients.AddAsync(new Client(name, industry));
         return entity.Entity;
     }
 

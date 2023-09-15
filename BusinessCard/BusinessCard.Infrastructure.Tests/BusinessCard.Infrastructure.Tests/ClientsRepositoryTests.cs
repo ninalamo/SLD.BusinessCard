@@ -28,7 +28,7 @@ public class ClientsRepositoryTests
         // Arrange
         var context = await CreateInMemoryDbContext();
 
-        var existingClient = new Client("Existing Client", true, "");
+        var existingClient = new Client("Existing Client", "");
         var existingClientId = context.Clients.Add(existingClient).Entity.Id;
         await context.SaveChangesAsync(); 
 

@@ -14,7 +14,7 @@ namespace BusinessCard.Infrastructure.Tests
             var newName = "Test Company";
             var newIsDiscreet = true;
             var industry = "BPO";
-            var addedEntity = new Client (newName, newIsDiscreet, industry );
+            var addedEntity = new Client (newName, industry );
 
             mockRepository.Setup(c => c.CreateAsync(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>())).ReturnsAsync(addedEntity);
 
@@ -26,7 +26,6 @@ namespace BusinessCard.Infrastructure.Tests
             // Assert
             Assert.NotNull(createdClient);
             Assert.Equal(newName, createdClient.Name);
-            Assert.Equal(newIsDiscreet, createdClient.IsDiscreet);
             Assert.Equal(addedEntity.Id, createdClient.Id);
         }
 

@@ -5,7 +5,6 @@ public class Client : Entity, IAggregateRoot
     #region Attributes and Navigations
 
     public string Name { get; set; }
-    public bool IsDiscreet { get; set; }
     public string Industry { get; set; }
     public bool IsBlackList { get; private set; }
   
@@ -21,12 +20,12 @@ public class Client : Entity, IAggregateRoot
         _subscriptions = new List<Subscription>();
     }
     
-    public Client(string name, bool isDiscreet, string industry) : this()
+    public Client(string name, string industry) : this()
     {
         Name = name;
-        IsDiscreet = isDiscreet;
         Industry = industry;
     }
+    
     
     #endregion
 
