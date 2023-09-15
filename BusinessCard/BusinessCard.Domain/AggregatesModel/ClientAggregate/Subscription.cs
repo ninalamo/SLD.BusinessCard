@@ -16,14 +16,14 @@ public class Subscription : Entity
     }
    
     
-    public Subscription(Guid billingPlanId, DateTimeOffset startDate, DateTimeOffset endDate, Status? state = null)
+    public Subscription(Guid billingPlanId, DateTimeOffset startDate, DateTimeOffset endDate, Status state = Status.New)
     {
         _billingPlanId = billingPlanId;
         
         StartDate = startDate;
         EndDate = endDate;
         Reason = Enum.GetName(typeof(Status), Status.New);
-        State = state ?? Status.New;
+        State = state;
     }
     
    

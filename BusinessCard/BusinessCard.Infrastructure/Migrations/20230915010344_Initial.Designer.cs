@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessCard.Infrastructure.Migrations
 {
     [DbContext(typeof(LokiContext))]
-    [Migration("20230914164002_added_socmed_account")]
-    partial class added_socmed_account
+    [Migration("20230915010344_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

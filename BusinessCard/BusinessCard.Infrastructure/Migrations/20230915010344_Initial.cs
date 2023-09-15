@@ -155,6 +155,30 @@ namespace BusinessCard.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "socialmedia",
+                schema: "dbo",
+                columns: table => new
+                {
+                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Facebook = table.Column<string>(type: "nvarchar(56)", maxLength: 56, nullable: false),
+                    Instagram = table.Column<string>(type: "nvarchar(56)", maxLength: 56, nullable: false),
+                    LinkedIn = table.Column<string>(type: "nvarchar(56)", maxLength: 56, nullable: false),
+                    Pinterest = table.Column<string>(type: "nvarchar(56)", maxLength: 56, nullable: false),
+                    Twitter = table.Column<string>(type: "nvarchar(56)", maxLength: 56, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_socialmedia", x => x.PersonId);
+                    table.ForeignKey(
+                        name: "FK_socialmedia_people_PersonId",
+                        column: x => x.PersonId,
+                        principalSchema: "dbo",
+                        principalTable: "people",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "cardsetting",
                 schema: "dbo",
                 columns: table => new
@@ -259,11 +283,15 @@ namespace BusinessCard.Infrastructure.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "people",
+                name: "socialmedia",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "subscription",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "people",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
