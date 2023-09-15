@@ -1,7 +1,7 @@
-using BusinessCard.API.Application.Queries.GetClients;
+using BusinessCard.Application.Application.Queries.GetClients;
 using FluentValidation;
 
-namespace BusinessCard.API.Application.Queries.GetClientById;
+namespace BusinessCard.Application.Application.Queries.GetClientById;
 
 public class GetClientByIdQuery : IRequest<ClientsResult>
 {

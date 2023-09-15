@@ -1,5 +1,5 @@
-using BusinessCard.API.Application.Queries.GetClients;
-using BusinessCard.API.Application.Queries.GetMembers;
+using BusinessCard.Application.Application.Queries.GetClients;
+using BusinessCard.Application.Application.Queries.GetMembers;
 
 namespace BusinessCard.Application.Application.Common.Interfaces;
 public interface IClientQueries

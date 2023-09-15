@@ -1,9 +1,8 @@
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.Exceptions;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace BusinessCard.API.Application.Commands.EditClient;
+namespace BusinessCard.Application.Application.Commands.EditClient;
 
 public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Guid>
 {

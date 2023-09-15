@@ -1,7 +1,6 @@
-using BusinessCard.API.Application.Common.Interfaces;
 using BusinessCard.Application.Application.Common.Interfaces;
 
-namespace BusinessCard.API.Application.Queries.GetMembers;
+namespace BusinessCard.Application.Application.Queries.GetMembers;
 
 public class GetMembersQueryHandler : IRequestHandler<GetMembersQuery, GetMembersQueryResult>
 {

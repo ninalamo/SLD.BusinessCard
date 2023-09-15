@@ -1,8 +1,7 @@
-using BusinessCard.API.Application.Common.Interfaces;
-using BusinessCard.API.Application.Queries.GetClients;
 using BusinessCard.Application.Application.Common.Interfaces;
+using BusinessCard.Application.Application.Queries.GetClients;
 
-namespace BusinessCard.API.Application.Queries.GetClientById;
+namespace BusinessCard.Application.Application.Queries.GetClientById;
 
 public class GetClientByIdQueryHandler : IRequestHandler<GetClientByIdQuery, ClientsResult>
 {

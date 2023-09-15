@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-
-namespace BusinessCard.API.Application.Commands.UpsertClient;
+namespace BusinessCard.Application.Application.Commands.AddClient;
 
 public class AddClientCommand : IRequest<CommandResult>
 {

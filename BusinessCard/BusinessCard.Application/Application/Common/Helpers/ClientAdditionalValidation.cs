@@ -2,7 +2,7 @@ using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace BusinessCard.API.Application.Common.Interfaces.Helpers;
+namespace BusinessCard.Application.Application.Common.Helpers;
 
 public static class AdditionalValidationExtensions
 {

@@ -1,7 +1,6 @@
-using BusinessCard.API.Application.Commands.UpsertClient;
 using FluentValidation;
 
-namespace BusinessCard.API.Application.Commands.AddClient;
+namespace BusinessCard.Application.Application.Commands.AddClient;
 
 public class AddClientCommandValidator : AbstractValidator<AddClientCommand>
 {

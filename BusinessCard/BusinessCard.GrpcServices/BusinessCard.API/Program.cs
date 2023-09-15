@@ -1,5 +1,4 @@
-using BusinessCard.API.Application.Common.Interfaces;
-using BusinessCard.API.Extensions;
+using BusinessCard.Application;
 using BusinessCard.Application.Application.Common.Interfaces;
 using BusinessCard.Application.Application.Queries;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;

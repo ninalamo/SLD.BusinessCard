@@ -1,7 +1,6 @@
-using BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
 using FluentValidation;
 
-namespace BusinessCard.API.Application.Commands.AddMemberWithIdentityKey;
+namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
 
 public class AddMemberWithIdentityKeyCommandValidator : AbstractValidator<AddMemberWithIdentityKeyCommand>
 {

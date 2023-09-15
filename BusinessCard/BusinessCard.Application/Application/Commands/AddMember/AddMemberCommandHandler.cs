@@ -1,11 +1,8 @@
-using BusinessCard.API.Application.Commands.AddClient;
-using BusinessCard.API.Application.Commands.UpsertClient;
-using BusinessCard.API.Application.Common.Interfaces.Helpers;
+using BusinessCard.Application.Application.Commands.AddClient;
+using BusinessCard.Application.Application.Common.Helpers;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using FluentValidation;
-using FluentValidation.Results;
 
-namespace BusinessCard.API.Application.Commands.AddMember;
+namespace BusinessCard.Application.Application.Commands.AddMember;
 
 public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Guid>
 {

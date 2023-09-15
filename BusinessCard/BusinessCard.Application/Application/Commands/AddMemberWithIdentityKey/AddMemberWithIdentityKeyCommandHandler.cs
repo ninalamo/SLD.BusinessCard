@@ -1,4 +1,4 @@
-using BusinessCard.API.Application.Common.Interfaces.Helpers;
+using BusinessCard.Application.Application.Common.Helpers;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
 namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;

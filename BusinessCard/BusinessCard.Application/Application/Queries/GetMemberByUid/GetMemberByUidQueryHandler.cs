@@ -1,7 +1,7 @@
 using System.Text.Json;
-using BusinessCard.API.Application.Common.Models;
-using BusinessCard.API.Application.Queries.GetMemberId;
 using BusinessCard.Application.Application.Common.Interfaces;
+using BusinessCard.Application.Application.Common.Models;
+using BusinessCard.Application.Application.Queries.GetMemberId;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Exceptions;
 

@@ -1,11 +1,9 @@
-﻿using BusinessCard.API.Application.Commands.RemoveClient;
-using BusinessCard.API.Application.Queries;
+﻿using BusinessCard.Application.Application.Commands.RemoveClient;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.Exceptions;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace BusinessCard.API.Application.Commands.ExportCards;
+namespace BusinessCard.Application.Application.Commands.ExportCards;
 
 public class ExportCardsCommand : IRequest<ExportCardsCommandResult>
 {

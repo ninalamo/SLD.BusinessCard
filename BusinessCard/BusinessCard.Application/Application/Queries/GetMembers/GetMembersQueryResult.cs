@@ -1,4 +1,4 @@
-namespace BusinessCard.API.Application.Queries.GetMembers;
+namespace BusinessCard.Application.Application.Queries.GetMembers;
 
 public record GetMembersQueryResult
 {

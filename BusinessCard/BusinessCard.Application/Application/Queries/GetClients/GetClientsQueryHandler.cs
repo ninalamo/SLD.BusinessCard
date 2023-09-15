@@ -1,4 +1,3 @@
-using BusinessCard.API.Application.Queries.GetClients;
 using BusinessCard.Application.Application.Common.Interfaces;
 
 namespace BusinessCard.Application.Application.Queries.GetClients;

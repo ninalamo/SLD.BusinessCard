@@ -1,4 +1,4 @@
-﻿namespace BusinessCard.API.Application.Commands.EditClient;
+﻿namespace BusinessCard.Application.Application.Commands.EditClient;
 
 public class EditClientCommand : IRequest<Guid>
 {

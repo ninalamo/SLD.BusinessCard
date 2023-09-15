@@ -1,9 +1,9 @@
 using System.Reflection;
-using BusinessCard.API.Application.Behaviors;
-using BusinessCard.API.Application.Commands;
-using BusinessCard.API.Application.Commands.AddClient;
-using BusinessCard.API.Application.Commands.UpsertClient;
-using BusinessCard.API.Application.Common.Interfaces;
+using BusinessCard.Application.Application.Behaviors;
+using BusinessCard.Application.Application.Commands;
+using BusinessCard.Application.Application.Commands.AddClient;
+using BusinessCard.Application.Application.Common;
+using BusinessCard.Application.Application.Common.Interfaces;
 using Microsoft.OpenApi.Models;
 
 namespace BusinessCard.API;

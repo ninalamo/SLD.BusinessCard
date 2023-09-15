@@ -1,5 +1,5 @@
 using System.Text.Json;
-using BusinessCard.API.Application.Common.Models;
+using BusinessCard.Application.Application.Common.Models;
 
 namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
 

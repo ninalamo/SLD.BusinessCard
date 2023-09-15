@@ -1,7 +1,7 @@
 using System.Text.Json;
-using BusinessCard.API.Application.Common.Models;
+using BusinessCard.Application.Application.Common.Models;
 
-namespace BusinessCard.API.Application.Commands.AddMember;
+namespace BusinessCard.Application.Application.Commands.AddMember;
 
 public class AddMemberCommand : IRequest<Guid>
 {

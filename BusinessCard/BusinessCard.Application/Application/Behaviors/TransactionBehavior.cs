@@ -1,9 +1,9 @@
-using BusinessCard.API.Extensions;
+using BusinessCard.Application.Extensions;
 using BusinessCard.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Serilog.Context;
 
-namespace BusinessCard.API.Application.Behaviors;
+namespace BusinessCard.Application.Application.Behaviors;
 
 public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

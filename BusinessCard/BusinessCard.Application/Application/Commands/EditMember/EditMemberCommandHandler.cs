@@ -1,8 +1,8 @@
-using BusinessCard.API.Application.Common.Interfaces.Helpers;
+using BusinessCard.Application.Application.Common.Helpers;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using FluentValidation;
 
-namespace BusinessCard.API.Application.Commands.EditMember;
+namespace BusinessCard.Application.Application.Commands.EditMember;
 
 public class EditMemberCommandHandler : IRequestHandler<EditMemberCommand, Guid>
 {

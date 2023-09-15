@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace BusinessCard.API.Application.Commands.AddMember;
+namespace BusinessCard.Application.Application.Commands.AddMember;
 
 public class AddMemberCommandValidator : AbstractValidator<AddMemberCommand>
 {

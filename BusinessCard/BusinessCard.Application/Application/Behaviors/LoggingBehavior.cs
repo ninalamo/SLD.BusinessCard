@@ -1,6 +1,6 @@
-using BusinessCard.API.Extensions;
+using BusinessCard.Application.Extensions;
 
-namespace BusinessCard.API.Application.Behaviors;
+namespace BusinessCard.Application.Application.Behaviors;
 
 public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

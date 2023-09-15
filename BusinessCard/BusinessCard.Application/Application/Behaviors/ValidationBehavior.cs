@@ -1,9 +1,7 @@
-using BusinessCard.API.Extensions;
-using BusinessCard.Domain.Exceptions;
+using BusinessCard.Application.Extensions;
 using FluentValidation;
-using FluentValidationException = FluentValidation.ValidationException;
 
-namespace BusinessCard.API.Application.Behaviors;
+namespace BusinessCard.Application.Application.Behaviors;
 
 public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

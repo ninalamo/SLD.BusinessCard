@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using BusinessCard.API.Application.Commands;
-using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.Application.Application.Commands;
+using BusinessCard.Application.Application.Commands.AddClient;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using MediatR;
 using Microsoft.Extensions.Logging;

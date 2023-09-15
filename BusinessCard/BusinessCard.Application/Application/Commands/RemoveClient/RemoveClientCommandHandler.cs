@@ -1,9 +1,8 @@
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.Exceptions;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace BusinessCard.API.Application.Commands.RemoveClient;
+namespace BusinessCard.Application.Application.Commands.RemoveClient;
 
 public class RemoveClientCommandHandler : IRequestHandler<RemoveClientCommand>
 {

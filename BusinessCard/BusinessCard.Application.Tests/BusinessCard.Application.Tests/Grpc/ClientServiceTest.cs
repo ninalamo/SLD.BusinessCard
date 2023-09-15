@@ -1,8 +1,8 @@
-﻿using BusinessCard.API.Application.Commands;
-using BusinessCard.API.Application.Commands.EditClient;
-using BusinessCard.API.Application.Commands.UpsertClient;
-using BusinessCard.API.Extensions;
-using BusinessCard.API.Services;
+﻿using BusinessCard.API.Services;
+using BusinessCard.Application.Application.Commands;
+using BusinessCard.Application.Application.Commands.AddClient;
+using BusinessCard.Application.Application.Commands.EditClient;
+using BusinessCard.Application.Extensions;
 using BusinessCard.GrpcServices.Services;
 using ClientService;
 using Grpc.Core;

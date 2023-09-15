@@ -1,12 +1,8 @@
 using System.Text.Json;
-using BusinessCard.API.Application.Common.Interfaces;
-using BusinessCard.API.Application.Common.Models;
+using BusinessCard.Application.Application.Common.Models;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.Exceptions;
-using FluentValidation;
-using FluentValidation.Results;
 
-namespace BusinessCard.API.Application.Queries.GetMemberId;
+namespace BusinessCard.Application.Application.Queries.GetMemberId;
 
 public class GetMemberIdQuery : IRequest<GetMemberByIdQueryResult>
 {

@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace BusinessCard.API.Application.Commands;
+namespace BusinessCard.Application.Application.Commands;
 
 public record CommandResult
 {

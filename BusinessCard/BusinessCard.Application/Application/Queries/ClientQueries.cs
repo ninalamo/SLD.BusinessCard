@@ -1,8 +1,7 @@
-using BusinessCard.API.Application.Common.Interfaces;
-using BusinessCard.API.Application.Common.SQLScripts;
-using BusinessCard.API.Application.Queries.GetClients;
-using BusinessCard.API.Application.Queries.GetMembers;
 using BusinessCard.Application.Application.Common.Interfaces;
+using BusinessCard.Application.Application.Common.SQLScripts;
+using BusinessCard.Application.Application.Queries.GetClients;
+using BusinessCard.Application.Application.Queries.GetMembers;
 using Dapper;
 using Microsoft.Data.SqlClient;
 

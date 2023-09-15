@@ -1,6 +1,4 @@
-using System.Text.Json.Serialization;
-
-namespace BusinessCard.API.Application.Queries.GetClients;
+namespace BusinessCard.Application.Application.Queries.GetClients;
 
 public record GetClientsQueryResult(int PageSize, int PageNumber, int TotalCount, IEnumerable<ClientsResult> Clients)
 {

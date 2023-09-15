@@ -1,4 +1,4 @@
-namespace BusinessCard.API.Application.Common.SQLScripts;
+namespace BusinessCard.Application.Application.Common.SQLScripts;
 
 internal static class SqlScript
 {
