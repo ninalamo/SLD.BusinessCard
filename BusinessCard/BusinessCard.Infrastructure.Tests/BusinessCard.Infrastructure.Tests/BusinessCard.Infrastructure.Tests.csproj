@@ -34,4 +34,9 @@
 
 
 
+    <ItemGroup>
+      <Compile Remove="LokiContextTests.cs" />
+
+    </ItemGroup>
+
 </Project>

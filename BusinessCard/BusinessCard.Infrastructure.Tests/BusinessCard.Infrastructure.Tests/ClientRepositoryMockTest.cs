@@ -1,15 +1,7 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.Exceptions;
-using BusinessCard.Domain.Seedwork;
-using BusinessCard.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Moq;
-using Xunit;
 
-namespace BusinessCard.Infrastructure.Tests.Repositories
+namespace BusinessCard.Infrastructure.Tests
 {
     public class ClientsRepositoryMOckTests
     {

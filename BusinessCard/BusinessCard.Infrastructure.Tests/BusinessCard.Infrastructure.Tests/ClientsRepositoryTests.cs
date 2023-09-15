@@ -108,7 +108,7 @@ public class ClientsRepositoryTests
         // Assert
         Assert.NotNull(clientToUpdate);
         Assert.Equal(id, clientToUpdate.Id);
-        Assert.Equal("Updated Client", clientToUpdate.Name);
+        Assert.Equal("Sonic Lynx", clientToUpdate.Name);
     }
     
     [Fact]

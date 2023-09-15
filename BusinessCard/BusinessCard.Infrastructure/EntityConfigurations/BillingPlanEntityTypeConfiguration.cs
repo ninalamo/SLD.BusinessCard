@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusinessCard.Infrastructure.EntityConfigurations;
 
-internal class BillingPlanEntityTypeConfiguration : IEntityTypeConfiguration<BillingPlan>
+public class BillingPlanEntityTypeConfiguration : IEntityTypeConfiguration<BillingPlan>
 {
     public void Configure(EntityTypeBuilder<BillingPlan> builder)
     {
