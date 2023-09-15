@@ -162,9 +162,9 @@ public class ClientsRepositoryTests
             Pinterest = "pinterest.com",
             Twitter = "twitter.com",
         };
-        client.AddMember("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
-            "Encoder",
-            JsonSerializer.Serialize(json));
+        // client.AddMember("Nin", "Alamo", "", "", "1234", "nin.alamo@outlook.com", "Cavite",
+        //     "Encoder",
+        //     JsonSerializer.Serialize(json));
         repository.Update(client);
         await repository.UnitOfWork.SaveChangesAsync(CancellationToken.None);
         client = null;

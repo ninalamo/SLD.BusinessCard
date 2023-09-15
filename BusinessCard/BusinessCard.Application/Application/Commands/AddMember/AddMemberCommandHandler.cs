@@ -26,7 +26,7 @@ public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Guid>
         client.AdditionalValidation(request.PhoneNumber, request.Email);
 
         _logger.LogInformation($"Adding {nameof(Person)}-{DateTimeOffset.Now}");
-        var person = client.AddMember(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,"");
+        var person = new Person();//client.AddMember(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,"");
 
         person.SetSocialMedia(request.Facebook, request.Instagram, request.Twitter, request.Pinterest,
             request.LinkedIn);

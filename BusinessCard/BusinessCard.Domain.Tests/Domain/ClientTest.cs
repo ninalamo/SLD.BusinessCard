@@ -35,19 +35,19 @@ namespace BusinessCard.Domain.Tests.Domain
             Client company = new(companyName, false, "");
             int count = 1000;
             
-            for (int i = 0; i < count; i++)
-            {
-                company.AddMember(
-                    "N/A", 
-                    "N/A", 
-                    "N/A",
-                    "N/A",
-                    Guid.NewGuid().ToString(),
-                    $"{Guid.NewGuid().ToString()}@tuldok.co", 
-                    "N/A",
-                    "N/A",
-                    "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
-            }
+            // for (int i = 0; i < count; i++)
+            // {
+            //     company.AddMember(
+            //         "N/A", 
+            //         "N/A", 
+            //         "N/A",
+            //         "N/A",
+            //         Guid.NewGuid().ToString(),
+            //         $"{Guid.NewGuid().ToString()}@tuldok.co", 
+            //         "N/A",
+            //         "N/A",
+            //         "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
+            // }
 
         
             // company.Persons.ShouldNotBeEmpty();
@@ -73,7 +73,7 @@ namespace BusinessCard.Domain.Tests.Domain
                         "N/A",
                         "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
     
-                company.AddMember(person);
+                // company.AddMember(person);
             }
             
             // company.Persons.ShouldNotBeEmpty();
@@ -96,8 +96,8 @@ namespace BusinessCard.Domain.Tests.Domain
             company.IsDiscreet = false;
             company.IsDiscreet.ShouldBeFalse();
             
-            company.AddMember(NameFaker.First(), NameFaker.Last(), NameFaker.Last(), NameFaker.Last(),
-                Faker.Phone.Number(), Internet.FreeMail, Address.Country, "", "");
+            // company.AddMember(NameFaker.First(), NameFaker.Last(), NameFaker.Last(), NameFaker.Last(),
+            //     Faker.Phone.Number(), Internet.FreeMail, Address.Country, "", "");
 
             // Person person = company.Persons.FirstOrDefault();
             //

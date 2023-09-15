@@ -21,7 +21,6 @@ service ClientGrpc {
     rpc GetMemberByUidGrpc(GetMemberByUidGrpcQuery) returns (GetMemberWithUidGrpcResult){}
 }
 
-
 message AddClientGrpcCommand {
     string companyName = 1;
     bool isDiscreet = 2;

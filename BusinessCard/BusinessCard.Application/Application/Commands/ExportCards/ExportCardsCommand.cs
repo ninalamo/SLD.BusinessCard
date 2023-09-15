@@ -58,16 +58,17 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
 
         for (var i = 0; i < request.Count; i++)
         {
-            var person = entity.AddMember(
-                "N/A", 
-                "N/A", 
-                "N/A",
-                "N/A",
-                Guid.NewGuid().ToString(),
-                $"{Guid.NewGuid().ToString()}@tuldok.co", 
-                "N/A",
-                "N/A",
-                "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
+            var person = new Person();
+                // entity.AddMember(
+                // "N/A", 
+                // "N/A", 
+                // "N/A",
+                // "N/A",
+                // Guid.NewGuid().ToString(),
+                // $"{Guid.NewGuid().ToString()}@tuldok.co", 
+                // "N/A",
+                // "N/A",
+                // "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
 
             //person.SetSubscription(entity.MembershipTier.Level);
             // person.DisableCard();

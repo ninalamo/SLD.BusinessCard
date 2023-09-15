@@ -25,7 +25,7 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
         client.AdditionalValidation(request.PhoneNumber, request.Email);
 
         _logger.LogInformation($"Adding {nameof(Person)}-{DateTimeOffset.Now}");
-        var person = client.AddMember(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,request.SocialMedia);
+        var person = new Person();// client.AddMember(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,request.SocialMedia);
         
         _logger.LogInformation($"Setting industry level for {nameof(Person)}-{DateTimeOffset.Now}");
        //TODO: person.SetSubscription(client.MembershipTier.Level);
