@@ -27,59 +27,6 @@ namespace BusinessCard.Domain.Tests.Domain
             company.Name.ShouldBe("GMA");
         }
 
-
-        [Fact]
-        public async Task ClientShouldBeAbleToGenerateMultiplePlaceholders()
-        {
-            string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, "");
-            int count = 1000;
-            
-            // for (int i = 0; i < count; i++)
-            // {
-            //     company.AddMember(
-            //         "N/A", 
-            //         "N/A", 
-            //         "N/A",
-            //         "N/A",
-            //         Guid.NewGuid().ToString(),
-            //         $"{Guid.NewGuid().ToString()}@tuldok.co", 
-            //         "N/A",
-            //         "N/A",
-            //         "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
-            // }
-
-        
-            // company.Persons.ShouldNotBeEmpty();
-            // company.Persons.Count.ShouldBe(1000);
-        }
-        
-        [Fact]
-        public async Task CanAddMemberUsingEntityObject()
-        {
-            string companyName = CompanyFaker.Name();
-            Client company = new(companyName, false, "");
-            int count = 1000;
-
-            for (int i = 0; i < count; i++)
-            {
-                var person = new Person("N/A",
-                        "N/A",
-                        "N/A",
-                        "N/A",
-                        Guid.NewGuid().ToString(),
-                        $"{Guid.NewGuid().ToString()}@tuldok.co",
-                        "N/A",
-                        "N/A",
-                        "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
-    
-                // company.AddMember(person);
-            }
-            
-            // company.Persons.ShouldNotBeEmpty();
-            // company.Persons.Count.ShouldBe(1000);
-        }
-
         [Fact]
         public void ClientCanBeDiscreet()
         {
@@ -89,31 +36,7 @@ namespace BusinessCard.Domain.Tests.Domain
             company.IsDiscreet.ShouldBeFalse();
         }
 
-        [Fact]
-        public void ClientCanAddMembers()
-        {
-            Client company = new(CompanyFaker.Name(), false, "");
-            company.IsDiscreet = false;
-            company.IsDiscreet.ShouldBeFalse();
-            
-            // company.AddMember(NameFaker.First(), NameFaker.Last(), NameFaker.Last(), NameFaker.Last(),
-            //     Faker.Phone.Number(), Internet.FreeMail, Address.Country, "", "");
-
-            // Person person = company.Persons.FirstOrDefault();
-            //
-            // company.Persons.ShouldNotBeEmpty();
-            // company.Persons.FirstOrDefault().ShouldBeEquivalentTo(person);
-
-        }
-
-        [Fact]
-        public void ClientPersonListShouldNotBeNull()
-        {
-            Client client = new(CompanyFaker.Name(), false, "");
-            // client.Persons.ShouldNotBeNull();
-            // client.Persons.ShouldBeEmpty();
-        }
-        
+       
         [Fact]
         public void ClientSubscriptionListShouldNotBeNull()
         {
