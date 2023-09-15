@@ -20,12 +20,10 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
         
         builder.Property(b => b.Address).IsRequired();
         builder.Property(b => b.Occupation).IsRequired();
-        builder.Property(b => b.SocialMedia).IsRequired();
-
+       
         builder.Property(b => b.IdentityUserId).HasDefaultValue(string.Empty);
 
         builder.Property<Guid>("ClientId").IsRequired();
-        
         
         builder.Metadata
             .FindNavigation(nameof(Person.Cards))

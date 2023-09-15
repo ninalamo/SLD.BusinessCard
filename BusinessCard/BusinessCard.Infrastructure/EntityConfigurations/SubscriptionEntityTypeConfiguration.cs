@@ -9,8 +9,7 @@ internal class SubscriptionEntityTypeConfiguration : IEntityTypeConfiguration<Su
     {
         builder.ToTable("subscription", LokiContext.DefaultSchema);
         builder.HasKey(b => b.Id);
-
-
+        
         builder.Property<Guid>("_billingPlanId")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("BillingPlanId")
@@ -21,7 +20,8 @@ internal class SubscriptionEntityTypeConfiguration : IEntityTypeConfiguration<Su
             .HasForeignKey("_billingPlanId")
             .OnDelete(DeleteBehavior.Restrict);
         
-        
+        builder.Property<Guid>("ClientId").IsRequired();
+
         builder.OwnsOne(b => b.Setting, setting =>
         {
             setting.ToTable("cardsetting", LokiContext.DefaultSchema);
@@ -30,6 +30,9 @@ internal class SubscriptionEntityTypeConfiguration : IEntityTypeConfiguration<Su
             setting.Property(b => b.Description).HasMaxLength(50);
         });
         
+        builder.Metadata
+            .FindNavigation(nameof(Subscription.Persons))
+            ?.SetPropertyAccessMode(PropertyAccessMode.Field);
         
     }
 }

@@ -21,7 +21,7 @@ public class FluentValidationTests
         };
 
         var loggerMock = new Mock<ILogger<ValidatorBehavior<AddClientCommand, CommandResult>>>();
-        var request = new AddClientCommand("Sonic Lynx Digital",true,1);
+        var request = new AddClientCommand("Sonic Lynx Digital","industry",true);
         var nextHandlerMock = new Mock<RequestHandlerDelegate<CommandResult>>();
         nextHandlerMock.Setup(h => h()).ReturnsAsync(CommandResult.Success(Guid.NewGuid()));
 

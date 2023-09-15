@@ -51,42 +51,6 @@ namespace BusinessCard.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "people",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsSubscriptionOverride = table.Column<bool>(type: "bit", nullable: false),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NameSuffix = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SocialMedia = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Occupation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_people", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_people_client_ClientId",
-                        column: x => x.ClientId,
-                        principalSchema: "dbo",
-                        principalTable: "client",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "subscription",
                 schema: "dbo",
                 columns: table => new
@@ -99,7 +63,7 @@ namespace BusinessCard.Infrastructure.Migrations
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PaymentScheduleReminderInterval = table.Column<int>(type: "int", nullable: false),
                     PaymentScheduleInterval = table.Column<int>(type: "int", nullable: false),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BillingPlanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -122,6 +86,64 @@ namespace BusinessCard.Infrastructure.Migrations
                         column: x => x.ClientId,
                         principalSchema: "dbo",
                         principalTable: "client",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "cardsetting",
+                schema: "dbo",
+                columns: table => new
+                {
+                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ExpiresInMonths = table.Column<int>(type: "int", nullable: false, defaultValue: 12)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_cardsetting", x => x.SubscriptionId);
+                    table.ForeignKey(
+                        name: "FK_cardsetting_subscription_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalSchema: "dbo",
+                        principalTable: "subscription",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "people",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsSubscriptionOverride = table.Column<bool>(type: "bit", nullable: false),
+                    IdentityUserId = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NameSuffix = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Occupation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_people", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_people_subscription_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalSchema: "dbo",
+                        principalTable: "subscription",
                         principalColumn: "Id");
                 });
 
@@ -178,28 +200,6 @@ namespace BusinessCard.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "cardsetting",
-                schema: "dbo",
-                columns: table => new
-                {
-                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Level = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ExpiresInMonths = table.Column<int>(type: "int", nullable: false, defaultValue: 12)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_cardsetting", x => x.SubscriptionId);
-                    table.ForeignKey(
-                        name: "FK_cardsetting_subscription_SubscriptionId",
-                        column: x => x.SubscriptionId,
-                        principalSchema: "dbo",
-                        principalTable: "subscription",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 schema: "dbo",
                 table: "billingplan",
@@ -239,12 +239,6 @@ namespace BusinessCard.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_people_ClientId",
-                schema: "dbo",
-                table: "people",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_people_Email",
                 schema: "dbo",
                 table: "people",
@@ -257,6 +251,12 @@ namespace BusinessCard.Infrastructure.Migrations
                 table: "people",
                 column: "PhoneNumber",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_people_SubscriptionId",
+                schema: "dbo",
+                table: "people",
+                column: "SubscriptionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_subscription_BillingPlanId",
@@ -287,11 +287,11 @@ namespace BusinessCard.Infrastructure.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "subscription",
+                name: "people",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "people",
+                name: "subscription",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

@@ -11,20 +11,21 @@ public static class AdditionalValidationExtensions
       var validationFailures = new List<ValidationFailure>();
       if (client == null) throw new KeyNotFoundException("Client not found.");
 
-      if (memberId.HasValue && memberId.Value != Guid.Empty)
-      {
-         var person = client.Persons.FirstOrDefault(p => p.Id == memberId.Value);
-       
-         if (person == null) throw new KeyNotFoundException("Member not found.");
-
-         if (client.Persons.Any(i => i.PhoneNumber == phoneNumber && i.Id != memberId.Value))
-            validationFailures.Add(new ValidationFailure("PhoneNumber",
-               $"PhoneNumber: ({phoneNumber}) Already exists."));
-
-         if (client.Persons.Any(i => i.Email.ToLower() == email.ToLower() && i.Id != memberId.Value))
-            validationFailures.Add(new ValidationFailure("Email", $"Email: ({email}) Already exists."));
-
-      }
+      //TODO: Refactor
+      // if (memberId.HasValue && memberId.Value != Guid.Empty)
+      // {
+      //    var person = client.Persons.FirstOrDefault(p => p.Id == memberId.Value);
+      //  
+      //    if (person == null) throw new KeyNotFoundException("Member not found.");
+      //
+      //    if (client.Persons.Any(i => i.PhoneNumber == phoneNumber && i.Id != memberId.Value))
+      //       validationFailures.Add(new ValidationFailure("PhoneNumber",
+      //          $"PhoneNumber: ({phoneNumber}) Already exists."));
+      //
+      //    if (client.Persons.Any(i => i.Email.ToLower() == email.ToLower() && i.Id != memberId.Value))
+      //       validationFailures.Add(new ValidationFailure("Email", $"Email: ({email}) Already exists."));
+      //
+      // }
 
       if (validationFailures.Any())
          throw new ValidationException("Business validation error.", validationFailures);

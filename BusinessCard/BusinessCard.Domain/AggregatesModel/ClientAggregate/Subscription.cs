@@ -14,7 +14,6 @@ public class Subscription : Entity
         Renewed = 4,
         Deleted = 5,
     }
-   
     
     public Subscription(Guid billingPlanId, DateTimeOffset startDate, DateTimeOffset endDate, Status state = Status.New)
     {
@@ -25,10 +24,10 @@ public class Subscription : Entity
         Reason = Enum.GetName(typeof(Status), Status.New);
         State = state;
     }
-    
+    private readonly List<Person> _persons;
+    public IReadOnlyCollection<Person> Persons => _persons.AsReadOnly();
    
     public CardSetting Setting { get; private set; }
-
 
     public DateTimeOffset StartDate { get; private set; }
     public DateTimeOffset EndDate { get; private set; }

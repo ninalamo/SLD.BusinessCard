@@ -14,6 +14,6 @@ public class AddMemberCommandValidator : AbstractValidator<AddMemberCommand>
         RuleFor(x => x.Address).NotEmpty();
         RuleFor(x => x.Occupation).NotEmpty();
 
-        RuleFor(x => x.SocialMedia).Must(x => x.Any());
+      
     }
 }

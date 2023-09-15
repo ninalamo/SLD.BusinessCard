@@ -26,14 +26,15 @@ public class EditMemberCommandHandler : IRequestHandler<EditMemberCommand, Guid>
         client.AdditionalValidation(request.PhoneNumber, request.Email, request.MemberId);
 
         _logger.LogInformation($"Getting {nameof(Person)}-{DateTimeOffset.Now}");
-        var person = client.Persons.FirstOrDefault(p => p.Id == request.MemberId);
-        
-        // person.AddKeyToCard(request.CardKey);
-        person.SetContactDetails(request.PhoneNumber, request.Email, request.Address);
-        person.SetName(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix);
-        person.Occupation = request.Occupation;
-        person.SetSocialMedia(request.SocialMedia);
-        person.SetSubscription(request.SubscriptionLevel);
+        //TODO: Refactor
+        // var person = client.Persons.FirstOrDefault(p => p.Id == request.MemberId);
+        //
+        // // person.AddKeyToCard(request.CardKey);
+        // person.SetContactDetails(request.PhoneNumber, request.Email, request.Address);
+        // person.SetName(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix);
+        // person.Occupation = request.Occupation;
+        // person.SetSocialMedia(request.SocialMedia);
+        // person.SetSubscription(request.SubscriptionLevel);
 
         _logger.LogInformation($"Update {nameof(Client)}-{DateTimeOffset.Now}");
         _repository.Update(client);
@@ -41,7 +42,7 @@ public class EditMemberCommandHandler : IRequestHandler<EditMemberCommand, Guid>
         _logger.LogInformation($"Saving changes... {DateTimeOffset.Now}");
         await _repository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-        return person.Id;
+        return Guid.NewGuid();//TODO: Refactor .Id;
     }
 }
 

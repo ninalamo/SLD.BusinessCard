@@ -54,7 +54,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public string PhoneNumber { get; set; }
         public string Email { get; private set; }
         public string Address { get; private set; }
-        public string SocialMedia { get; private set; }
         public string Occupation { get; set; }
 
         public void SetSubscription(int level)
@@ -79,7 +78,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 
         public void SetSocialMedia(string links)
         {
-            SocialMedia = links;
+            //SocialMedia = links;
         }
 
         public void SetSocialMedia(string facebook, string instagram, string twitter, string pinterest, string linkedId)

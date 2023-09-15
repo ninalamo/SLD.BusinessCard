@@ -38,7 +38,7 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
         var cardExists = await _queries.IsCardExists(request.Uid);
         message += cardExists ? string.Empty : $"{Environment.NewLine}Card key not found.";
 
-        var person = client?.Persons.FirstOrDefault();//c =>  c.Card?.Key == request.Uid);
+       // var person = client?.Persons.FirstOrDefault();//c =>  c.Card?.Key == request.Uid);
         // message +=  person == null ? string.Empty : $"{Environment.NewLine}Key no longer available.";
         
         if (!string.IsNullOrEmpty(message))
@@ -50,36 +50,36 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
             return result;
         }
         
-        var member = new MemberUidResult()
-        {
-            ClientId = request.ClientId,
-            Subscription = "To remove",//person?.Subscription?.Name,
-            SubscriptionLevel = 1, //person.Subscription.Level,
-            Address = person.Address,
-            // CardKey = person.Card.Key,
-            CreatedBy = person.CreatedBy,
-            CreatedOn = person.CreatedOn,
-            Email = person.Email,
-            Facebook = ToSocialMediaObject(person.SocialMedia).Facebook,
-            FirstName = person.FirstName,
-            LastName = person.LastName,
-            NameSuffix = person.NameSuffix,
-            MiddleName = person.MiddleName,
-            Id = person.Id,
-            Instagram = ToSocialMediaObject(person.SocialMedia).Instagram,
-            Pinterest = ToSocialMediaObject(person.SocialMedia).Pinterest,
-            Occupation = person.Occupation,
-            Twitter = ToSocialMediaObject(person.SocialMedia).Twitter,
-            IsActive = person.IsActive,
-            PhoneNumber = person.PhoneNumber,
-            ModifiedBy = person.ModifiedBy,
-            ModifiedOn = person.ModifiedOn,
-            LinkedIn = ToSocialMediaObject(person.SocialMedia).LinkedIn,
-            IdentityUserId = person.IdentityUserId,
-            Company = client.Name
-        };
-
-        result.SetMember(member);
+        // var member = new MemberUidResult()
+        // {
+        //     ClientId = request.ClientId,
+        //     Subscription = "To remove",//person?.Subscription?.Name,
+        //     SubscriptionLevel = 1, //person.Subscription.Level,
+        //     Address = person.Address,
+        //     // CardKey = person.Card.Key,
+        //     CreatedBy = person.CreatedBy,
+        //     CreatedOn = person.CreatedOn,
+        //     Email = person.Email,
+        //     Facebook = ToSocialMediaObject(person.SocialMedia).Facebook,
+        //     FirstName = person.FirstName,
+        //     LastName = person.LastName,
+        //     NameSuffix = person.NameSuffix,
+        //     MiddleName = person.MiddleName,
+        //     Id = person.Id,
+        //     Instagram = ToSocialMediaObject(person.SocialMedia).Instagram,
+        //     Pinterest = ToSocialMediaObject(person.SocialMedia).Pinterest,
+        //     Occupation = person.Occupation,
+        //     Twitter = ToSocialMediaObject(person.SocialMedia).Twitter,
+        //     IsActive = person.IsActive,
+        //     PhoneNumber = person.PhoneNumber,
+        //     ModifiedBy = person.ModifiedBy,
+        //     ModifiedOn = person.ModifiedOn,
+        //     LinkedIn = ToSocialMediaObject(person.SocialMedia).LinkedIn,
+        //     IdentityUserId = person.IdentityUserId,
+        //     Company = client.Name
+        // };
+        //
+        // result.SetMember(member);
 
         return result;
     }

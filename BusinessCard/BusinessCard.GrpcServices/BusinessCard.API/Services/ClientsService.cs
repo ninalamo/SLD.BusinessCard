@@ -45,7 +45,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         var result = await _mediator.Send(ToAddClientCommand(request));
         return new ClientGrpcCommandResult
         {
-            ClientId = result.Id?.ToString(),
+            ClientId = result.Data.ToString(),
         };
     }
     
@@ -448,7 +448,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
     
     private static AddClientCommand ToAddClientCommand(AddClientGrpcCommand request)
     {
-        return new AddClientCommand(request.CompanyName, request.IsDiscreet, request.Subscription);
+        return new AddClientCommand(request.CompanyName, request.Industry, request.IsDiscreet);
     }
     
     private static EditClientCommand ToEditClientCommand(EditClientGrpcCommand request)

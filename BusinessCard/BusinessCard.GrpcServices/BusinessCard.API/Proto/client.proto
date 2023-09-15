@@ -25,7 +25,7 @@ service ClientGrpc {
 message AddClientGrpcCommand {
     string companyName = 1;
     bool isDiscreet = 2;
-    int32 subscription = 3;
+    string industry = 3;
 }
 
 message EditClientGrpcCommand {

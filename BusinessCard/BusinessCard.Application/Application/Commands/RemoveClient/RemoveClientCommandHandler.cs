@@ -31,11 +31,12 @@ public class RemoveClientCommandHandler : IRequestHandler<RemoveClientCommand>
         }
 
         entity.IsActive = false;
-        entity.Persons.ToList().ForEach(p =>
-        {
-            p.IsActive = false;
-            // p.DisableCard();
-        });
+        //TODO: Refactor
+        // entity.Persons.ToList().ForEach(p =>
+        // {
+        //     p.IsActive = false;
+        //     // p.DisableCard();
+        // });
         _logger.LogInformation($"Updating {nameof(entity)}. {DateTime.UtcNow}");
         _repository.Update(entity);
         

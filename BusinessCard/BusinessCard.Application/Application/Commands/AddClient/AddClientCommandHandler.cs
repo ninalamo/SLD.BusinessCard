@@ -1,3 +1,4 @@
+using System.Text.Json;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
 namespace BusinessCard.Application.Application.Commands.AddClient;
@@ -15,10 +16,10 @@ public class AddClientCommandHandler : IRequestHandler<AddClientCommand, Command
 
     public async Task<CommandResult> Handle(AddClientCommand request, CancellationToken cancellationToken)
     {
-        // _logger.LogInformation($"Starting {nameof(AddClientCommandHandler)}.");
-        // _logger.LogInformation($"Creating {nameof(Client)}. Request:{JsonSerializer.Serialize(request)}");
-        // var id = (await _repository.CreateAsync(request.CompanyName, request.IsDiscreet,request.MemberTierLevel)).Id;
-        //
+        _logger.LogInformation($"Starting {nameof(AddClientCommandHandler)}.");
+        _logger.LogInformation($"Creating {nameof(Client)}. Request:{JsonSerializer.Serialize(request)}");
+        var id = (await _repository.CreateAsync(request.Name, request.IsDiscreet,request.Industry)).Id;
+        
          return CommandResult.Success(null);
     }
 }

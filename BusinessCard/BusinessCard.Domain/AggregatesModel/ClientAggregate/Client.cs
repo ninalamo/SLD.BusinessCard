@@ -12,15 +12,11 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
         private readonly List<Subscription> _subscriptions;
         public IReadOnlyCollection<Subscription> Subscriptions => _subscriptions.AsReadOnly();
         
-
-        private readonly List<Person> _persons;
-        public IReadOnlyCollection<Person> Persons => _persons.AsReadOnly();
-
         #region Constructors and Factory
         
         private Client()
         {
-            _persons = new List<Person>();
+           // _persons = new List<Person>();
             _subscriptions = new List<Subscription>();
         }
         
@@ -38,7 +34,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
         public Person AddMember(Person person)
         {
-            _persons.Add(person);
+           // _persons.Add(person);
             return person;
         }
         
@@ -57,7 +53,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
             {
                 IsActive = false
             };
-            _persons.Add(person);
+           // _persons.Add(person);
             return person;
         }
 

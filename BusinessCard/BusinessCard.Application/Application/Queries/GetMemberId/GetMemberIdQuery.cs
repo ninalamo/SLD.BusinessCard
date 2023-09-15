@@ -1,5 +1,6 @@
 using System.Text.Json;
 using BusinessCard.Application.Application.Common.Models;
+using BusinessCard.Application.Application.Queries.GetMemberByIdAndUid;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
 namespace BusinessCard.Application.Application.Queries.GetMemberId;
@@ -34,7 +35,7 @@ public class GetMemberIdQueryHandler : IRequestHandler<GetMemberIdQuery, GetMemb
         
         if (client == null) throw new KeyNotFoundException("Client not found.");
 
-        var member = client.Persons.FirstOrDefault(c => c.Id == request.MemberId);
+        MemberIdAndUidResult member = null; //TODO: Refactor client.Persons.FirstOrDefault(c => c.Id == request.MemberId);
 
         if (member == null) throw new KeyNotFoundException("Member not found.");
 

@@ -11,10 +11,6 @@ internal class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Name).IsRequired();
         builder.HasIndex(b => b.Name).IsUnique();
-
-        builder.Metadata
-            .FindNavigation(nameof(Client.Persons))
-            ?.SetPropertyAccessMode(PropertyAccessMode.Field);
         
         builder.Metadata
             .FindNavigation(nameof(Client.Subscriptions))

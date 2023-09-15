@@ -2,13 +2,13 @@ namespace BusinessCard.Application.Application.Commands.AddClient;
 
 public class AddClientCommand : IRequest<CommandResult>
 {
-    public AddClientCommand(string companyName, bool isDiscreet, int memberTierLevel)
+    public AddClientCommand(string name, string industry, bool isDiscreet)
     {
-        CompanyName = companyName;
+        Name = name;
+        Industry = industry;
         IsDiscreet = isDiscreet;
-        MemberTierLevel = memberTierLevel;
     }
-    public string CompanyName { get; private set; }
-    public int MemberTierLevel { get; private set; }
+    public string Name { get; private set; }
+    public string Industry { get; private set; }
     public bool IsDiscreet { get; private set; }
 }

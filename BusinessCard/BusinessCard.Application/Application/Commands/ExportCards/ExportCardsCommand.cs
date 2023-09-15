@@ -80,10 +80,10 @@ public class ExportCardsCommmandHandler : IRequestHandler<ExportCardsCommand, Ex
 
         return new ExportCardsCommandResult()
         {
-            Urls = entity.Persons.Where(p => p.IsActive == false).Select(p => $"ext/v1/tenants/{entity.Id}/members/{p.Id}").ToArray()
+            Urls = Array.Empty<string>()//TODO: Refactor entity.Persons.Where(p => p.IsActive == false).Select(p => $"ext/v1/tenants/{entity.Id}/members/{p.Id}").ToArray()
         };
     }
-}
+} 
 
 
 public record ExportCardsCommandResult

@@ -35,15 +35,15 @@ public class GetMemberIdAndUidQueryHandler : IRequestHandler<GetMemberByIdAndUid
             return result;
         }
 
-        var person = client.Persons.FirstOrDefault(c =>  c.Id == request.MemberId);
-        if (person == null)
-        {
-            result.SetMember(null);
-            result.SetMessage("Member id not found.");
-            result.IsValid = false;
-
-            return result;
-        }
+        // var person = client.Persons.FirstOrDefault(c =>  c.Id == request.MemberId);
+        // if (person == null)
+        // {
+        //     result.SetMember(null);
+        //     result.SetMessage("Member id not found.");
+        //     result.IsValid = false;
+        //
+        //     return result;
+        // }
 
         // if (person.HasKeylessCard())
         // {
@@ -62,36 +62,36 @@ public class GetMemberIdAndUidQueryHandler : IRequestHandler<GetMemberByIdAndUid
         //     }
         // }
 
-        var member = new MemberIdAndUidResult()
-        {
-                ClientId = request.ClientId,
-                Subscription = "To remove",//person.Subscription.Name,
-                SubscriptionLevel = 1, //person.Subscription.Level,
-                Address = person.Address,
-                // CardKey = person.Card.Key,
-                CreatedBy = person.CreatedBy,
-                CreatedOn = person.CreatedOn,
-                Email = person.Email,
-                Facebook = ToSocialMediaObject(person.SocialMedia).Facebook,
-                FirstName = person.FirstName,
-                LastName = person.LastName,
-                NameSuffix = person.NameSuffix,
-                MiddleName = person.MiddleName,
-                Id = person.Id,
-                Instagram = ToSocialMediaObject(person.SocialMedia).Instagram,
-                Pinterest = ToSocialMediaObject(person.SocialMedia).Pinterest,
-                Occupation = person.Occupation,
-                Twitter = ToSocialMediaObject(person.SocialMedia).Twitter,
-                IsActive = person.IsActive,
-                PhoneNumber = person.PhoneNumber,
-                ModifiedBy = person.ModifiedBy,
-                ModifiedOn = person.ModifiedOn,
-                LinkedIn = ToSocialMediaObject(person.SocialMedia).LinkedIn,
-                IdentityUserId = person.IdentityUserId,
-                Company = client.Name
-        };
-
-        result.SetMember(member);
+        // var member = new MemberIdAndUidResult()
+        // {
+        //         ClientId = request.ClientId,
+        //         Subscription = "To remove",//person.Subscription.Name,
+        //         SubscriptionLevel = 1, //person.Subscription.Level,
+        //         Address = person.Address,
+        //         // CardKey = person.Card.Key,
+        //         CreatedBy = person.CreatedBy,
+        //         CreatedOn = person.CreatedOn,
+        //         Email = person.Email,
+        //         Facebook = ToSocialMediaObject(person.SocialMedia).Facebook,
+        //         FirstName = person.FirstName,
+        //         LastName = person.LastName,
+        //         NameSuffix = person.NameSuffix,
+        //         MiddleName = person.MiddleName,
+        //         Id = person.Id,
+        //         Instagram = ToSocialMediaObject(person.SocialMedia).Instagram,
+        //         Pinterest = ToSocialMediaObject(person.SocialMedia).Pinterest,
+        //         Occupation = person.Occupation,
+        //         Twitter = ToSocialMediaObject(person.SocialMedia).Twitter,
+        //         IsActive = person.IsActive,
+        //         PhoneNumber = person.PhoneNumber,
+        //         ModifiedBy = person.ModifiedBy,
+        //         ModifiedOn = person.ModifiedOn,
+        //         LinkedIn = ToSocialMediaObject(person.SocialMedia).LinkedIn,
+        //         IdentityUserId = person.IdentityUserId,
+        //         Company = client.Name
+        // };
+        //
+        // result.SetMember(member);
 
         return result;
     }

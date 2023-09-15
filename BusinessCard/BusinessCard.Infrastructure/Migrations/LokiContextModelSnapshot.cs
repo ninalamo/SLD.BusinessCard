@@ -221,19 +221,18 @@ namespace BusinessCard.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("SocialMedia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
 
                     b.HasIndex("Email")
                         .IsUnique();
 
                     b.HasIndex("PhoneNumber")
                         .IsUnique();
+
+                    b.HasIndex("SubscriptionId");
 
                     b.ToTable("people", "dbo");
                 });
@@ -247,7 +246,7 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("ActualEndDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ClientId")
+                    b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
@@ -309,11 +308,9 @@ namespace BusinessCard.Infrastructure.Migrations
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Person", b =>
                 {
-                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", null)
+                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Subscription", null)
                         .WithMany("Persons")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubscriptionId");
 
                     b.OwnsOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.SocialMedia", "SocialMediaAccounts", b1 =>
                         {
@@ -361,7 +358,9 @@ namespace BusinessCard.Infrastructure.Migrations
                 {
                     b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", null)
                         .WithMany("Subscriptions")
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.BillingPlan", null)
                         .WithMany()
@@ -401,14 +400,17 @@ namespace BusinessCard.Infrastructure.Migrations
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", b =>
                 {
-                    b.Navigation("Persons");
-
                     b.Navigation("Subscriptions");
                 });
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Person", b =>
                 {
                     b.Navigation("Cards");
+                });
+
+            modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Subscription", b =>
+                {
+                    b.Navigation("Persons");
                 });
 #pragma warning restore 612, 618
         }
