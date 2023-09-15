@@ -18,24 +18,27 @@ public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Guid>
     {
         _logger.LogInformation($"Starting {nameof(Handle)} in {nameof(EditClientCommandHandler)} with request: {request}. {DateTime.UtcNow}");
 
-        var entity = await _repository.GetEntityByIdAsync(request.Id);
+        var client = await _repository.GetEntityByIdAsync(request.Id);
 
         _logger.LogInformation($"Checking if {nameof(request.Id)} exists. {DateTime.UtcNow}");
 
-        if (entity == null)
+        if (client == null)
         {
             _logger.LogInformation($"{nameof(request.Id)} does not exists. {DateTime.UtcNow}");
             throw new ValidationException("Validation error.",
                 new ValidationFailure[] { new ValidationFailure("Id", "Id does not exist.") });
         }
-        _logger.LogInformation($"Updating {nameof(entity)}. {DateTime.UtcNow}");
-        // entity.Amend(request.CompanyName,request.IsDiscreet,request.MemberTierLevel);
-        //
-        _repository.Update(entity);
+        
+        _logger.LogInformation($"Updating {nameof(client)}. {DateTime.UtcNow}");
+        client.Name = request.Name;
+        client.Industry = request.Industry;
+        
+        _repository.Update(client);
+        await _repository.UnitOfWork.SaveChangesAsync(cancellationToken);
         
         _logger.LogInformation($"Exiting {nameof(Handle)} in {nameof(EditClientCommandHandler)} with request: {request}. {DateTime.UtcNow}");
         
-        _logger.LogInformation($"Return {nameof(entity.Id)}. {DateTime.UtcNow}");
-        return entity.Id;
+        _logger.LogInformation($"Return {nameof(client.Id)}. {DateTime.UtcNow}");
+        return client.Id;
     }
 }

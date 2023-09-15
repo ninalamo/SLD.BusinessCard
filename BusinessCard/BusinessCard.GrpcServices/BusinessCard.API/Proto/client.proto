@@ -28,9 +28,8 @@ message AddClientGrpcCommand {
 
 message EditClientGrpcCommand {
     string id = 1;
-    string companyName = 2;
-    bool isDiscreet = 3;
-    int32 subscription = 4;
+    string name = 2;
+    string industry = 3;
 }
 
 message RemoveClientGrpcCommand {

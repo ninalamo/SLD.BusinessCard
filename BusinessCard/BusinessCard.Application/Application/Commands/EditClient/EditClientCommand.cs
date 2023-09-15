@@ -2,15 +2,14 @@
 
 public class EditClientCommand : IRequest<Guid>
 {
-    public EditClientCommand(Guid id, string companyName, int memberTierLevel, bool isDiscreet)
+    public EditClientCommand(Guid id, string name, string industry)
     {
         Id = id;
-        CompanyName = companyName;
-        MemberTierLevel = memberTierLevel;
-        IsDiscreet = isDiscreet;
+        Name = name;
+        Industry = industry;
     }
+    
     public Guid Id { get; private set; }
-    public string CompanyName { get; private set; }
-    public int MemberTierLevel { get; private set; }
-    public bool IsDiscreet { get; private set; }
+    public string Name { get; private set; }
+    public string Industry { get; private set; }
 }

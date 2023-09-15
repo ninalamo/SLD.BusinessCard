@@ -51,9 +51,8 @@ public class ClientServiceTest
         var request = new EditClientGrpcCommand()
         {
             Id = Guid.NewGuid().ToString(),
-            CompanyName = "SonicLynx",
-            IsDiscreet = true,
-            Subscription = 1
+            Name = "SonicLynx",
+          Industry = "BPO"
         };
 
         var expectedResult = request.Id.ToGuid();

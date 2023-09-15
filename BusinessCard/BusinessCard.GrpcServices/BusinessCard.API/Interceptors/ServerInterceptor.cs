@@ -21,6 +21,8 @@ public class ServerInterceptor : Interceptor
             MethodType.Unary, context.Method);
         try
         {
+            _logger.LogInformation( "CorrelationId: {CorrelationId} - Server Interceptor", _correlationId);
+
             return await continuation(request, context);
         }
         catch (Exception e)

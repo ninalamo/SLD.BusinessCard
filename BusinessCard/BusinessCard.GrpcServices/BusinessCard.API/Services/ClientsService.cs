@@ -42,7 +42,12 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
     /// <returns></returns>
     public override async Task<ClientGrpcCommandResult> AddClientGrpc(AddClientGrpcCommand request, ServerCallContext context)
     {
+        _logger.LogInformation( $"gRPC Service: {nameof(ClientsService)} - {nameof(AddClientGrpc)}. Sending:{request}");
+
         var result = await _mediator.Send(new AddClientCommand(request.CompanyName, request.Industry));
+        
+        _logger.LogInformation( $"gRPC Service: {nameof(ClientsService)} - {nameof(AddClientGrpc)}. Received:{result}");
+
         return new ClientGrpcCommandResult
         {
             ClientId = result.ToString(),
@@ -58,10 +63,15 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
     /// <returns></returns>
     public override async Task<MemberGrpcCommandResult> AddMemberWithIdentityGrpc(AddMemberWithIdentityGrpcCommand request, ServerCallContext context)
     {
-        var command = await _mediator.Send(ToAddMemberWithIdentityKeyCommand(request));
+        _logger.LogInformation( $"gRPC Service: {nameof(ClientsService)} - {nameof(AddMemberWithIdentityGrpc)}. Sending:{request}");
+
+        var result = await _mediator.Send(ToAddMemberWithIdentityKeyCommand(request));
+        
+        _logger.LogInformation( $"gRPC Service: {nameof(ClientsService)} - {nameof(AddMemberWithIdentityGrpc)}. Received:{result}");
+
         return new MemberGrpcCommandResult()
         {
-            MemberId = command.ToString()
+            MemberId = result.ToString()
         };
     }
 
@@ -75,7 +85,12 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
     /// <exception cref="BusinessCardApiException"></exception>
     public override async Task<ClientGrpcCommandResult> EditClientGrpc(EditClientGrpcCommand request, ServerCallContext context)
     {
-         var result = await _mediator.Send(ToEditClientCommand(request));
+        _logger.LogInformation( $"gRPC Service: {nameof(ClientsService)} - {nameof(EditClientGrpc)}. Sending:{request}");
+
+         var result = await _mediator.Send(new EditClientCommand(request.Id.ToGuid(),request.Name,request.Industry));
+         
+         _logger.LogInformation( $"gRPC Service: {nameof(ClientsService)} - {nameof(EditClientGrpc)}. Received:{result}");
+
          return new ClientGrpcCommandResult
          {
              ClientId = result.ToString(),
@@ -446,10 +461,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         };
     }
     
-    private static EditClientCommand ToEditClientCommand(EditClientGrpcCommand request)
-    {
-        return new EditClientCommand(request.Id.ToGuid(), request.CompanyName,request.Subscription,request.IsDiscreet);
-    }
+   
 
 
     private static AddMemberCommand ToAddMemberCommand(AddMemberGrpcCommand request)
