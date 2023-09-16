@@ -392,17 +392,10 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
     {
         return  new ClientGrpcResult
         {
-            CardHolders = c.CardHolders,
-            CompanyName = c.CompanyName,
-            ClientId = c.ClientId.ToString(),
-            IsDiscreet = c.IsDiscreet,
-            NonCardHolders = c.NonCardHolders,
-            Subscription = "",
-            SubscriptionLevel = 0,
-            CreatedBy = c.CreatedBy,
-            CreatedOn = c.CreatedOn?.ToString("yyyy-MMM-dd"),
-            ModifiedBy = c.ModifiedBy,
-            ModifiedOn = c.ModifiedOn?.ToString("yyyy-MMM-dd"),
+            Id = c.Id.ToString(),
+            Industry = c.Industry,
+            Name = c.Name,
+            Subscriptions = c.Subscriptions,
             IsActive = c.IsActive
         };
     }

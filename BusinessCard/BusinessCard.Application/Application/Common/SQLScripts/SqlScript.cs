@@ -2,32 +2,29 @@ namespace BusinessCard.Application.Application.Common.SQLScripts;
 
 internal static class SqlScript
 {
-    public const string SelectClients = @"SELECT 
-	  		C.[Id] [ClientId] 
-      		,C.[CompanyName] 
-      		,C.[IsDiscreet] 
-      		,C.[CreatedBy] 
-      		,C.[CreatedOn] 
-      		,C.[ModifiedBy] 
-      		,C.[ModifiedOn] 
-      		,C.[IsActive] 
-	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 1)  [Cardholders] 
-	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 0)  [NonCardholders] 
-  		FROM [kardb].[kardibee].[client] C  ";
+    public const string SelectClients = 
+		@"SELECT
+		[Id]
+    	,[Name]
+    	,[Industry]   
+		,(SELECT COUNT(*)
+			FROM [kardb].[dbo].[subscription] S
+    		LEFT JOIN  [kardb].[dbo].people P ON S.Id = P.SubscriptionId) [Subscriptions]
+  		FROM [kardb].[dbo].[client] 
+  		WHERE [IsActive] = 1 ";
     
-    public const string SelectClientById =  @"SELECT TOP 1
-	  		C.[Id] [ClientId] 
-      		,C.[CompanyName] 
-      		,C.[IsDiscreet] 
-      		,C.[CreatedBy] 
-      		,C.[CreatedOn] 
-      		,C.[ModifiedBy] 
-      		,C.[ModifiedOn] 
-      		,C.[IsActive] 
-	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 1)  [Cardholders] 
-	  		,(SELECT COUNT(*) FROM kardb.kardibee.people WHERE ClientId = C.Id AND C.IsActive = 0)  [NonCardholders] 
-  		FROM [kardb].[kardibee].[client] C 
-  		WHERE C.[Id] = @Id ";
+    public const string SelectClientById = 
+	@"SELECT TOP 1 [Id]
+      ,[Name]
+      ,[Industry]
+      ,[IsBlackList]
+      ,[CreatedBy]
+      ,[CreatedOn]
+      ,[ModifiedBy]
+      ,[ModifiedOn]
+      ,[IsActive]
+  	FROM [kardb].[dbo].[client]
+  	WHERE C.[Id] = @Id ";
 
     public const string SelectMembers = @"SELECT
     		P.[Id] 
@@ -51,13 +48,13 @@ internal static class SqlScript
 	      ,P.[ModifiedOn]
 	      ,P.[IsActive]
     	  ,P.[IdentityUserId]
-	FROM [kardb].[kardibee].[people] P
-	LEFT JOIN kardb.kardibee.client CL ON CL.Id = P.ClientId
-	LEFT JOIN kardb.kardibee.card C ON C.Id = P.CardId ";
+	FROM [kardb].[dbo].[people] P
+	LEFT JOIN kardb.dbo.client CL ON CL.Id = P.ClientId
+	LEFT JOIN kardb.dbo.card C ON C.Id = P.CardId ";
 
-    public const string ClientCount = @"SELECT COUNT(Id) FROM kardb.kardibee.client";
+    public const string ClientCount = @"SELECT COUNT(Id) FROM kardb.dbo.client WHERE [IsActive] = 1 ";
     
-    public const string MemberCount = @"SELECT COUNT(Id) FROM kardb.kardibee.people WHERE ClientId = @ClientId";
+    public const string MemberCount = @"SELECT COUNT(Id) FROM kardb.dbo.people WHERE ClientId = @ClientId";
 
     public const string CheckIfCardKeyExists = @"SELECT COUNT([Key]) [Count] FROM [kardb].[kardibee].[card] WHERE [Key] = @key";
     

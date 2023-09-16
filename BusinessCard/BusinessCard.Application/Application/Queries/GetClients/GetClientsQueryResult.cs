@@ -10,16 +10,9 @@ public record GetClientsQueryResult(int PageSize, int PageNumber, int TotalCount
 
 public record ClientsResult
 {
-    public Guid ClientId { get; init; }
-    public string CompanyName {get;  init; }
-    public bool IsDiscreet { get; init; }
-    public int? SubscriptionLevel { get;init; }
-    public string? Subscription { get; init; }
-    public int CardHolders { get; init; }
-    public int NonCardHolders { get; init; }
-    public string? CreatedBy { get; init; }
-    public string? ModifiedBy { get; init; }
-    public DateTimeOffset? CreatedOn { get; init; }
-    public DateTimeOffset? ModifiedOn { get; init; }
+    public Guid? Id { get; init; }
+    public string? Name {get;  init; }
+    public string? Industry { get; init; }
+    public int Subscriptions { get;init; }
     public bool IsActive { get; init; }
 }

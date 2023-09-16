@@ -23,8 +23,7 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
        
         builder.Property(b => b.IdentityUserId).HasDefaultValue(string.Empty);
 
-        builder.Property<Guid>("ClientId").IsRequired();
-        
+         
         builder.Metadata
             .FindNavigation(nameof(Person.Cards))
             ?.SetPropertyAccessMode(PropertyAccessMode.Field);

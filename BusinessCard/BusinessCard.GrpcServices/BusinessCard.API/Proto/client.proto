@@ -108,8 +108,6 @@ message GetClientByIdGrpcQuery {
     string id = 1;
 }
 
-
-
 message GetPaginatedClientsGrpcQueryResult {
     int32 pageSize = 1;
     int32 pageNumber = 2;
@@ -118,18 +116,11 @@ message GetPaginatedClientsGrpcQueryResult {
 }
 
 message ClientGrpcResult {
-    string clientId = 1;
-    string companyName = 2;
-    bool isDiscreet = 3;
-    int32 subscriptionLevel = 4;
-    int32 cardHolders = 5;
-    int32 nonCardHolders = 6;
-    string createdBy = 7;
-    string modifiedBy = 8;
-    string createdOn = 9;
-    string modifiedOn = 10;
-    string subscription = 11;
-    bool isActive = 12;
+    string id = 1;
+    string name = 2;
+    string industry = 3;
+    int32 subscriptions = 4;
+    bool isActive = 5;
 }
 
 message GetPaginatedMembersGrpcQuery{

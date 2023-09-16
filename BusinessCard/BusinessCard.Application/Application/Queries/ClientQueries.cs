@@ -23,22 +23,19 @@ public class ClientQueries : IClientQueries
         parameters.Add("pageSize", pageSize);
         parameters.Add("offSet",(pageNumber -1) * pageSize);
 
-
         var query = SqlScript.SelectClients;
 
         if (!string.IsNullOrEmpty(name))
         {
-            parameters.Add("CompanyName",name);
-            query += " WHERE C.[CompanyName] LIKE '@CompanyName%' ";
+            parameters.Add("Name",name);
+            query += $" AND [Name] LIKE '%@Name%' ";
         }
         
-        query += @" ORDER BY C.[CompanyName] 
-        OFFSET @offSet 
-        ROWS FETCH NEXT @pageSize ROWS ONLY";
+        query += @" ORDER BY [Name] OFFSET @offSet ROWS FETCH NEXT @pageSize ROWS ONLY ";
 
         var countQuery = SqlScript.ClientCount;
 
-        await using var connection = _dbConnectionFactory.CreateConnection(); //new SqlConnection(_connectionString);
+        await using var connection = _dbConnectionFactory.CreateConnection(); 
         
         await connection.OpenAsync(CancellationToken.None);
 
