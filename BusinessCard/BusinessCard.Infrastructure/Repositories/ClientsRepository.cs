@@ -31,9 +31,9 @@ public class ClientsRepository : IClientsRepository
     public async Task<Client> GetWithPropertiesByIdAsync(Guid id)
     {
         var entity =  await _context.Clients
-            // .Include(c => c.Persons).ThenInclude(p => p.Cards)
-            // .Include(c => c.Persons)//.ThenInclude(p => p.MemberTier)
-           // .Include(c => c.MembershipTier)
+            .Include(c => c.Subscriptions)
+            .ThenInclude(p => p.Persons)
+            .ThenInclude(p => p.Cards)
             .FirstOrDefaultAsync(c => c.Id == id);
         return entity;
     }
