@@ -469,7 +469,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return new AddMemberCommand(request.ClientId.ToGuid(), request.FirstName, request.LastName,
             request.MiddleName, request.NameSuffix, request.PhoneNumber, request.Email, request.Address,
             request.Occupation, request.Facebook, request.LinkedIn, request.Instagram, request.Pinterest,
-            request.Twitter);
+            request.Twitter, request.SubscriptionId.ToGuid());
     }
     
     private static AddMemberWithIdentityKeyCommand ToAddMemberWithIdentityKeyCommand(AddMemberWithIdentityGrpcCommand request)

@@ -6,7 +6,7 @@ namespace BusinessCard.Application.Application.Commands.AddMember;
 public class AddMemberCommand : IRequest<Guid>
 {
     public AddMemberCommand(Guid clientId, string firstName, string lastName, string middleName, string nameSuffix, string phoneNumber, string email, string address, string occupation, 
-        string facebook, string linkedIn, string instagram, string pinterest, string twitter)
+        string facebook, string linkedIn, string instagram, string pinterest, string twitter, Guid subscriptionId)
     {
         ClientId = clientId;
         FirstName = firstName;
@@ -19,7 +19,7 @@ public class AddMemberCommand : IRequest<Guid>
         Occupation = occupation;
 
 
-
+        SubscriptionId = subscriptionId;
         Facebook = string.IsNullOrEmpty(facebook) ? "N/A" : facebook;
         Instagram = string.IsNullOrEmpty(instagram) ? "N/A" : instagram;
         LinkedIn = string.IsNullOrEmpty(linkedIn) ? "N/A" : linkedIn;
@@ -29,6 +29,7 @@ public class AddMemberCommand : IRequest<Guid>
 
     }
     public Guid ClientId { get; init; }
+    public Guid SubscriptionId { get; init; }
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string MiddleName { get; init; }

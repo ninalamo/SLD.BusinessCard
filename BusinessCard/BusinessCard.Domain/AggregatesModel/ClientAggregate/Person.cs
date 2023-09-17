@@ -5,7 +5,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
     public class Person : Entity
     {
-        private List<Card> _cards;
+        private readonly List<Card> _cards;
         public IReadOnlyCollection<Card> Cards => _cards.AsReadOnly();
 
         public Person(
@@ -27,8 +27,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             Email = email;
             Address = address;
             Occupation = occupation;
-
-            SetSocialMedia(socialMedia);
+            
             SocialMediaAccounts = new SocialMedia("N/A", "N/A", "N/A", "N/A", "N/A");
         }
 
@@ -76,10 +75,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             Address = address;
         }
 
-        public void SetSocialMedia(string links)
-        {
-            //SocialMedia = links;
-        }
+
 
         public void SetSocialMedia(string facebook, string instagram, string twitter, string pinterest, string linkedId)
         {

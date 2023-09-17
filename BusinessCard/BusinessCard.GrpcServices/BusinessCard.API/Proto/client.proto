@@ -54,6 +54,7 @@ message AddMemberGrpcCommand {
     string pinterest = 12;
     string twitter = 13;
     string clientId = 14;
+    string subscriptionId = 15;
 }
 
 message AddMemberWithIdentityGrpcCommand {
@@ -73,6 +74,7 @@ message AddMemberWithIdentityGrpcCommand {
     string clientId = 14;
     string identity = 15;
     string cardKey = 16;
+    string subscriptionId = 17;
 }
 
 message EditMemberGrpcCommand {

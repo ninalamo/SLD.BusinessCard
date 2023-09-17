@@ -26,6 +26,8 @@ public class Subscription : Entity
 
         Level = level;
         CardExpiryInMonths = cardExpiryInMonths;
+
+        _persons = new List<Person>();
     }
     private readonly List<Person> _persons;
     public IReadOnlyCollection<Person> Persons => _persons.AsReadOnly();
@@ -101,4 +103,11 @@ public class Subscription : Entity
     public void UpdateReminderInterval(int dayOfMonth) => PaymentScheduleReminderInterval = dayOfMonth;
     public void UpdatePaymentScheduleInterval(int dayOfMonth) => PaymentScheduleInterval = dayOfMonth;
 
+    public Person AddMember(Person person)
+    {
+        person.IsActive = person.HasIdentity();
+        _persons.Add(person);
+        
+        return person;
+    }
 }
