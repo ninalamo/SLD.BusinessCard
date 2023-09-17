@@ -81,6 +81,7 @@ await using var scope = app.Services.CreateAsyncScope();
 
 app.MapGrpcService<ClientsService>();
 app.MapGrpcService<KardsService>();
+app.MapGrpcService<BusinessCard.API.Services.SubscriptionService>();
 
 app.UseCors(b=> b.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 

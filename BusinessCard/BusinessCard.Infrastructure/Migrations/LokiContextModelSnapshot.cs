@@ -240,6 +240,9 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("ActualEndDate")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int>("CardExpiryInMonths")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
@@ -250,11 +253,18 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("EndDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
@@ -284,9 +294,10 @@ namespace BusinessCard.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
-
                     b.HasIndex("_billingPlanId");
+
+                    b.HasIndex("ClientId", "Level")
+                        .IsUnique();
 
                     b.ToTable("subscription", "dbo");
                 });
@@ -360,35 +371,6 @@ namespace BusinessCard.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("_billingPlanId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.OwnsOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.CardSetting", "Setting", b1 =>
-                        {
-                            b1.Property<Guid>("SubscriptionId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Description")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<int>("ExpiresInMonths")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .HasDefaultValue(12);
-
-                            b1.Property<int>("Level")
-                                .HasColumnType("int");
-
-                            b1.HasKey("SubscriptionId");
-
-                            b1.ToTable("cardsetting", "dbo");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SubscriptionId");
-                        });
-
-                    b.Navigation("Setting")
                         .IsRequired();
                 });
 

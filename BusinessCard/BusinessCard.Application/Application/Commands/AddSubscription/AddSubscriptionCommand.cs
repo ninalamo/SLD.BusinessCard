@@ -5,13 +5,17 @@ public class AddSubscriptionCommand : IRequest<Guid>
     public Guid ClientId { get; }
     public Guid PlanId { get; }
     public DateTimeOffset StartDate { get; }
-    public int NumberOfMonthToExpire { get; }
+    public DateTimeOffset EndDate { get; }
+    public int CardExpiryInMonth { get; }
+    public int CardLevel { get; }
 
-    public AddSubscriptionCommand(Guid clientId, Guid planId, DateTimeOffset startDate, int numberOfMonthToExpire)
+    public AddSubscriptionCommand(Guid clientId, Guid planId, DateTimeOffset startDate, DateTimeOffset endDate, int cardExpiryInMonth, int level )
     {
         ClientId = clientId;
         PlanId = planId;
         StartDate = startDate;
-        NumberOfMonthToExpire = numberOfMonthToExpire;
+        CardExpiryInMonth = cardExpiryInMonth;
+        EndDate = endDate;
+        CardLevel = level;
     }
 }

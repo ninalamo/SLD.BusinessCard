@@ -3,11 +3,11 @@ using BusinessCard.Application.Application.Queries.GetMembers;
 using BusinessCard.Application.Extensions;
 using FluentValidation.Results;
 using Grpc.Core;
-using KardService;
+using CardService;
 
 namespace BusinessCard.GrpcServices.Services;
 
-public class KardsService : KardGrpc.KardGrpcBase
+internal class KardsService : KardGrpc.KardGrpcBase
 {
     private readonly IMediator _mediator;
     private readonly ILogger<KardsService> _logger;

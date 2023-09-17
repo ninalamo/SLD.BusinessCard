@@ -1,4 +1,7 @@
-﻿namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
+﻿using FluentValidation;
+using FluentValidation.Results;
+
+namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
 public class Client : Entity, IAggregateRoot
 {
@@ -32,12 +35,16 @@ public class Client : Entity, IAggregateRoot
 
     #region Behaviors
     
-    public Subscription AddSubscription(Guid billingPlanId, DateTimeOffset startDate, int numberOfMonthsToExpire)
+    public Subscription AddSubscription(Guid billingPlanId, DateTimeOffset startDate,DateTimeOffset endDate, int cardLevel, int numberOfMonthsToExpire)
     {
         Subscription subscription =
             new(billingPlanId: billingPlanId,
                 startDate: startDate, 
-                startDate.AddMonths(numberOfMonthsToExpire));
+                endDate,
+                cardLevel,
+                numberOfMonthsToExpire);
+
+        subscription.Description = $"Card Level: {cardLevel}, card expires after {numberOfMonthsToExpire} month(s)";
         
         _subscriptions.Add(subscription);
         return subscription;

@@ -15,7 +15,7 @@ public class Subscription : Entity
         Deleted = 5,
     }
     
-    public Subscription(Guid billingPlanId, DateTimeOffset startDate, DateTimeOffset endDate, Status state = Status.New)
+    public Subscription(Guid billingPlanId, DateTimeOffset startDate, DateTimeOffset endDate, int level = 1, int cardExpiryInMonths = 12, Status state = Status.New)
     {
         _billingPlanId = billingPlanId;
         
@@ -23,12 +23,17 @@ public class Subscription : Entity
         EndDate = endDate;
         Reason = Enum.GetName(typeof(Status), Status.New);
         State = state;
+
+        Level = level;
+        CardExpiryInMonths = cardExpiryInMonths;
     }
     private readonly List<Person> _persons;
     public IReadOnlyCollection<Person> Persons => _persons.AsReadOnly();
    
-    public CardSetting Setting { get; private set; }
-
+  
+    public int Level { get; private set; }
+    public string Description { get; set; }
+    public int CardExpiryInMonths { get; private set; }
     public DateTimeOffset StartDate { get; private set; }
     public DateTimeOffset EndDate { get; private set; }
     public DateTimeOffset? ActualEndDate { get; private set; }
@@ -43,7 +48,12 @@ public class Subscription : Entity
     public Guid GetBillingPlanId() => _billingPlanId;
 
     public Subscription CreateRenewal(DateTimeOffset renewDate, int numberOfMonthsToExpire) =>
-        new(_billingPlanId, renewDate, renewDate.AddMonths(numberOfMonthsToExpire), Status.Renewed);
+        new(_billingPlanId, renewDate, renewDate.AddMonths(numberOfMonthsToExpire), state: Status.Renewed);
+
+    public Subscription CreateRenewal(DateTimeOffset renewData, DateTimeOffset endDate)
+    {
+        return new(_billingPlanId, renewData, endDate, state: Status.Renewed);
+    }
     
     public void PreTerminate(DateTimeOffset lastDay, string reason)
     {
@@ -83,7 +93,9 @@ public class Subscription : Entity
 
     public void ChangeCardSetting(int level, int expiresInMonths, string description)
     {
-        Setting = new CardSetting(level, description, expiresInMonths);
+        Level = level;
+        CardExpiryInMonths = expiresInMonths;
+        Description = description;
     }
 
     public void UpdateReminderInterval(int dayOfMonth) => PaymentScheduleReminderInterval = dayOfMonth;

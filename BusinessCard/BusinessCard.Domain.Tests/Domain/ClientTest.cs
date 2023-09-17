@@ -49,7 +49,8 @@ public class ClientTest
         var addedSubscription = client.AddSubscription(
             subscription.GetBillingPlanId(), 
             subscription.StartDate, 
-            subscription.EndDate.Month - subscription.StartDate.Month);
+            subscription.EndDate,
+            1,12);
             
         addedSubscription.StartDate.Date.ShouldBe(subscription.StartDate.Date);
             

@@ -5,7 +5,9 @@ using Microsoft.Data.SqlClient;
 namespace BusinessCard.API.Interceptors;
 
 public static class ExceptionHelpers
-{  private const int HresultAlreadyExists = -2146232060;
+{ 
+    private const int HresultAlreadyExists = -2146232060;
+    private const int HresultUniqueIndex = -2146232060;
     public static RpcException Handle<T>(this Exception exception, ServerCallContext context, ILogger<T> logger, 
         Guid correlationId) =>
         exception switch
@@ -35,6 +37,9 @@ public static class ExceptionHelpers
         ILogger<T> logger, Guid correlationId)
     {
         logger.LogError(exception, exception.InnerException?.Message);
+        
+        
+        
         var status = exception.InnerException.HResult switch
         {
             HresultAlreadyExists => new Status(StatusCode.AlreadyExists, "Cannot insert duplicate key / index."),

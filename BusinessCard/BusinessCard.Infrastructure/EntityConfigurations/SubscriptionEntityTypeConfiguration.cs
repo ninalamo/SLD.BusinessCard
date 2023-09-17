@@ -22,13 +22,7 @@ internal class SubscriptionEntityTypeConfiguration : IEntityTypeConfiguration<Su
         
         builder.Property<Guid>("ClientId").IsRequired();
 
-        builder.OwnsOne(b => b.Setting, setting =>
-        {
-            setting.ToTable("cardsetting", LokiContext.DefaultSchema);
-            setting.Property(b => b.Level).IsRequired();
-            setting.Property(b => b.ExpiresInMonths).IsRequired().HasDefaultValue(12);
-            setting.Property(b => b.Description).HasMaxLength(50);
-        });
+        builder.HasIndex("ClientId", "Level").IsUnique();
         
         builder.Metadata
             .FindNavigation(nameof(Subscription.Persons))

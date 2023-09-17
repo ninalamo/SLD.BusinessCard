@@ -1,0 +1,13 @@
+
+syntax = "proto3";
+option csharp_namespace = "Common";
+
+package BusinessCardApi;
+
+message GrpcCommandResult {
+  string id = 1;
+}
+
+message GetByIdGrpcQuery {
+  string id = 1;
+}

@@ -105,9 +105,9 @@ public class SubscriptionTests
     public void CanSetCardSettings()
     {
         _subscription.ChangeCardSetting(1, 12, "only_a_level_one_with_twelve_month_period");
-        _subscription.Setting.Level.ShouldBe(1);
-        _subscription.Setting.ExpiresInMonths.ShouldBe(12);
-        _subscription.Setting.Description.ShouldBe("only_a_level_one_with_twelve_month_period");
+        _subscription.Level.ShouldBe(1);
+        _subscription.CardExpiryInMonths.ShouldBe(12);
+        _subscription.Description.ShouldBe("only_a_level_one_with_twelve_month_period");
     }
 
     [Fact]

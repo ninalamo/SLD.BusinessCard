@@ -31,7 +31,12 @@ public class AddSubscriptionCommandHandler : IRequestHandler<AddSubscriptionComm
         }
         
         _logger.LogInformation($"Adding subscriptions to {nameof(client)}. {DateTime.UtcNow}");
-        client.AddSubscription(request.PlanId, request.StartDate, request.NumberOfMonthToExpire);
+        client.AddSubscription(
+            request.PlanId,
+            request.StartDate,
+            request.EndDate,
+            request.CardLevel,
+            request.CardExpiryInMonth);
         
         _repository.Update(client);
         await _repository.UnitOfWork.SaveChangesAsync(cancellationToken);

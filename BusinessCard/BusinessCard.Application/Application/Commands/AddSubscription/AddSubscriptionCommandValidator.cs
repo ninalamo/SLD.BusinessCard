@@ -9,6 +9,6 @@ public class AddSubscriptionCommandValidator : AbstractValidator<AddSubscription
         RuleFor(i => i.ClientId).NotEmpty();
         RuleFor(i => i.PlanId).NotEmpty();
         RuleFor(i => i.StartDate).NotEmpty().GreaterThanOrEqualTo(DateTimeOffset.Now);
-        RuleFor(i => i.NumberOfMonthToExpire).NotEmpty().GreaterThanOrEqualTo(1);
+        RuleFor(i => i.CardExpiryInMonth).NotEmpty().GreaterThanOrEqualTo(1);
     }
 }

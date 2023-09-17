@@ -10,6 +10,8 @@
     <ItemGroup>
         <Protobuf Include="Proto\client.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
         <Protobuf Include="Proto\card.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
+        <Protobuf Include="Proto\common.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
+        <Protobuf Include="Proto\subscription.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
     </ItemGroup>
 
     <ItemGroup>
@@ -46,5 +48,6 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
+
 
 </Project>
