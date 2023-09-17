@@ -3,6 +3,7 @@ using System.Text.Json;
 using BusinessCard.Application.Application.Commands.AddClient;
 using BusinessCard.Application.Application.Commands.AddMember;
 using BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
+using BusinessCard.Application.Application.Commands.AddSubscription;
 using BusinessCard.Application.Application.Commands.EditClient;
 using BusinessCard.Application.Application.Commands.EditMember;
 using BusinessCard.Application.Application.Commands.RemoveClient;
@@ -50,7 +51,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
         return new ClientGrpcCommandResult
         {
-            ClientId = result.ToString(),
+            Id = result.ToString(),
         };
     }
     
@@ -93,7 +94,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
          return new ClientGrpcCommandResult
          {
-             ClientId = result.ToString(),
+             Id = result.ToString(),
          };
     }
 
@@ -152,11 +153,34 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
         await _mediator.Send(new RemoveClientCommand(guid));
 
-        return new ClientGrpcCommandResult { ClientId = guid.ToString() };
+        return new ClientGrpcCommandResult { Id = guid.ToString() };
 
     }
 
-    
+    /// <summary>
+    /// Adding a subscription
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    /// <exception cref="ValidationException"></exception>
+    public override async Task<ClientGrpcCommandResult> AddSubscriptionGrpc(AddSubscriptionGrpcCommand request, ServerCallContext context)
+    {
+        if (!DateTimeOffset.TryParse(request.StartDate, out var parsedDate))
+        {
+            throw new ValidationException("Validation Error", new[] { new ValidationFailure( "StartDate", "Date is invalid.") });
+        }
+
+        var result = await _mediator.Send(new AddSubscriptionCommand(
+            request.ClientId.ToGuid(),
+            request.PlanId.ToGuid(),
+            parsedDate,
+            request.NumberOfMonthToExpire));
+
+        return new ClientGrpcCommandResult() { Id = result.ToString() };
+    }
+
+
     /// <summary>
     /// Add member to client
     /// 'gRPC' implementation

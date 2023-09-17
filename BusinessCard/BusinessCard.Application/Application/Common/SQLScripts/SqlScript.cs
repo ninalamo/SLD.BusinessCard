@@ -4,27 +4,27 @@ internal static class SqlScript
 {
     public const string SelectClients = 
 		@"SELECT
-		[Id]
-    	,[Name]
-    	,[Industry]   
-  		,[IsActive]
-		,(SELECT COUNT(*)
-			FROM [kardb].[dbo].[subscription] S
-    			INNER JOIN  [kardb].[dbo].people P ON S.Id = P.SubscriptionId) [Subscriptions]
-  		FROM [kardb].[dbo].[client] 
-  		WHERE [IsActive] = 1 ";
+			C.[Id]
+    		,C.[Name]
+    		,C.[Industry]   
+  			,C.[IsActive]
+			,(SELECT COUNT(*) FROM [kardb].[dbo].[subscription] S WHERE S.ClientId = C.[Id]) [Subscriptions]
+  		FROM 
+  			[kardb].[dbo].[client] C
+  		WHERE
+  			[IsActive] = 1 ";
     
     public const string SelectClientById = 
 	    @"SELECT
-		[Id]
-    	,[Name]
-    	,[Industry]  
-  		,[IsActive]
-		,(SELECT COUNT(P.Id)
-			FROM [kardb].[dbo].[subscription] S
-    			INNER JOIN  [kardb].[dbo].people P ON S.Id = P.SubscriptionId) [Subscriptions]
-  		FROM [kardb].[dbo].[client] 
-  		WHERE [IsActive] = 1 AND [Id] = @Id ";
+			C.[Id]
+    		,C.[Name]
+    		,C.[Industry]   
+  			,C.[IsActive]
+			,(SELECT COUNT(*) FROM [kardb].[dbo].[subscription] S WHERE S.ClientId = C.[Id]) [Subscriptions]
+  		FROM 
+  			[kardb].[dbo].[client] C
+  		WHERE 
+  			[IsActive] = 1 AND [Id] = @Id ";
 
     public const string SelectMembers = @"SELECT
     		P.[Id] 

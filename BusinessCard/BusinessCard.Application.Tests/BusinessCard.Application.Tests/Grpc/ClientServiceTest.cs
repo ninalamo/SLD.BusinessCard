@@ -41,7 +41,7 @@ public class ClientServiceTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(expectedResult.ToString(), result.ClientId);
+        Assert.Equal(expectedResult.ToString(), result.Id);
     }
     
     [Fact]
@@ -66,7 +66,7 @@ public class ClientServiceTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equivalent(expectedResult.ToString(), result.ClientId);
+        Assert.Equivalent(expectedResult.ToString(), result.Id);
     }
 
 }
