@@ -8,7 +8,7 @@ package BusinessCardApi;
 
 service SubscriptionGrpc {
     rpc AddSubscriptionGrpc(AddSubscriptionGrpcCommand) returns (GrpcCommandResult){}
-    rpc GetSubscriptionsByIdGrpc(GetByIdGrpcQuery) returns (PaginatedSubscriptionGrpcQueryResult) {}
+    rpc GetClientSubscriptionsGrpc(GetByIdGrpcQuery) returns (ClientSubscriptionsGrpcQueryResult) {}
 }
 
 message AddSubscriptionGrpcCommand {
@@ -20,16 +20,19 @@ message AddSubscriptionGrpcCommand {
     int32 cardLevel = 6;
 }
 
-message SubscriptionGrpcResult {
+message ClientSubscriptionGrpcResult {
     string clientId = 1;
     string planId = 2;
     string startDate = 3;
     int32 numberOfMonthToExpire = 4;
     string endDate = 5;
     int32 cardLevel = 6;
+    int32 status = 7;
+    string statusDescription = 8;
+    string subscriptionId = 9;
 }
 
-message PaginatedSubscriptionGrpcQueryResult {
-    repeated SubscriptionGrpcResult result = 1;
+message ClientSubscriptionsGrpcQueryResult {
+    repeated ClientSubscriptionGrpcResult result = 1;
 }
 

@@ -47,8 +47,10 @@ builder.Services.AddScoped(typeof(ICurrentUser), typeof(CurrentUser));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 //register queries and repositories
-builder.Services.AddScoped<IClientQueries,ClientQueries>();
 builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
+
+builder.Services.AddScoped<IClientQueries,ClientQueries>();
+builder.Services.AddScoped<ISubscriptionQueries,SubscriptionQueries>();
 
 
 // reverse proxy headers forwarding config
