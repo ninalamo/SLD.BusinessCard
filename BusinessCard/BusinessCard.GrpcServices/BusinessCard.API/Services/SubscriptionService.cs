@@ -66,7 +66,10 @@ public class SubscriptionService : SubscriptionGrpc.SubscriptionGrpcBase
             StatusDescription = i.StateDescription,
             StartDate = i.StartDate.ToString(),
             Status = (int)i.State,
-            SubscriptionId = i.Id.ToString()
+            SubscriptionId = i.Id.ToString(),
+            ActualEndDate = i.ActualEndDate?.ToString() ?? default(DateTimeOffset).ToString(),
+            Description = i.Description ?? string.Empty,
+            Reason = i.Reason
         });
         
         grpcResult.Result.AddRange(subscriptions);

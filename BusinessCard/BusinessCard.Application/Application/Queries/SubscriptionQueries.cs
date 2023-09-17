@@ -28,6 +28,8 @@ public class SubscriptionQueries : ISubscriptionQueries
         await connection.OpenAsync(CancellationToken.None);
         var result = await connection.QueryAsync<ClientSubscriptionResult>(query, parameters);
 
+        if (!result.Any()) throw new KeyNotFoundException("Id not found.");
+        
         return result;
     }
 }
