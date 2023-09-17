@@ -22,6 +22,7 @@ namespace BusinessCard.Domain.Tests.Domain
             Person person = new();
             person.SetName(Name.First(), Name.Last(), Name.Last(), Name.Suffix());
             person.SetContactDetails(Phone.Number(), Internet.Email(), Address.Country());
+            
             person.Occupation = "N/A";
             
 
@@ -33,8 +34,7 @@ namespace BusinessCard.Domain.Tests.Domain
                 Pinterest = "pinterest.com",
                 Twitter = "twitter.com",
             };
-            person.SetSocialMedia(JsonSerializer.Serialize(json));
-
+           
             person.FirstName.ShouldNotBeNull();
             person.LastName.ShouldNotBeNull();
             person.MiddleName.ShouldNotBeNull();
