@@ -18,6 +18,7 @@ public class Client : Entity, IAggregateRoot
     private Client()
     { 
         _subscriptions = new List<Subscription>();
+        IsActive = true;
     }
     
     public Client(string name, string industry) : this()

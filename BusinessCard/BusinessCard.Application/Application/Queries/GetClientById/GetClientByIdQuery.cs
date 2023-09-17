@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BusinessCard.Application.Application.Queries.GetClientById;
 
-public class GetClientByIdQuery : IRequest<ClientsResult>
+public class GetClientByIdQuery : IRequest<IEnumerable<ClientsResult>>
 {
     public GetClientByIdQuery(Guid id)
     {

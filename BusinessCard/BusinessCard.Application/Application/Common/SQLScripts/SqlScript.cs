@@ -7,24 +7,24 @@ internal static class SqlScript
 		[Id]
     	,[Name]
     	,[Industry]   
+  		,[IsActive]
 		,(SELECT COUNT(*)
 			FROM [kardb].[dbo].[subscription] S
-    		LEFT JOIN  [kardb].[dbo].people P ON S.Id = P.SubscriptionId) [Subscriptions]
+    			INNER JOIN  [kardb].[dbo].people P ON S.Id = P.SubscriptionId) [Subscriptions]
   		FROM [kardb].[dbo].[client] 
   		WHERE [IsActive] = 1 ";
     
     public const string SelectClientById = 
-	@"SELECT TOP 1 [Id]
-      ,[Name]
-      ,[Industry]
-      ,[IsBlackList]
-      ,[CreatedBy]
-      ,[CreatedOn]
-      ,[ModifiedBy]
-      ,[ModifiedOn]
-      ,[IsActive]
-  	FROM [kardb].[dbo].[client]
-  	WHERE C.[Id] = @Id ";
+	    @"SELECT
+		[Id]
+    	,[Name]
+    	,[Industry]  
+  		,[IsActive]
+		,(SELECT COUNT(P.Id)
+			FROM [kardb].[dbo].[subscription] S
+    			INNER JOIN  [kardb].[dbo].people P ON S.Id = P.SubscriptionId) [Subscriptions]
+  		FROM [kardb].[dbo].[client] 
+  		WHERE [IsActive] = 1 AND [Id] = @Id ";
 
     public const string SelectMembers = @"SELECT
     		P.[Id] 

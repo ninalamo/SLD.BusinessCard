@@ -104,11 +104,14 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
     /// <param name="request"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    public override async Task<ClientGrpcResult> GetClientByIdGrpc(GetClientByIdGrpcQuery request, ServerCallContext context)
+    public override async Task<GetListClientGrpcResult> GetClientByIdGrpc(GetClientByIdGrpcQuery request, ServerCallContext context)
     {
         var result = await _mediator.Send(new GetClientByIdQuery(request.Id.ToGuid()));
-        
-        return ToClientResult(result);
+
+        var data = new GetListClientGrpcResult();
+        data.Result.AddRange(result.Select(r => ToClientResult(r)));
+
+        return data;
     }
 
     /// <summary>

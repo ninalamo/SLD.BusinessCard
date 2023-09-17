@@ -2,6 +2,7 @@ using BusinessCard.Application.Application.Common.Interfaces;
 using BusinessCard.Application.Application.Common.SQLScripts;
 using BusinessCard.Application.Application.Queries.GetClients;
 using BusinessCard.Application.Application.Queries.GetMembers;
+using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
@@ -46,7 +47,7 @@ public class ClientQueries : IClientQueries
         return (count.First(), result);
     }
 
-    public async Task<ClientsResult> GetClientById(Guid id)
+    public async Task<IEnumerable<ClientsResult>> GetClientById(Guid id)
     {
 	    DynamicParameters parameters = new();
 	    parameters.Add("Id", id);
@@ -59,11 +60,9 @@ public class ClientQueries : IClientQueries
 
 	    var result = await connection.QueryAsync<ClientsResult>(query, parameters);
 
-	    var clientsResults = result as ClientsResult[] ?? result.ToArray();
-	    
-	    if (!clientsResults.Any()) throw new KeyNotFoundException("Id not found.");
+	    var clientsResults = result ?? Array.Empty<ClientsResult>();
 
-	    return clientsResults.FirstOrDefault();
+	    return clientsResults;
     }
     
     public async Task<MembersResult> GetClientByUid(string uid)

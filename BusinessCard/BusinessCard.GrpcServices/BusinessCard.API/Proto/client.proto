@@ -9,7 +9,9 @@ service ClientGrpc {
     rpc EditClientGrpc(EditClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc RemoveClientGrpc(RemoveClientGrpcCommand) returns (ClientGrpcCommandResult){}
     rpc GetPaginatedClientsGrpc(GetPaginatedClientsGrpcQuery) returns (GetPaginatedClientsGrpcQueryResult){}
-    rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (ClientGrpcResult){}
+    rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (GetListClientGrpcResult){}
+    
+    
 
     rpc AddMemberGrpc(AddMemberGrpcCommand) returns (MemberGrpcCommandResult){}
     rpc AddMemberWithIdentityGrpc(AddMemberWithIdentityGrpcCommand) returns (MemberGrpcCommandResult){}
@@ -34,6 +36,13 @@ message EditClientGrpcCommand {
 
 message RemoveClientGrpcCommand {
     string id = 1;
+}
+
+message AddSubscriptionGrpcCommand {
+    string clientId = 1;
+    string planId = 2;
+    string startDate = 3;
+    int32 numberOfMonthToExpire = 4;
 }
 
 message AddMemberGrpcCommand {
@@ -113,6 +122,10 @@ message GetPaginatedClientsGrpcQueryResult {
     int32 pageNumber = 2;
     int32 totalCount = 3;
     repeated ClientGrpcResult clients = 4;
+}
+
+message GetListClientGrpcResult {
+    repeated ClientGrpcResult result = 1;
 }
 
 message ClientGrpcResult {
