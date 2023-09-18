@@ -1,0 +1,41 @@
+
+syntax = "proto3";
+import "Proto/common.proto";
+
+option csharp_namespace = "SubscriptionService";
+
+package BusinessCardApi;
+
+service SubscriptionGrpc {
+    rpc AddSubscriptionGrpc(AddSubscriptionGrpcCommand) returns (GrpcCommandResult){}
+    rpc GetClientSubscriptionsGrpc(GetByIdGrpcQuery) returns (ClientSubscriptionsGrpcQueryResult) {}
+}
+
+message AddSubscriptionGrpcCommand {
+    string clientId = 1;
+    string planId = 2;
+    string startDate = 3;
+    int32 numberOfMonthToExpire = 4;
+    string endDate = 5;
+    int32 cardLevel = 6;
+}
+
+message ClientSubscriptionGrpcResult {
+    string clientId = 1;
+    string planId = 2;
+    string startDate = 3;
+    int32 numberOfMonthToExpire = 4;
+    string endDate = 5;
+    int32 cardLevel = 6;
+    int32 status = 7;
+    string statusDescription = 8;
+    string subscriptionId = 9;
+    string actualEndDate = 10;
+    string description = 11;
+    string reason = 12;
+}
+
+message ClientSubscriptionsGrpcQueryResult {
+    repeated ClientSubscriptionGrpcResult result = 1;
+}
+

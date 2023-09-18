@@ -1,5 +1,5 @@
 using System.Text.Json;
-using BusinessCard.API.Application.Common.Models;
+using BusinessCard.Application.Application.Common.Models;
 
 namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
 
@@ -7,9 +7,10 @@ namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey
 public class AddMemberWithIdentityKeyCommand : IRequest<Guid>
 {
     public AddMemberWithIdentityKeyCommand(Guid clientId, string firstName, string lastName, string middleName, string nameSuffix, string phoneNumber, string email, string address, string occupation, 
-        string facebook, string linkedIn, string instagram, string pinterest, string twitter, string identityId, string cardKey)
+        string identityId, string cardKey, Guid subscriptionId, SocialMediaObject socialMedia)
     {
         ClientId = clientId;
+        SubscriptionId = subscriptionId;
         FirstName = firstName;
         LastName = lastName;
         MiddleName = middleName;
@@ -21,16 +22,10 @@ public class AddMemberWithIdentityKeyCommand : IRequest<Guid>
         IdentityId = identityId;
         CardKey = cardKey;
 
-        SocialMedia = JsonSerializer.Serialize(new SocialMediaObject()
-        {
-            Facebook = string.IsNullOrEmpty(facebook) ?  "N/A" : facebook,
-            Instagram =string.IsNullOrEmpty(instagram) ?  "N/A" : instagram,
-            LinkedIn = string.IsNullOrEmpty(linkedIn) ?  "N/A" : linkedIn,
-            Pinterest = string.IsNullOrEmpty(pinterest) ?  "N/A" : pinterest,
-            Twitter =string.IsNullOrEmpty(twitter) ?  "N/A" : twitter, 
-        });
+        SocialMedia = socialMedia;
 
     }
+    public Guid SubscriptionId { get; }
     public Guid ClientId { get; }
     public string IdentityId { get; }
     public string FirstName { get; }
@@ -41,6 +36,6 @@ public class AddMemberWithIdentityKeyCommand : IRequest<Guid>
     public string Email { get; }
     public string Address { get; }
     public string Occupation { get; }
-    public string SocialMedia { get; private set; }
+    public SocialMediaObject SocialMedia { get; private set; }
     public string CardKey { get; }
 }

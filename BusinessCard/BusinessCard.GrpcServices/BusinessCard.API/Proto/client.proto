@@ -9,35 +9,34 @@ service ClientGrpc {
     rpc EditClientGrpc(EditClientGrpcCommand) returns (ClientGrpcCommandResult) {}
     rpc RemoveClientGrpc(RemoveClientGrpcCommand) returns (ClientGrpcCommandResult){}
     rpc GetPaginatedClientsGrpc(GetPaginatedClientsGrpcQuery) returns (GetPaginatedClientsGrpcQueryResult){}
-    rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (ClientGrpcResult){}
+    rpc GetClientByIdGrpc(GetClientByIdGrpcQuery) returns (GetListClientGrpcResult){}
+
 
     rpc AddMemberGrpc(AddMemberGrpcCommand) returns (MemberGrpcCommandResult){}
     rpc AddMemberWithIdentityGrpc(AddMemberWithIdentityGrpcCommand) returns (MemberGrpcCommandResult){}
-    
+
     rpc EditMemberGrpc(EditMemberGrpcCommand) returns (MemberGrpcCommandResult){}
     rpc GetPaginatedMembersGrpc(GetPaginatedMembersGrpcQuery)returns(GetPaginatedMembersGrpcQueryResult){}
-    rpc GetMemberByIdGrpc(GetMemberByIdGrpcQuery)returns(MemberGrpcResult){}
     rpc GetMemberByIdAndUidGrpc(GetMemberByIdAndUidGrpcQuery) returns (GetMemberWithUidGrpcResult){}
-    rpc GetMemberByUidGrpc(GetMemberByUidGrpcQuery) returns (GetMemberWithUidGrpcResult){}
+   
 }
-
 
 message AddClientGrpcCommand {
     string companyName = 1;
-    bool isDiscreet = 2;
-    int32 subscription = 3;
+    string industry = 2;
 }
 
 message EditClientGrpcCommand {
     string id = 1;
-    string companyName = 2;
-    bool isDiscreet = 3;
-    int32 subscription = 4;
+    string name = 2;
+    string industry = 3;
 }
 
 message RemoveClientGrpcCommand {
     string id = 1;
 }
+
+
 
 message AddMemberGrpcCommand {
     string firstName = 1;
@@ -54,6 +53,7 @@ message AddMemberGrpcCommand {
     string pinterest = 12;
     string twitter = 13;
     string clientId = 14;
+    string subscriptionId = 15;
 }
 
 message AddMemberWithIdentityGrpcCommand {
@@ -73,6 +73,7 @@ message AddMemberWithIdentityGrpcCommand {
     string clientId = 14;
     string identity = 15;
     string cardKey = 16;
+    string subscriptionId = 17;
 }
 
 message EditMemberGrpcCommand {
@@ -98,7 +99,7 @@ message EditMemberGrpcCommand {
 
 
 message ClientGrpcCommandResult {
-    string clientId = 1;
+    string id = 1;
 }
 
 message GetPaginatedClientsGrpcQuery {
@@ -111,8 +112,6 @@ message GetClientByIdGrpcQuery {
     string id = 1;
 }
 
-
-
 message GetPaginatedClientsGrpcQueryResult {
     int32 pageSize = 1;
     int32 pageNumber = 2;
@@ -120,19 +119,16 @@ message GetPaginatedClientsGrpcQueryResult {
     repeated ClientGrpcResult clients = 4;
 }
 
+message GetListClientGrpcResult {
+    repeated ClientGrpcResult result = 1;
+}
+
 message ClientGrpcResult {
-    string clientId = 1;
-    string companyName = 2;
-    bool isDiscreet = 3;
-    int32 subscriptionLevel = 4;
-    int32 cardHolders = 5;
-    int32 nonCardHolders = 6;
-    string createdBy = 7;
-    string modifiedBy = 8;
-    string createdOn = 9;
-    string modifiedOn = 10;
-    string subscription = 11;
-    bool isActive = 12;
+    string id = 1;
+    string name = 2;
+    string industry = 3;
+    int32 subscriptions = 4;
+    bool isActive = 5;
 }
 
 message GetPaginatedMembersGrpcQuery{
@@ -141,10 +137,7 @@ message GetPaginatedMembersGrpcQuery{
     int32 pageNumber = 3;
 }
 
-message GetMemberByIdGrpcQuery{
-    string clientId = 1;
-    string memberId = 2;
-}
+
 
 message GetMemberByIdAndUidGrpcQuery {
     string uid = 1;
@@ -152,10 +145,6 @@ message GetMemberByIdAndUidGrpcQuery {
     string memberId = 3;
 }
 
-message GetMemberByUidGrpcQuery {
-    string uid = 1;
-    string clientId = 2;
-}
 
 message GetPaginatedMembersGrpcQueryResult {
     int32 pageSize = 1;
@@ -176,22 +165,21 @@ message MemberGrpcResult {
     string pinterest = 9;
     string twitter = 10;
     string clientId = 11;
-    string subscription = 12;
-    int32 subscriptionLevel = 13;
+    string subscriptionId = 12;
+    int32 cardLevel = 13;
     string cardKey = 14;
-    string id = 15;
+    string memberId = 15;
     string firstName = 16;
     string middleName = 17;
     string lastName = 18;
     string nameSuffix = 19;
     string identity = 20;
     string company = 21;
+    string cardId = 22;
 }
 
 message GetMemberWithUidGrpcResult {
     repeated MemberGrpcResult members = 1;
-    string message = 2;
-    bool isValid = 3;
 }
 
 message MemberGrpcCommandResult {

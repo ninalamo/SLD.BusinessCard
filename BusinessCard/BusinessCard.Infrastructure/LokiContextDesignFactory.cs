@@ -14,8 +14,8 @@ public class LokiContextDesignFactory : IDesignTimeDbContextFactory<LokiContext>
 
         return new LokiContext(optionsBuilder.Options, new NoMediator(), null);
     }
-        
-        
+
+
     private class NoMediator : IMediator
     {
         public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = new CancellationToken())

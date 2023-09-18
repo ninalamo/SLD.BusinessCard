@@ -1,7 +1,7 @@
 using System.Text.Json;
-using BusinessCard.API.Application.Common.Models;
+using BusinessCard.Application.Application.Common.Models;
 
-namespace BusinessCard.API.Application.Commands.EditMember;
+namespace BusinessCard.Application.Application.Commands.EditMember;
 
 public class EditMemberCommand : IRequest<Guid>
 {
@@ -42,4 +42,5 @@ public class EditMemberCommand : IRequest<Guid>
     public string SocialMedia { get; init; }
     public string CardKey { get; init; }
     public int SubscriptionLevel { get; init; }
+    public Guid SubscriptionId { get; set; }
 }

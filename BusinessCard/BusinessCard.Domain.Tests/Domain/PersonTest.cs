@@ -1,10 +1,9 @@
 ﻿using System.Text.Json;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using Faker;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Shouldly;
 
-namespace BusinessCard.Tests.Domain
+namespace BusinessCard.Domain.Tests.Domain
 {
     public class PersonTest
     {
@@ -23,6 +22,9 @@ namespace BusinessCard.Tests.Domain
             Person person = new();
             person.SetName(Name.First(), Name.Last(), Name.Last(), Name.Suffix());
             person.SetContactDetails(Phone.Number(), Internet.Email(), Address.Country());
+            
+            person.Occupation = "N/A";
+            
 
             var json = new SocialMediaObject()
             {
@@ -32,66 +34,79 @@ namespace BusinessCard.Tests.Domain
                 Pinterest = "pinterest.com",
                 Twitter = "twitter.com",
             };
-            person.SetSocialMedia(JsonSerializer.Serialize(json));
-
+           
             person.FirstName.ShouldNotBeNull();
             person.LastName.ShouldNotBeNull();
+            person.MiddleName.ShouldNotBeNull();
+            person.NameSuffix.ShouldNotBeNull();
             person.Address.ShouldNotBeNull();
             person.Email.ShouldNotBeNull();
             person.PhoneNumber.ShouldNotBeNull();
+            person.IsActive.ShouldBeFalse();
+            person.Occupation.ShouldNotBeNull();
+            person.IsSubscriptionOverride.ShouldBeFalse();
 
-            var obj = JsonSerializer.Deserialize<SocialMediaObject>(person.SocialMedia);
-            obj.ShouldBeEquivalentTo(json);
-
-            obj.ShouldBeOfType<SocialMediaObject>();
-            obj.Facebook.ShouldBeEquivalentTo(json.Facebook);
+            // var obj = JsonSerializer.Deserialize<SocialMediaObject>(person.SocialMedia);
+            // obj.ShouldBeEquivalentTo(json);
+            //
+            // obj.ShouldBeOfType<SocialMediaObject>();
+            // obj.Facebook.ShouldBeEquivalentTo(json.Facebook);
         }
 
         [Fact]
-        public void PersonShouldBeCreatedWithACard()
+        public void PersonShouldHaveEmptyCards()
         {
             Person person = new();
-            person.Card.ShouldNotBeNull();
-            person.Card.Key.ShouldBeEmpty();
-        }
-        
-        
-        [Fact]
-        public void PersonShouldBeAbleToLinkEmptyCard()
-        {
-            Person person = new();
-            person.AddKeyToCard("abc");
-
-            person.Card.Key.ShouldBe("abc");
+            person.Cards.ShouldNotBeNull();
+            person.Cards.ShouldBeEmpty();
         }
         
         [Fact]
-        public void PersonShouldBeAbleToLinkToAnotherCard()
+        public void PersonShouldBeCreateWithoutIdentity()
         {
             Person person = new();
-            person.AddKeyToCard("abc");
-            person.Card.Key.ShouldBe("abc");
-            
-            person.RemoveCard();
-            person.Card.ShouldBeNull();
-
-            person.AddKeyToCard("xyz");
-            person.Card.ShouldNotBeNull();
-            person.Card.Key.ShouldBe("xyz");
+            person.HasIdentity().ShouldBeFalse();
         }
-        
-      
         
         [Fact]
-        public void PersonShouldAllowDisableOfCard()
+        public void PersonCanSetIdentity()
         {
             Person person = new();
-            person.DisableCard();
-            person.Card.IsActive.ShouldBeFalse();
-            
-            person.EnableCard();
-            person.Card.IsActive.ShouldBeTrue();
-
+            person.HasIdentity().ShouldBeFalse();
+            person.SetIdentity(Guid.NewGuid().ToString());
         }
+        
+        [Fact]
+        public void PersonCanValidateSetIdentity()
+        {
+            Person person = new();
+            person.HasIdentity().ShouldBeFalse();
+            Assert.Throws<FormatException>(() => person.SetIdentity(""));
+        }
+        
+        [Fact]
+        public void PersonCanSetSubscription()
+        {
+            Person person = new();
+            Assert.Throws<NotImplementedException>(() => person.SetSubscription(0));
+        }
+
+        [Fact]
+        public void CanSetSocialMediaAccountForPerson()
+        {
+            Person person = new();
+            person.SetSocialMedia("facebook.com/janinejams", "instagram.com/despicablenin", "n/a", "n/a", "n/a");
+            person.SocialMediaAccounts.ShouldNotBeNull();
+            person.SocialMediaAccounts.Facebook.ShouldBe("facebook.com/janinejams");
+            person.SocialMediaAccounts.Instagram.ShouldBe("instagram.com/despicablenin");
+            person.SocialMediaAccounts.Pinterest.ShouldBe("n/a");
+            person.SocialMediaAccounts.Twitter.ShouldBe("n/a");
+            person.SocialMediaAccounts.LinkedIn.ShouldBe("n/a");
+
+            var facebookCopy = person.SocialMediaAccounts.Facebook;
+            facebookCopy.ShouldBe(person.SocialMediaAccounts.Facebook);
+        }
+
+    
     }
 }

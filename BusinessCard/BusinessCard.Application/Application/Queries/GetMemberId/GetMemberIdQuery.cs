@@ -1,12 +1,9 @@
 using System.Text.Json;
-using BusinessCard.API.Application.Common.Interfaces;
-using BusinessCard.API.Application.Common.Models;
+using BusinessCard.Application.Application.Common.Models;
+using BusinessCard.Application.Application.Queries.GetMemberByIdAndUid;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.Exceptions;
-using FluentValidation;
-using FluentValidation.Results;
 
-namespace BusinessCard.API.Application.Queries.GetMemberId;
+namespace BusinessCard.Application.Application.Queries.GetMemberId;
 
 public class GetMemberIdQuery : IRequest<GetMemberByIdQueryResult>
 {
@@ -34,13 +31,28 @@ public class GetMemberIdQueryHandler : IRequestHandler<GetMemberIdQuery, GetMemb
     {
         _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberIdQueryHandler), DateTimeOffset.Now);
 
-        var client = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
-        
-        if (client == null) throw new KeyNotFoundException("Client not found.");
+        var cardResults = await _queries.GetCardByUidAndClientId(request.Uid, request.ClientId);
 
-        var member = client.Persons.FirstOrDefault(c => c.Id == request.MemberId);
+        var emptyResult = new GetMemberByIdQueryResult()
+        {
+            Member = Array.Empty<MemberIdAndUidResult>()
+        };
+        ;
 
-        if (member == null) throw new KeyNotFoundException("Member not found.");
+        if (!cardResults.Any()) return emptyResult;
+
+        var card = cardResults.SingleOrDefault();
+
+        var client = await _repository.GetWithPropertiesByIdAsync(card.ClientId);
+
+        var subscription = client.Subscriptions.FirstOrDefault(i => i.Id == card.SubscriptionId);
+
+        if (subscription == null) return emptyResult;
+
+        var person = subscription.Persons.FirstOrDefault(i => i.Id == card.MemberId);
+
+        if (person == null) return emptyResult;
+
 
         return new GetMemberByIdQueryResult()
         {
@@ -48,7 +60,7 @@ public class GetMemberIdQueryHandler : IRequestHandler<GetMemberIdQuery, GetMemb
             Subscription = "To remove",//member.MemberTier.Name,
             SubscriptionLevel = 1,//member.MemberTier.Level,
             Address = member.Address,
-            CardKey = member.Card?.Key ?? "",
+            // CardKey = member.Card?.Key ?? "",
             CreatedBy = member.CreatedBy,
             CreatedOn = member.CreatedOn,
             Email = member.Email,

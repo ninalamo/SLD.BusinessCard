@@ -1,6 +1,7 @@
+using BusinessCard.Application.Application.Common.Interfaces;
 using Microsoft.Data.SqlClient;
 
-namespace BusinessCard.API.Application.Common.Interfaces;
+namespace BusinessCard.Application.Application.Common;
 
 public class DbConnectionFactory : IDbConnectionFactory
 {

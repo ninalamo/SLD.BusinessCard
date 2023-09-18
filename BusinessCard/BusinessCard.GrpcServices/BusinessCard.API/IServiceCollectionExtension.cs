@@ -1,8 +1,9 @@
 using System.Reflection;
-using BusinessCard.API.Application.Behaviors;
-using BusinessCard.API.Application.Commands;
-using BusinessCard.API.Application.Commands.AddClient;
-using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.Application.Application.Behaviors;
+using BusinessCard.Application.Application.Commands;
+using BusinessCard.Application.Application.Commands.AddClient;
+using BusinessCard.Application.Application.Common;
+using BusinessCard.Application.Application.Common.Interfaces;
 using Microsoft.OpenApi.Models;
 
 namespace BusinessCard.API;
@@ -79,7 +80,7 @@ public static class ServiceCollectionExtension
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
 
         // Register command and query handlers
-        services.AddScoped<IRequestHandler<AddClientCommand, CommandResult>, AddClientCommandHandler>();
+        services.AddScoped<IRequestHandler<AddClientCommand, Guid>, AddClientCommandHandler>();
 
         // Register validators
         services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(AddClientCommandValidator)));

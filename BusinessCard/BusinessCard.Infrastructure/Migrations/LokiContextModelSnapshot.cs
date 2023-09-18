@@ -22,11 +22,50 @@ namespace BusinessCard.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.BillingPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("billingplan", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Name = "Free Trial"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                            Name = "Monthly"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000003"),
+                            Name = "Yearly"
+                        });
+                });
+
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Card", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ActivatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -35,14 +74,13 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<DateTimeOffset?>("ExpireDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
@@ -51,12 +89,24 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PersonId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("RenewDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Uid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("card", "kardibee");
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("Uid")
+                        .IsUnique();
+
+                    b.ToTable("card", "dbo");
                 });
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", b =>
@@ -65,10 +115,6 @@ namespace BusinessCard.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -76,10 +122,14 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Industry")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDiscreet")
+                    b.Property<bool>("IsBlackList")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedBy")
@@ -89,12 +139,16 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyName")
+                    b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("client", "kardibee");
+                    b.ToTable("client", "dbo");
                 });
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Person", b =>
@@ -106,9 +160,6 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -164,17 +215,10 @@ namespace BusinessCard.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("SocialMedia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("_cardId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CardId");
+                    b.Property<Guid?>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -182,29 +226,165 @@ namespace BusinessCard.Infrastructure.Migrations
                     b.HasIndex("PhoneNumber")
                         .IsUnique();
 
-                    b.HasIndex("_cardId");
+                    b.HasIndex("SubscriptionId");
 
-                    b.ToTable("people", "kardibee");
+                    b.ToTable("people", "dbo");
+                });
+
+            modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Subscription", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ActualEndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("CardExpiryInMonths")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("PaymentScheduleInterval")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentScheduleReminderInterval")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("_billingPlanId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("BillingPlanId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("_billingPlanId");
+
+                    b.HasIndex("ClientId", "Level")
+                        .IsUnique();
+
+                    b.ToTable("subscription", "dbo");
+                });
+
+            modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Card", b =>
+                {
+                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Person", null)
+                        .WithMany("Cards")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Person", b =>
                 {
-                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", null)
+                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Subscription", null)
                         .WithMany("Persons")
+                        .HasForeignKey("SubscriptionId");
+
+                    b.OwnsOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.SocialMedia", "SocialMediaAccounts", b1 =>
+                        {
+                            b1.Property<Guid>("PersonId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Facebook")
+                                .IsRequired()
+                                .HasMaxLength(56)
+                                .HasColumnType("nvarchar(56)");
+
+                            b1.Property<string>("Instagram")
+                                .IsRequired()
+                                .HasMaxLength(56)
+                                .HasColumnType("nvarchar(56)");
+
+                            b1.Property<string>("LinkedIn")
+                                .IsRequired()
+                                .HasMaxLength(56)
+                                .HasColumnType("nvarchar(56)");
+
+                            b1.Property<string>("Pinterest")
+                                .IsRequired()
+                                .HasMaxLength(56)
+                                .HasColumnType("nvarchar(56)");
+
+                            b1.Property<string>("Twitter")
+                                .IsRequired()
+                                .HasMaxLength(56)
+                                .HasColumnType("nvarchar(56)");
+
+                            b1.HasKey("PersonId");
+
+                            b1.ToTable("socialmedia", "dbo");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PersonId");
+                        });
+
+                    b.Navigation("SocialMediaAccounts")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Subscription", b =>
+                {
+                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", null)
+                        .WithMany("Subscriptions")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.Card", "Card")
+                    b.HasOne("BusinessCard.Domain.AggregatesModel.ClientAggregate.BillingPlan", null)
                         .WithMany()
-                        .HasForeignKey("_cardId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("_billingPlanId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Card");
                 });
 
             modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Client", b =>
+                {
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Person", b =>
+                {
+                    b.Navigation("Cards");
+                });
+
+            modelBuilder.Entity("BusinessCard.Domain.AggregatesModel.ClientAggregate.Subscription", b =>
                 {
                     b.Navigation("Persons");
                 });

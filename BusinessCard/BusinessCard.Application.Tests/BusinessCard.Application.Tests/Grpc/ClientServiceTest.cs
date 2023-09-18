@@ -1,8 +1,8 @@
-﻿using BusinessCard.API.Application.Commands;
-using BusinessCard.API.Application.Commands.EditClient;
-using BusinessCard.API.Application.Commands.UpsertClient;
-using BusinessCard.API.Extensions;
-using BusinessCard.API.Services;
+﻿using BusinessCard.API.Services;
+using BusinessCard.Application.Application.Commands;
+using BusinessCard.Application.Application.Commands.AddClient;
+using BusinessCard.Application.Application.Commands.EditClient;
+using BusinessCard.Application.Extensions;
 using BusinessCard.GrpcServices.Services;
 using ClientService;
 using Grpc.Core;
@@ -30,7 +30,7 @@ public class ClientServiceTest
     {
         // Arrange
         var request = new AddClientGrpcCommand();
-        var expectedResult = CommandResult.Success(Guid.NewGuid());
+        var expectedResult = Guid.NewGuid();
         
         _mediatorMock
             .Setup(mediator => mediator.Send(It.IsAny<AddClientCommand>(), CancellationToken.None))
@@ -41,7 +41,7 @@ public class ClientServiceTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(expectedResult.Id.ToString(), result.ClientId);
+        Assert.Equal(expectedResult.ToString(), result.Id);
     }
     
     [Fact]
@@ -51,9 +51,8 @@ public class ClientServiceTest
         var request = new EditClientGrpcCommand()
         {
             Id = Guid.NewGuid().ToString(),
-            CompanyName = "SonicLynx",
-            IsDiscreet = true,
-            Subscription = 1
+            Name = "SonicLynx",
+          Industry = "BPO"
         };
 
         var expectedResult = request.Id.ToGuid();
@@ -67,7 +66,7 @@ public class ClientServiceTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equivalent(expectedResult.ToString(), result.ClientId);
+        Assert.Equivalent(expectedResult.ToString(), result.Id);
     }
 
 }

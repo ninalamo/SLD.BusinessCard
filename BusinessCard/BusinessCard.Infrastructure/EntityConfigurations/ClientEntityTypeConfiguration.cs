@@ -9,21 +9,13 @@ internal class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
     {
         builder.ToTable("client", LokiContext.DefaultSchema);
         builder.HasKey(b => b.Id);
-        builder.Property(b => b.CompanyName).IsRequired();
-        builder.HasIndex(b => b.CompanyName).IsUnique();
-
-        builder.Metadata
-            .FindNavigation(nameof(Client.Persons))
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
+        builder.Property(b => b.Name).IsRequired();
+        builder.HasIndex(b => b.Name).IsUnique();
         
-        // builder.Property<Guid>("_subscriptionId")
-        //     .UsePropertyAccessMode(PropertyAccessMode.Field)
-        //     .HasColumnName("SubscriptionId")
-        //     .IsRequired();
-        //
-        // builder.HasOne(b => b.MembershipTier)
-        //     .WithMany()
-        //     .HasForeignKey("_subscriptionId")
-        //     .OnDelete(DeleteBehavior.NoAction);
+        builder.Metadata
+            .FindNavigation(nameof(Client.Subscriptions))
+            ?.SetPropertyAccessMode(PropertyAccessMode.Field);
+
+      
     }
 }

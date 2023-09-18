@@ -1,9 +1,8 @@
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
-using BusinessCard.Domain.Exceptions;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace BusinessCard.API.Application.Commands.RemoveClient;
+namespace BusinessCard.Application.Application.Commands.RemoveClient;
 
 public class RemoveClientCommandHandler : IRequestHandler<RemoveClientCommand>
 {
@@ -20,28 +19,34 @@ public class RemoveClientCommandHandler : IRequestHandler<RemoveClientCommand>
     {
         _logger.LogInformation($"Starting {nameof(Handle)} in {nameof(RemoveClientCommandHandler)} with request: {request}. {DateTime.UtcNow}");
 
-        var entity = await _repository.GetEntityByIdAsync(request.Id);
+        var client = await _repository.GetEntityByIdAsync(request.Id);
 
         _logger.LogInformation($"Checking if {nameof(request.Id)} exists. {DateTime.UtcNow}");
 
-        if (entity == null)
+        if (client == null)
         {
             _logger.LogInformation($"{nameof(request.Id)} does not exists. {DateTime.UtcNow}");
             throw new ValidationException("Validation error.",
                 new ValidationFailure[] { new ValidationFailure("Id", "Id does not exist.") });
         }
 
-        entity.IsActive = false;
-        entity.Persons.ToList().ForEach(p =>
+        client.IsActive = false;
+        client.Subscriptions.ToList().ForEach(c =>
         {
-            p.IsActive = false;
-            p.DisableCard();
+            c.Cancel(DateTimeOffset.Now, "Client has been removed.");
+            c.Persons.ToList().ForEach(p =>
+            {
+                p.IsActive = false;
+
+            });
         });
-        _logger.LogInformation($"Updating {nameof(entity)}. {DateTime.UtcNow}");
-        _repository.Update(entity);
+        
+        _logger.LogInformation($"Updating {nameof(client)}. {DateTime.UtcNow}");
+        _repository.Update(client);
+
+        await _repository.UnitOfWork.SaveChangesAsync(cancellationToken);
         
         _logger.LogInformation($"Exiting {nameof(Handle)} in {nameof(RemoveClientCommandHandler)} with request: {request}. {DateTime.UtcNow}");
-
         
     }
 }

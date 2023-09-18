@@ -1,4 +1,4 @@
-namespace BusinessCard.API.Extensions;
+namespace BusinessCard.Application.Extensions;
 
 public static class StringExtensions
 {

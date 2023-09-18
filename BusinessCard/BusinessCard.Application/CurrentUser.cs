@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using BusinessCard.Domain.Seedwork;
 
-namespace BusinessCard.API;
+namespace BusinessCard.Application;
 
 public class CurrentUser : ICurrentUser
 {

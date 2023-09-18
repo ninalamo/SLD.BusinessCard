@@ -1,9 +1,8 @@
-namespace BusinessCard.API.Application.Queries.GetMembers;
+namespace BusinessCard.Application.Application.Queries.GetMembers;
 
 public record MembersResult
 {
     public string IdentityUserId { get; init; }
-    public Guid Id { get; init; }
     public Guid ClientId { get; init; }
     public string FirstName { get; init; }
     public string LastName { get; init; }
@@ -19,12 +18,7 @@ public record MembersResult
     public string Pinterest { get; init; }
     public string Twitter { get; init; }
     public string CardKey { get; init; }
-    public string SocialMedia { get; init; }
-    public string Subscription { get; init; }
-    public int SubscriptionLevel { get; init; }
-    public string? CreatedBy { get; init; }
-    public string? ModifiedBy { get; init; }
-    public DateTimeOffset? CreatedOn { get; init; }
-    public DateTimeOffset? ModifiedOn { get; init; }
-    public bool IsActive { get; init; }
+    public Guid MemberId { get; init; }
+    public Guid SubscriptionId { get; init; }
+    public int CardLevel { get; init; }
 }

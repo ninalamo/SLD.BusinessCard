@@ -20,30 +20,24 @@ internal class PersonEntityTypeConfiguration : IEntityTypeConfiguration<Person>
         
         builder.Property(b => b.Address).IsRequired();
         builder.Property(b => b.Occupation).IsRequired();
-        builder.Property(b => b.SocialMedia).IsRequired();
-
+       
         builder.Property(b => b.IdentityUserId).HasDefaultValue(string.Empty);
 
-        builder.Property<Guid>("ClientId").IsRequired();
-        
-        // builder.Property<Guid>("_subscriptionId")
-        //     .UsePropertyAccessMode(PropertyAccessMode.Field)
-        //     .HasColumnName("SubscriptionId")
-        //     .IsRequired();
-        //
-        // builder.HasOne(b => b.MemberTier)
-        //     .WithMany()
-        //     .HasForeignKey("_subscriptionId")
-        //     .OnDelete(DeleteBehavior.NoAction);
-       
-        builder.Property<Guid>("_cardId")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("CardId")
-            .IsRequired();
+         
+        builder.Metadata
+            .FindNavigation(nameof(Person.Cards))
+            ?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-        builder.HasOne( b => b.Card)
-            .WithMany()
-            .HasForeignKey("_cardId")
-            .OnDelete(DeleteBehavior.NoAction);
+        builder.OwnsOne(b => b.SocialMediaAccounts, soc =>
+        {
+            soc.ToTable("socialmedia", LokiContext.DefaultSchema);
+            soc.Property(b => b.Facebook).HasMaxLength(56);
+            soc.Property(b => b.Instagram).HasMaxLength(56);
+            soc.Property(b => b.LinkedIn).HasMaxLength(56);
+            soc.Property(b => b.Pinterest).HasMaxLength(56);
+            soc.Property(b => b.Twitter).HasMaxLength(56);
+        });
+
+
     }
 }

@@ -1,7 +1,6 @@
-using BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
 using FluentValidation;
 
-namespace BusinessCard.API.Application.Commands.AddMemberWithIdentityKey;
+namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
 
 public class AddMemberWithIdentityKeyCommandValidator : AbstractValidator<AddMemberWithIdentityKeyCommand>
 {
@@ -16,6 +15,6 @@ public class AddMemberWithIdentityKeyCommandValidator : AbstractValidator<AddMem
         RuleFor(x => x.Occupation).NotEmpty();
         RuleFor(x => x.IdentityId).NotEmpty();
 
-        RuleFor(x => x.SocialMedia).Must(x => x.Any());
+        RuleFor(x => x.SocialMedia).NotEmpty();
     }
 }

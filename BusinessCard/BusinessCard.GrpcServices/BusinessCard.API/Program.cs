@@ -1,5 +1,4 @@
-using BusinessCard.API.Application.Common.Interfaces;
-using BusinessCard.API.Extensions;
+using BusinessCard.Application;
 using BusinessCard.Application.Application.Common.Interfaces;
 using BusinessCard.Application.Application.Queries;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
@@ -48,8 +47,10 @@ builder.Services.AddScoped(typeof(ICurrentUser), typeof(CurrentUser));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 //register queries and repositories
-builder.Services.AddScoped<IClientQueries,ClientQueries>();
 builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
+
+builder.Services.AddScoped<IClientQueries,ClientQueries>();
+builder.Services.AddScoped<ISubscriptionQueries,SubscriptionQueries>();
 builder.Services.AddSingleton<IDbConnectionFactory>(i =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DevServerConnection");
@@ -86,6 +87,7 @@ await using var scope = app.Services.CreateAsyncScope();
 
 app.MapGrpcService<ClientsService>();
 app.MapGrpcService<KardsService>();
+app.MapGrpcService<BusinessCard.API.Services.SubscriptionService>();
 
 app.UseCors(b=> b.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 

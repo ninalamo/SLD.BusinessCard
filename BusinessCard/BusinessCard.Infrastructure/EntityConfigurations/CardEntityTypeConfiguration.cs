@@ -10,5 +10,9 @@ internal class CardEntityTypeConfiguration : IEntityTypeConfiguration<Card>
         builder.ToTable("card", LokiContext.DefaultSchema);
         builder.HasKey(b => b.Id);
         builder.Property(b => b.IsActive).HasDefaultValue(false);
+        builder.HasIndex(b => b.Uid).IsUnique();
+        
+        builder.Property<Guid>("PersonId").IsRequired();
+
     }
 }

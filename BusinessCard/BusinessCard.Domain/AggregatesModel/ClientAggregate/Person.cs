@@ -1,11 +1,12 @@
-﻿
+﻿                          
 
 
 namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
     public class Person : Entity
     {
-        private Guid _cardId;
+        private readonly List<Card> _cards;
+        public IReadOnlyCollection<Card> Cards => _cards.AsReadOnly();
 
         public Person(
             string firstName,
@@ -15,8 +16,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             string phoneNumber,
             string email,
             string address,
-            string occupation,
-            string socialMedia) : this()
+            string occupation) : this()
         {
             FirstName = firstName;
             LastName = lastName;
@@ -26,22 +26,23 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             Email = email;
             Address = address;
             Occupation = occupation;
-
-            SetSocialMedia(socialMedia);
+            
+            SocialMediaAccounts = new SocialMedia("N/A", "N/A", "N/A", "N/A", "N/A");
         }
 
         public Person()
         {
             IsSubscriptionOverride = false;
-            Card = new Card();
+            _cards = new List<Card>();
             IsActive = false;
         }
 
+        public SocialMedia SocialMediaAccounts { get; private set; }
         public bool IsSubscriptionOverride { get; private set; }
         public string IdentityUserId { get; private set; } = string.Empty;
 
         public void SetIdentity(string key) => IdentityUserId = Guid.Parse(key).ToString();
-
+        public bool HasIdentity() => !string.IsNullOrEmpty(IdentityUserId);
 
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -51,12 +52,20 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
         public string PhoneNumber { get; set; }
         public string Email { get; private set; }
         public string Address { get; private set; }
-        public string SocialMedia { get; private set; }
         public string Occupation { get; set; }
-        public Card? Card { get; private set; }
 
         public void SetSubscription(int level)
         {
+            throw new NotImplementedException();
+        }
+
+        public void AddCard(string uid, int cardExpiryInMonths)
+        {
+          
+            var newCard = new Card();
+            newCard.Activate(uid,cardExpiryInMonths);
+            _cards.Add(newCard);
+            
         }
 
         public void SetName(string firstname, string lastname, string middlename, string nameSuffix)
@@ -74,30 +83,9 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             Address = address;
         }
 
-        public void SetSocialMedia(string links)
+        public void SetSocialMedia(string facebook, string instagram, string twitter, string pinterest, string linkedId)
         {
-            SocialMedia = links;
-        }
-
-        public void AddKeyToCard(string key)
-        {
-            if (Card == default) Card = new();
-            Card.SetKey(key);
-            IsActive = true;
-        }
-
-        public void RemoveCard() => Card = default;
-
-        public bool HasKeylessCard() => Card == default || !Card.HasKey();
-
-        public void EnableCard()
-        {
-            Card.IsActive = true;
-        }
-
-        public void DisableCard()
-        {
-            Card.Deactivate();
+            SocialMediaAccounts = new SocialMedia(facebook, instagram, linkedId, pinterest, twitter);
         }
 
     }

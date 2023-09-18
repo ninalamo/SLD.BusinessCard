@@ -1,7 +1,6 @@
-using BusinessCard.API.Application.Behaviors;
-using BusinessCard.API.Application.Commands;
-using BusinessCard.API.Application.Commands.AddClient;
-using BusinessCard.API.Application.Commands.UpsertClient;
+using BusinessCard.Application.Application.Behaviors;
+using BusinessCard.Application.Application.Commands;
+using BusinessCard.Application.Application.Commands.AddClient;
 using BusinessCard.Domain.Exceptions;
 using FluentValidation;
 using MediatR;
@@ -21,12 +20,12 @@ public class FluentValidationTests
             new AddClientCommandValidator()
         };
 
-        var loggerMock = new Mock<ILogger<ValidatorBehavior<AddClientCommand, CommandResult>>>();
-        var request = new AddClientCommand("Sonic Lynx Digital",true,1);
-        var nextHandlerMock = new Mock<RequestHandlerDelegate<CommandResult>>();
-        nextHandlerMock.Setup(h => h()).ReturnsAsync(CommandResult.Success(Guid.NewGuid()));
+        var loggerMock = new Mock<ILogger<ValidatorBehavior<AddClientCommand, Guid>>>();
+        var request = new AddClientCommand("Sonic Lynx Digital","industry");
+        var nextHandlerMock = new Mock<RequestHandlerDelegate<Guid>>();
+        nextHandlerMock.Setup(h => h()).ReturnsAsync(Guid.NewGuid());
 
-        var behavior = new ValidatorBehavior<AddClientCommand, CommandResult>(validators, loggerMock.Object);
+        var behavior = new ValidatorBehavior<AddClientCommand, Guid>(validators, loggerMock.Object);
 
         // Act
         var result = await behavior.Handle(request, nextHandlerMock.Object, CancellationToken.None);

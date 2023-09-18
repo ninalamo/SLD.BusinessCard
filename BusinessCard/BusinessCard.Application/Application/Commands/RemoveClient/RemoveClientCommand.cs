@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace BusinessCard.API.Application.Commands.RemoveClient;
+namespace BusinessCard.Application.Application.Commands.RemoveClient;
 
 public class RemoveClientCommand : IRequest
 {

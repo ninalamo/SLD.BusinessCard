@@ -14,9 +14,9 @@ public class ClientsRepository : IClientsRepository
         _context = context ?? throw BusinessCardDomainException.CreateArgumentNullException(nameof(context));
     }
     
-    public async Task<Client> CreateAsync(string name, bool isDiscreet, int tierId)
+    public async Task<Client> CreateAsync(string name, string industry)
     {
-        var entity = await _context.Clients.AddAsync(new Client(name, isDiscreet, tierId));
+        var entity = await _context.Clients.AddAsync(new Client(name, industry));
         return entity.Entity;
     }
 
@@ -31,9 +31,9 @@ public class ClientsRepository : IClientsRepository
     public async Task<Client> GetWithPropertiesByIdAsync(Guid id)
     {
         var entity =  await _context.Clients
-            .Include(c => c.Persons).ThenInclude(p => p.Card)
-            .Include(c => c.Persons)//.ThenInclude(p => p.MemberTier)
-           // .Include(c => c.MembershipTier)
+            .Include(c => c.Subscriptions)
+            .ThenInclude(p => p.Persons)
+            .ThenInclude(p => p.Cards)
             .FirstOrDefaultAsync(c => c.Id == id);
         return entity;
     }

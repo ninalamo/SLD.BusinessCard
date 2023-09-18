@@ -1,16 +1,13 @@
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+namespace BusinessCard.Application.Application.Commands.AddClient;
 
-namespace BusinessCard.API.Application.Commands.UpsertClient;
-
-public class AddClientCommand : IRequest<CommandResult>
+public class AddClientCommand : IRequest<Guid>
 {
-    public AddClientCommand(string companyName, bool isDiscreet, int memberTierLevel)
+    public AddClientCommand(string name, string industry)
     {
-        CompanyName = companyName;
-        IsDiscreet = isDiscreet;
-        MemberTierLevel = memberTierLevel;
+        Name = name;
+        Industry = industry;
     }
-    public string CompanyName { get; private set; }
-    public int MemberTierLevel { get; private set; }
-    public bool IsDiscreet { get; private set; }
+    public string Name { get; private set; }
+    public string Industry { get; private set; }
+   
 }

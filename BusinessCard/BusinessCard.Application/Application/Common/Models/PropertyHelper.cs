@@ -1,4 +1,4 @@
-﻿namespace BusinessCard.API.Application.Common.Models;
+﻿namespace BusinessCard.Application.Application.Common.Models;
 
 public static class PropertyHelper
 {
