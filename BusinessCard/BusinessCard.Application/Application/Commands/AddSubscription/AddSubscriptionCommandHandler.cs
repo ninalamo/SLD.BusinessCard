@@ -31,7 +31,7 @@ public class AddSubscriptionCommandHandler : IRequestHandler<AddSubscriptionComm
         }
         
         _logger.LogInformation($"Adding subscriptions to {nameof(client)}. {DateTime.UtcNow}");
-        client.AddSubscription(
+        var subscription = client.AddSubscription(
             request.PlanId,
             request.StartDate,
             request.EndDate,
@@ -44,6 +44,6 @@ public class AddSubscriptionCommandHandler : IRequestHandler<AddSubscriptionComm
         _logger.LogInformation($"Exiting {nameof(Handle)} in {nameof(AddSubscriptionCommandHandler)} with request: {request}. {DateTime.UtcNow}");
         
         _logger.LogInformation($"Return {nameof(client.Id)}. {DateTime.UtcNow}");
-        return client.Id;
+        return subscription.Id;
     }
 }
