@@ -1,6 +1,7 @@
 using BusinessCard.Application.Application.Common.Helpers;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using FluentValidation;
+using FluentValidation.Results;
 
 namespace BusinessCard.Application.Application.Commands.EditMember;
 
@@ -22,8 +23,16 @@ public class EditMemberCommandHandler : IRequestHandler<EditMemberCommand, Guid>
         _logger.LogInformation($"Fetching {nameof(Client)}-{DateTimeOffset.Now}");
         var client = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
 
+        
+        Subscription defaultSubscription = client.Subscriptions.FirstOrDefault(i => i.Id == request.SubscriptionId);
+
+        if (defaultSubscription == null)
+            throw new ValidationException("Subscription not found.",
+                new[] { new ValidationFailure("Subscription", "SubscriptionId not found.") });
+
+        
         _logger.LogInformation($"Validating request... {nameof(request)}-{DateTimeOffset.Now}");
-        client.AdditionalValidation(request.PhoneNumber, request.Email, request.MemberId);
+        defaultSubscription.AdditionalValidation(request.PhoneNumber, request.Email, request.MemberId);
 
         _logger.LogInformation($"Getting {nameof(Person)}-{DateTimeOffset.Now}");
         //TODO: Refactor

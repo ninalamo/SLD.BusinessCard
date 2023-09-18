@@ -24,8 +24,16 @@ public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Guid>
         _logger.LogInformation($"Fetching {nameof(Client)}-{DateTimeOffset.Now}");
         var client = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
 
+        var subscription = client.Subscriptions.FirstOrDefault(i => i.Id == request.SubscriptionId);
+        
+        if (subscription == null)
+            throw new ValidationException("Subscription not found.", new[]
+            {
+                new ValidationFailure("SubscriptionId", "SubscriptionId not found.")
+            });
+
         _logger.LogInformation($"Validating request... {nameof(request)}-{DateTimeOffset.Now}");
-        client.AdditionalValidation(request.PhoneNumber, request.Email);
+        subscription.AdditionalValidation(request.PhoneNumber, request.Email);
 
         if (!client.Subscriptions.Any())
             throw new ValidationException("Client must have a subscription",
@@ -40,7 +48,7 @@ public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Guid>
         
         _logger.LogInformation($"Adding {nameof(Person)}-{DateTimeOffset.Now}");
         var person = new Person(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix,
-            request.PhoneNumber, request.Email, request.Address, request.Occupation, "");
+            request.PhoneNumber, request.Email, request.Address, request.Occupation);
 
         person.SetSocialMedia(request.Facebook, request.Instagram, request.Twitter, request.Pinterest,
             request.LinkedIn);

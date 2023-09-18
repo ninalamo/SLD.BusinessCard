@@ -16,8 +16,7 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             string phoneNumber,
             string email,
             string address,
-            string occupation,
-            string socialMedia) : this()
+            string occupation) : this()
         {
             FirstName = firstName;
             LastName = lastName;
@@ -60,6 +59,15 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             throw new NotImplementedException();
         }
 
+        public void AddCard(string uid, int cardExpiryInMonths)
+        {
+          
+            var newCard = new Card();
+            newCard.Activate(uid,cardExpiryInMonths);
+            _cards.Add(newCard);
+            
+        }
+
         public void SetName(string firstname, string lastname, string middlename, string nameSuffix)
         {
             FirstName = firstname;
@@ -74,8 +82,6 @@ namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
             Email = email;
             Address = address;
         }
-
-
 
         public void SetSocialMedia(string facebook, string instagram, string twitter, string pinterest, string linkedId)
         {

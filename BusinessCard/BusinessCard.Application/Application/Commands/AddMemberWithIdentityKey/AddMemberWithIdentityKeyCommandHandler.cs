@@ -1,5 +1,7 @@
 using BusinessCard.Application.Application.Common.Helpers;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey;
 
@@ -20,22 +22,47 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
         
         _logger.LogInformation($"Fetching {nameof(Client)}-{DateTimeOffset.Now}");
         var client = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
+        
+        _logger.LogInformation($"Fetching {nameof(Subscription)}-{DateTimeOffset.Now}");
+        var subscription = client.Subscriptions.FirstOrDefault(i => i.Id == request.SubscriptionId);
+
+        if (subscription == null)
+            throw new ValidationException("Subscription not found.", new[]
+            {
+                new ValidationFailure("SubscriptionId", "SubscriptionId not found.")
+            });
 
         _logger.LogInformation($"Validating request... {nameof(request)}-{DateTimeOffset.Now}");
-        client.AdditionalValidation(request.PhoneNumber, request.Email);
+        subscription.AdditionalValidation(request.PhoneNumber, request.Email);
 
         _logger.LogInformation($"Adding {nameof(Person)}-{DateTimeOffset.Now}");
-        var person = new Person();// client.AddMember(request.FirstName, request.LastName, request.MiddleName, request.NameSuffix, request.PhoneNumber,request.Email,request.Address,request.Occupation,request.SocialMedia);
+        var person = new Person(
+            request.FirstName,
+            request.LastName,
+            request.MiddleName, 
+            request.NameSuffix,
+            request.PhoneNumber,
+            request.Email,
+            request.Address,
+            request.Occupation);
+        
+        person.SetSocialMedia(request.SocialMedia.Facebook,
+            request.SocialMedia.Instagram,
+            request.SocialMedia.Twitter,
+            request.SocialMedia.Pinterest,
+            request.SocialMedia.LinkedIn);
         
         _logger.LogInformation($"Setting industry level for {nameof(Person)}-{DateTimeOffset.Now}");
-       //TODO: person.SetSubscription(client.MembershipTier.Level);
+        person.Occupation = request.Occupation;
         
         _logger.LogInformation($"Adding IdentityId to {nameof(Person)}-{DateTimeOffset.Now}");
         person.SetIdentity(request.IdentityId);
-        
-        //TODO: person.AddKeyToCard(request.CardKey);
+
+        _logger.LogInformation($"Adding card to {nameof(Person)}-{DateTimeOffset.Now}");
+        person.AddCard(request.CardKey, subscription.CardExpiryInMonths);
         
         _logger.LogInformation($"Update {nameof(Client)}-{DateTimeOffset.Now}");
+        subscription.AddMember(person);
         _repository.Update(client);
 
         _logger.LogInformation($"Saving changes... {DateTimeOffset.Now}");

@@ -15,6 +15,6 @@ public class AddMemberWithIdentityKeyCommandValidator : AbstractValidator<AddMem
         RuleFor(x => x.Occupation).NotEmpty();
         RuleFor(x => x.IdentityId).NotEmpty();
 
-        RuleFor(x => x.SocialMedia).Must(x => x.Any());
+        RuleFor(x => x.SocialMedia).NotEmpty();
     }
 }

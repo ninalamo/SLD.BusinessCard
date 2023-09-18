@@ -42,4 +42,5 @@ public class EditMemberCommand : IRequest<Guid>
     public string SocialMedia { get; init; }
     public string CardKey { get; init; }
     public int SubscriptionLevel { get; init; }
+    public Guid SubscriptionId { get; set; }
 }
