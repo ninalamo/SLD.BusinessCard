@@ -17,7 +17,6 @@ service ClientGrpc {
 
     rpc EditMemberGrpc(EditMemberGrpcCommand) returns (MemberGrpcCommandResult){}
     rpc GetPaginatedMembersGrpc(GetPaginatedMembersGrpcQuery)returns(GetPaginatedMembersGrpcQueryResult){}
-    rpc GetMemberByIdGrpc(GetMemberByIdGrpcQuery)returns(MemberGrpcResult){}
     rpc GetMemberByIdAndUidGrpc(GetMemberByIdAndUidGrpcQuery) returns (GetMemberWithUidGrpcResult){}
     rpc GetMemberByUidGrpc(GetMemberByUidGrpcQuery) returns (GetMemberWithUidGrpcResult){}
 }
@@ -138,10 +137,7 @@ message GetPaginatedMembersGrpcQuery{
     int32 pageNumber = 3;
 }
 
-message GetMemberByIdGrpcQuery{
-    string clientId = 1;
-    string memberId = 2;
-}
+
 
 message GetMemberByIdAndUidGrpcQuery {
     string uid = 1;
@@ -173,22 +169,21 @@ message MemberGrpcResult {
     string pinterest = 9;
     string twitter = 10;
     string clientId = 11;
-    string subscription = 12;
-    int32 subscriptionLevel = 13;
+    string subscriptionId = 12;
+    int32 cardLevel = 13;
     string cardKey = 14;
-    string id = 15;
+    string memberId = 15;
     string firstName = 16;
     string middleName = 17;
     string lastName = 18;
     string nameSuffix = 19;
     string identity = 20;
     string company = 21;
+    string cardId = 22;
 }
 
 message GetMemberWithUidGrpcResult {
     repeated MemberGrpcResult members = 1;
-    string message = 2;
-    bool isValid = 3;
 }
 
 message MemberGrpcCommandResult {

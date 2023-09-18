@@ -36,6 +36,7 @@
     <Compile Remove="Proto\**" />
     <Compile Remove="Interceptors\**" />
     <Compile Remove="Program.cs" />
+    <Compile Remove="Application\Queries\GetMemberId\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,12 +54,14 @@
     <None Remove="Dockerfile" />
     <None Remove="..\.dockerignore" />
     <None Remove="Properties\launchSettings.json" />
+    <None Remove="Application\Queries\GetMemberId\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="Grpc\**" />
     <EmbeddedResource Remove="Proto\**" />
     <EmbeddedResource Remove="Interceptors\**" />
+    <EmbeddedResource Remove="Application\Queries\GetMemberId\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,6 +70,7 @@
     <Content Remove="Interceptors\**" />
     <Content Remove="appsettings.json" />
     <Content Remove="appsettings.Development.json" />
+    <Content Remove="Application\Queries\GetMemberId\**" />
   </ItemGroup>
 
 </Project>

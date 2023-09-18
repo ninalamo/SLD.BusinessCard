@@ -1,4 +1,5 @@
 using BusinessCard.Application.Application.Common.Interfaces;
+using BusinessCard.Application.Application.Common.Models;
 using BusinessCard.Application.Application.Common.SQLScripts;
 using BusinessCard.Application.Application.Queries.GetClients;
 using BusinessCard.Application.Application.Queries.GetMembers;
@@ -121,12 +122,47 @@ public class ClientQueries : IClientQueries
 	    return (count.First(), result ?? Array.Empty<MembersResult>());
     }
 
+    public async Task<IEnumerable<CardResult>> GetCardByUidAndClientId(string uid, Guid clientId)
+    {
+	    var query = CardSQL.SelectCardByUidAndClientId;
+
+	    DynamicParameters parameters = new();
+	    parameters.Add("Uid", uid);
+	    parameters.Add("ClientId", clientId);
+
+	    await using var connection = _dbConnectionFactory.CreateConnection();
+
+	    await connection.OpenAsync(CancellationToken.None);
+
+	    var result = await connection.QueryAsync<CardResult>(query, parameters);
+
+	    return result ?? Array.Empty<CardResult>();
+    }
+
     public async Task<bool> IsCardExists(string uid)
     {
 	    var query = SqlScript.CheckIfCardKeyExists;
 
 	    DynamicParameters parameters = new();
 	    parameters.Add("key", uid);
+
+	    await using var connection = _dbConnectionFactory.CreateConnection();
+
+	    await connection.OpenAsync(CancellationToken.None);
+
+	    var count = await connection.QueryAsync<int>(query, parameters);
+
+	    return count.FirstOrDefault() == 1;
+
+    }
+
+    public async Task<bool> IsCardExists(string uid, Guid clientId)
+    {
+	    var query = CardSQL.SelectCardIfExists;
+	    
+	    DynamicParameters parameters = new();
+	    parameters.Add("Uid", uid);
+	    parameters.Add("ClientId", clientId);
 
 	    await using var connection = _dbConnectionFactory.CreateConnection();
 

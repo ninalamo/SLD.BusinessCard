@@ -1,99 +1,81 @@
 using System.Text.Json;
+using BusinessCard.Application.Application.Common.Interfaces;
 using BusinessCard.Application.Application.Common.Models;
-using BusinessCard.Application.Application.Queries.GetMemberId;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace BusinessCard.Application.Application.Queries.GetMemberByIdAndUid;
 
 public class GetMemberIdAndUidQueryHandler : IRequestHandler<GetMemberByIdAndUidQuery, GetMemberByIdAndUidQueryResult>
 {
     private readonly IClientsRepository _repository;
-    private readonly ILogger<GetMemberIdQueryHandler> _logger;
+    private readonly IClientQueries _queries;
+    private readonly ILogger<GetMemberIdAndUidQueryHandler> _logger;
 
-    public GetMemberIdAndUidQueryHandler(IClientsRepository repository, ILogger<GetMemberIdQueryHandler> logger)
+    public GetMemberIdAndUidQueryHandler(IClientsRepository repository, IClientQueries queries, ILogger<GetMemberIdAndUidQueryHandler> logger)
     {
         _repository = repository;
+        _queries = queries;
         _logger = logger;
     }
 
     public async Task<GetMemberByIdAndUidQueryResult> Handle(GetMemberByIdAndUidQuery request,
         CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberIdQueryHandler), DateTimeOffset.Now);
+        _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberIdAndUidQueryHandler), DateTimeOffset.Now);
 
-        var result = new GetMemberByIdAndUidQueryResult(); 
-        result.SetMessage("");
-        result.IsValid = true;
-        
-        var client = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
-        if (client == null)
+        var cardResults = await _queries.GetCardByUidAndClientId(request.Uid, request.ClientId);
+
+        var emptyResult = new GetMemberByIdAndUidQueryResult()
         {
-            result.SetMember(null);
-            result.SetMessage("Client id not found.");
-            result.IsValid = false;
+            Member = Array.Empty<MemberIdAndUidResult>()
+        };
+        ;
 
-            return result;
-        }
+        if (!cardResults.Any()) return emptyResult;
 
-        // var person = client.Persons.FirstOrDefault(c =>  c.Id == request.MemberId);
-        // if (person == null)
-        // {
-        //     result.SetMember(null);
-        //     result.SetMessage("Member id not found.");
-        //     result.IsValid = false;
-        //
-        //     return result;
-        // }
+        var card = cardResults.SingleOrDefault();
 
-        // if (person.HasKeylessCard())
-        // {
-        //     result.IsValid = true;
-        //     result.SetMember(null);
-        //     result.SetMessage("");
-        //     return result;
-        // }
-        // else
-        // {
-        //     if (person.Card.Key != request.Uid)
-        //     {
-        //         result.IsValid = false;
-        //         result.SetMessage("Member already assigned.");
-        //         return result;
-        //     }
-        // }
+        var client = await _repository.GetWithPropertiesByIdAsync(card.ClientId);
 
-        // var member = new MemberIdAndUidResult()
-        // {
-        //         ClientId = request.ClientId,
-        //         Subscription = "To remove",//person.Subscription.Name,
-        //         SubscriptionLevel = 1, //person.Subscription.Level,
-        //         Address = person.Address,
-        //         // CardKey = person.Card.Key,
-        //         CreatedBy = person.CreatedBy,
-        //         CreatedOn = person.CreatedOn,
-        //         Email = person.Email,
-        //         Facebook = ToSocialMediaObject(person.SocialMedia).Facebook,
-        //         FirstName = person.FirstName,
-        //         LastName = person.LastName,
-        //         NameSuffix = person.NameSuffix,
-        //         MiddleName = person.MiddleName,
-        //         Id = person.Id,
-        //         Instagram = ToSocialMediaObject(person.SocialMedia).Instagram,
-        //         Pinterest = ToSocialMediaObject(person.SocialMedia).Pinterest,
-        //         Occupation = person.Occupation,
-        //         Twitter = ToSocialMediaObject(person.SocialMedia).Twitter,
-        //         IsActive = person.IsActive,
-        //         PhoneNumber = person.PhoneNumber,
-        //         ModifiedBy = person.ModifiedBy,
-        //         ModifiedOn = person.ModifiedOn,
-        //         LinkedIn = ToSocialMediaObject(person.SocialMedia).LinkedIn,
-        //         IdentityUserId = person.IdentityUserId,
-        //         Company = client.Name
-        // };
-        //
-        // result.SetMember(member);
+        var subscription = client.Subscriptions.FirstOrDefault(i => i.Id == card.SubscriptionId);
 
-        return result;
+        if (subscription == null) return emptyResult;
+
+        var person = subscription.Persons.FirstOrDefault(i => i.Id == card.MemberId);
+
+        if (person == null) return emptyResult;
+            
+        
+
+        var m = new MemberIdAndUidResult()
+        {
+                ClientId = request.ClientId,
+                Address = person.Address,
+                CardKey = card.Uid,
+                Email = person.Email,
+                Facebook = person.SocialMediaAccounts?.Facebook,
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                NameSuffix = person.NameSuffix,
+                MiddleName = person.MiddleName,
+                MemberId = person.Id,
+                Instagram = person.SocialMediaAccounts?.Instagram,
+                Pinterest = person.SocialMediaAccounts?.Pinterest,
+                Occupation = person.Occupation,
+                Twitter = person.SocialMediaAccounts?.Twitter,
+                IsActive = person.IsActive,
+                PhoneNumber = person.PhoneNumber,
+                LinkedIn = person.SocialMediaAccounts?.LinkedIn,
+                IdentityUserId = person.IdentityUserId,
+                Company = client.Name
+        };
+
+        return new GetMemberByIdAndUidQueryResult()
+        {
+            Member = new[] { m }
+        };
     }
 
     private static SocialMediaObject ToSocialMediaObject(string json)

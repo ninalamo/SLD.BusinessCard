@@ -1,7 +1,6 @@
 using System.Text.Json;
 using BusinessCard.Application.Application.Common.Interfaces;
 using BusinessCard.Application.Application.Common.Models;
-using BusinessCard.Application.Application.Queries.GetMemberId;
 using BusinessCard.Domain.AggregatesModel.ClientAggregate;
 using BusinessCard.Domain.Exceptions;
 
@@ -12,9 +11,9 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
 {
     private readonly IClientsRepository _repository;
     private readonly IClientQueries _queries;
-    private readonly ILogger<GetMemberIdQueryHandler> _logger;
+    private readonly ILogger<GetMemberByUidQueryHandler> _logger;
 
-    public GetMemberByUidQueryHandler(IClientsRepository repository, IClientQueries queries, ILogger<GetMemberIdQueryHandler> logger)
+    public GetMemberByUidQueryHandler(IClientsRepository repository, IClientQueries queries, ILogger<GetMemberByUidQueryHandler> logger)
     {
         _repository = repository;
         _queries = queries;
@@ -24,11 +23,9 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
     public async Task<GetMemberByUidQueryResult> Handle(GetMemberByUidQuery request,
         CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberIdQueryHandler), DateTimeOffset.Now);
+        _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberByUidQueryResult), DateTimeOffset.Now);
 
-        var result = new GetMemberByUidQueryResult(); 
-        result.SetMessage("");
-        result.IsValid = true;
+        
 
         string message;
         
@@ -41,14 +38,7 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
        // var person = client?.Persons.FirstOrDefault();//c =>  c.Card?.Key == request.Uid);
         // message +=  person == null ? string.Empty : $"{Environment.NewLine}Key no longer available.";
         
-        if (!string.IsNullOrEmpty(message))
-        {
-            result.IsValid = false;
-            result.SetMessage(message);
-            result.SetMember(null);
-            
-            return result;
-        }
+      
         
         // var member = new MemberUidResult()
         // {
@@ -81,7 +71,7 @@ public class GetMemberByUidQueryHandler : IRequestHandler<GetMemberByUidQuery, G
         //
         // result.SetMember(member);
 
-        return result;
+        return default;
     }
 
     private static SocialMediaObject ToSocialMediaObject(string json)

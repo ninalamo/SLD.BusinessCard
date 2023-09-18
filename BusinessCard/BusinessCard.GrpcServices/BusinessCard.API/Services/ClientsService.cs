@@ -13,7 +13,6 @@ using BusinessCard.Application.Application.Queries.GetClientById;
 using BusinessCard.Application.Application.Queries.GetClients;
 using BusinessCard.Application.Application.Queries.GetMemberByIdAndUid;
 using BusinessCard.Application.Application.Queries.GetMemberByUid;
-using BusinessCard.Application.Application.Queries.GetMemberId;
 using BusinessCard.Application.Application.Queries.GetMembers;
 using BusinessCard.Application.Extensions;
 using BusinessCard.Domain.Exceptions;
@@ -222,20 +221,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
         return grpcResult;
     }
-
-    /// <summary>
-    /// Get member by Id
-    /// </summary>
-    /// <param name="request"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
-    public override async Task<MemberGrpcResult> GetMemberByIdGrpc(GetMemberByIdGrpcQuery request, ServerCallContext context)
-    {
-        var result = await _mediator.Send(new GetMemberIdQuery(request.ClientId.ToGuid(), request.MemberId.ToGuid()));
-
-        return ToMemberGrpcResult(result);
-    }
-
+    
     
     /// <summary>
     /// Get member information using MemberId and Uid. This to be used when credentials are pre-generated as dummy person objects in the database.
@@ -249,8 +235,6 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
 
         var result = new GetMemberWithUidGrpcResult();
-        result.IsValid = response.IsValid;
-        result.Message = response.Message;
 
         if (response.Member == null)
         {
@@ -261,29 +245,32 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         result.Members.AddRange(new [] {
             new MemberGrpcResult()
             {
-                Address = response.Member.Address,
-                ClientId = response.Member.ClientId.ToString(),
-                Subscription = response.Member.Subscription,
-                SubscriptionLevel = response.Member.SubscriptionLevel,
-                FullName = NameBuilder(response.Member.FirstName, response.Member.LastName, response.Member.MiddleName,
-                    response.Member.NameSuffix),
-                FirstName = response.Member.FirstName,
-                LastName = response.Member.LastName,
-                MiddleName = response.Member.MiddleName,
-                NameSuffix = response.Member.NameSuffix,
-                Email = response.Member.Email,
-                Facebook = response.Member.Facebook,
-                Id = response.Member.Id.ToString(),
-                Instagram = response.Member.Instagram,
-                Occupation = response.Member.Occupation,
-                Pinterest = response.Member.Pinterest,
-                Twitter = response.Member.Twitter,
-                LinkedIn = response.Member.LinkedIn,
-                CardKey = response.Member.CardKey,
-                PhoneNumber = response.Member.PhoneNumber,
-                Identity = response.Member.IdentityUserId,
-                Company = response.Member.Company,
-
+                Address = response.Member.FirstOrDefault()?.Address,
+                ClientId = response.Member.FirstOrDefault()?.ClientId.ToString(),
+                SubscriptionId = response.Member.FirstOrDefault()?.SubscriptionId.ToString(),
+                CardLevel = response.Member.FirstOrDefault().CardLevel,
+                FullName = NameBuilder(
+                    response.Member.FirstOrDefault()?.FirstName,
+                    response.Member.FirstOrDefault()?.LastName,
+                    response.Member.FirstOrDefault()?.MiddleName,
+                    response.Member.FirstOrDefault()?.NameSuffix),
+                FirstName = response.Member.FirstOrDefault()?.FirstName,
+                LastName = response.Member.FirstOrDefault()?.LastName,
+                MiddleName = response.Member.FirstOrDefault()?.MiddleName,
+                NameSuffix = response.Member.FirstOrDefault()?.NameSuffix,
+                Email = response.Member.FirstOrDefault()?.Email,
+                Facebook = response.Member.FirstOrDefault()?.Facebook,
+                MemberId = response.Member.FirstOrDefault()?.MemberId.ToString(),
+                Instagram = response.Member.FirstOrDefault()?.Instagram,
+                Occupation = response.Member.FirstOrDefault()?.Occupation,
+                Pinterest = response.Member.FirstOrDefault()?.Pinterest,
+                Twitter = response.Member.FirstOrDefault()?.Twitter,
+                LinkedIn = response.Member.FirstOrDefault()?.LinkedIn,
+                CardKey = response.Member.FirstOrDefault()?.CardKey,
+                PhoneNumber = response.Member.FirstOrDefault()?.PhoneNumber,
+                Identity = response.Member.FirstOrDefault()?.IdentityUserId,
+                Company = response.Member.FirstOrDefault()?.Company,
+                CardId = Guid.Empty.ToString()
             }
         });
 
@@ -302,43 +289,41 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
 
         var result = new GetMemberWithUidGrpcResult();
-        result.IsValid = response.IsValid;
-        result.Message = response.Message;
-
+       
         if (response.Member == null)
         {
             result.Members.AddRange(Array.Empty<MemberGrpcResult>());
             return result;
         }
         
-        result.Members.AddRange(new [] {
-            new MemberGrpcResult()
-            {
-                Address = response.Member.Address,
-                ClientId = response.Member.ClientId.ToString(),
-                Subscription = response.Member.Subscription,
-                SubscriptionLevel = response.Member.SubscriptionLevel,
-                FullName = NameBuilder(response.Member.FirstName, response.Member.LastName, response.Member.MiddleName,
-                    response.Member.NameSuffix),
-                FirstName = response.Member.FirstName,
-                LastName = response.Member.LastName,
-                MiddleName = response.Member.MiddleName,
-                NameSuffix = response.Member.NameSuffix,
-                Email = response.Member.Email,
-                Facebook = response.Member.Facebook,
-                Id = response.Member.Id.ToString(),
-                Instagram = response.Member.Instagram,
-                Occupation = response.Member.Occupation,
-                Pinterest = response.Member.Pinterest,
-                Twitter = response.Member.Twitter,
-                LinkedIn = response.Member.LinkedIn,
-                CardKey = response.Member.CardKey,
-                PhoneNumber = response.Member.PhoneNumber,
-                Identity = response.Member.IdentityUserId,
-                Company = response.Member.Company,
-
-            }
-        });
+        // result.Members.AddRange(new [] {
+        //     new MemberGrpcResult()
+        //     {
+        //         Address = response.Member.Address,
+        //         ClientId = response.Member.ClientId.ToString(),
+        //         Subscription = response.Member.Subscription,
+        //         SubscriptionLevel = response.Member.SubscriptionLevel,
+        //         FullName = NameBuilder(response.Member.FirstName, response.Member.LastName, response.Member.MiddleName,
+        //             response.Member.NameSuffix),
+        //         FirstName = response.Member.FirstName,
+        //         LastName = response.Member.LastName,
+        //         MiddleName = response.Member.MiddleName,
+        //         NameSuffix = response.Member.NameSuffix,
+        //         Email = response.Member.Email,
+        //         Facebook = response.Member.Facebook,
+        //         Id = response.Member.Id.ToString(),
+        //         Instagram = response.Member.Instagram,
+        //         Occupation = response.Member.Occupation,
+        //         Pinterest = response.Member.Pinterest,
+        //         Twitter = response.Member.Twitter,
+        //         LinkedIn = response.Member.LinkedIn,
+        //         CardKey = response.Member.CardKey,
+        //         PhoneNumber = response.Member.PhoneNumber,
+        //         Identity = response.Member.IdentityUserId,
+        //         Company = response.Member.Company,
+        //
+        //     }
+        // });
 
         return result;
     }
@@ -407,32 +392,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         };
     }
     
-    private static MemberGrpcResult ToMemberGrpcResult(GetMemberByIdQueryResult c)
-    {
-        return new MemberGrpcResult()
-        {
-            Address = c.Address,
-            ClientId = c.ClientId.ToString(),
-            Subscription = c.Subscription,
-            SubscriptionLevel = c.SubscriptionLevel,
-            FullName = NameBuilder(c.FirstName,c.LastName, c.MiddleName,c.NameSuffix),
-            FirstName = c.FirstName,
-            LastName = c.LastName,
-            MiddleName = c.MiddleName,
-            NameSuffix = c.NameSuffix,
-            Email = c.Email,
-            Facebook = c.Facebook,
-            Id = c.Id.ToString(),
-            Instagram = c.Instagram,
-            Occupation = c.Occupation,
-            Pinterest =  c.Pinterest,
-            Twitter =  c.Twitter,
-            LinkedIn =  c.LinkedIn,
-            CardKey = c.CardKey,
-            PhoneNumber = c.PhoneNumber,
-        };
-    }
-    
+  
  
     
     private static MemberGrpcResult ToMemberGrpcResult(MembersResult c)
@@ -445,12 +405,12 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             MiddleName = c.MiddleName,
             NameSuffix = c.NameSuffix,
             ClientId = c.ClientId.ToString(),
-            Subscription = c.Subscription,
-            SubscriptionLevel = c.SubscriptionLevel,
+            SubscriptionId = c.Subscription,
+            CardLevel = 0,
             FullName = NameBuilder(c),
             Email = c.Email,
             Facebook = GetSocialMedia(c)?.Facebook ?? "N/A",
-            Id = c.Id.ToString(),
+            MemberId = c.Id.ToString(),
             Instagram = GetSocialMedia(c)?.Instagram ?? "N/A",
             Occupation = c.Occupation,
             Pinterest =  GetSocialMedia(c)?.Pinterest ?? "N/A",

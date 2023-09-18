@@ -31,13 +31,28 @@ public class GetMemberIdQueryHandler : IRequestHandler<GetMemberIdQuery, GetMemb
     {
         _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberIdQueryHandler), DateTimeOffset.Now);
 
-        var client = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
-        
-        if (client == null) throw new KeyNotFoundException("Client not found.");
+        var cardResults = await _queries.GetCardByUidAndClientId(request.Uid, request.ClientId);
 
-        MemberIdAndUidResult member = null; //TODO: Refactor client.Persons.FirstOrDefault(c => c.Id == request.MemberId);
+        var emptyResult = new GetMemberByIdQueryResult()
+        {
+            Member = Array.Empty<MemberIdAndUidResult>()
+        };
+        ;
 
-        if (member == null) throw new KeyNotFoundException("Member not found.");
+        if (!cardResults.Any()) return emptyResult;
+
+        var card = cardResults.SingleOrDefault();
+
+        var client = await _repository.GetWithPropertiesByIdAsync(card.ClientId);
+
+        var subscription = client.Subscriptions.FirstOrDefault(i => i.Id == card.SubscriptionId);
+
+        if (subscription == null) return emptyResult;
+
+        var person = subscription.Persons.FirstOrDefault(i => i.Id == card.MemberId);
+
+        if (person == null) return emptyResult;
+
 
         return new GetMemberByIdQueryResult()
         {
