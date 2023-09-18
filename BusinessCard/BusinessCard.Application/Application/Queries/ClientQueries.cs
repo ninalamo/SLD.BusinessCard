@@ -25,7 +25,7 @@ public class ClientQueries : IClientQueries
         parameters.Add("pageSize", pageSize);
         parameters.Add("offSet",(pageNumber -1) * pageSize);
 
-        var query = SqlScript.SelectClients;
+        var query = ClientSQL.SelectClients;
 
         if (!string.IsNullOrEmpty(name))
         {
@@ -35,7 +35,7 @@ public class ClientQueries : IClientQueries
         
         query += @" ORDER BY [Name] OFFSET @offSet ROWS FETCH NEXT @pageSize ROWS ONLY ";
 
-        var countQuery = SqlScript.ClientCount;
+        var countQuery = ClientSQL.ClientCount;
 
         await using var connection = _dbConnectionFactory.CreateConnection(); 
         
@@ -53,7 +53,7 @@ public class ClientQueries : IClientQueries
 	    DynamicParameters parameters = new();
 	    parameters.Add("Id", id);
 
-	    string query = SqlScript.SelectClientById;
+	    string query = ClientSQL.SelectClientById;
 
 	    await using SqlConnection connection =_dbConnectionFactory.CreateConnection(); // new SqlConnection(_connectionString);
         
@@ -71,7 +71,7 @@ public class ClientQueries : IClientQueries
 	    DynamicParameters parameters = new();
 	    parameters.Add("uid", uid);
 
-	    string query = SqlScript.SelectMembers;
+	    string query = ClientSQL.SelectMembers;
 	    query += " WHERE C.[Key] = @uid ";
 
 	    await using SqlConnection connection =_dbConnectionFactory.CreateConnection(); 
@@ -95,9 +95,9 @@ public class ClientQueries : IClientQueries
 	    parameters.Add("pageSize", pageSize);
 	    parameters.Add("offSet",(pageNumber -1) * pageSize);
 
-	    var countQuery = SqlScript.MemberCount;
+	    var countQuery = ClientSQL.MemberCount;
 
-	    await using var connection = _dbConnectionFactory.CreateConnection(); //new SqlConnection(_connectionString);
+	    await using var connection = _dbConnectionFactory.CreateConnection(); 
         
 	    await connection.OpenAsync(CancellationToken.None);
 
@@ -105,7 +105,8 @@ public class ClientQueries : IClientQueries
 
 	    if (count.FirstOrDefault() == 0) return (0, Array.Empty<MembersResult>());
 
-	    var query = SqlScript.SelectMembers + " WHERE P.[ClientId] = @ClientId ";
+	    var query = ClientSQL.SelectMembers + " WHERE C.[Id] = @ClientId ";
+	    
 	    if (count.FirstOrDefault() == 1)
 	    {
 		    query += @" ORDER BY P.[LastName], P.[FirstName] ";
@@ -141,7 +142,7 @@ public class ClientQueries : IClientQueries
 
     public async Task<bool> IsCardExists(string uid)
     {
-	    var query = SqlScript.CheckIfCardKeyExists;
+	    var query = ClientSQL.CheckIfCardKeyExists;
 
 	    DynamicParameters parameters = new();
 	    parameters.Add("key", uid);

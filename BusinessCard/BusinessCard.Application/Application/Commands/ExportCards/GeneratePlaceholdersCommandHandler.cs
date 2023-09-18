@@ -41,30 +41,33 @@ public class GeneratePlaceholdersCommandHandler : IRequestHandler<GeneratePlaceh
 
         for (var i = 0; i < request.Count; i++)
         {
-            var person = new Person();
-            // entity.AddMember(
-            // "N/A", 
-            // "N/A", 
-            // "N/A",
-            // "N/A",
-            // Guid.NewGuid().ToString(),
-            // $"{Guid.NewGuid().ToString()}@tuldok.co", 
-            // "N/A",
-            // "N/A",
-            // "{\n  \"Facebook\": \"N/A\",\n  \"LinkedIn\": \"N/A\",\n  \"Pinterest\": \"N/A\",\n  \"Instagram\": \"N/A\",\n  \"Twitter\": \"N/A\"\n}");
+            var person = new Person("N/A", 
+                "N/A", 
+                "N/A",
+                "N/A",
+                Guid.NewGuid().ToString(),
+                $"{Guid.NewGuid().ToString()}@tuldok.co", 
+                "N/A",
+                "N/A");
 
-            //person.SetSubscription(entity.MembershipTier.Level);
-            // person.DisableCard();
-            person.Deactivate();
+            person.SetSocialMedia("", "", "", "", "");
+            person.Occupation = "";
+           
+            subscription.AddMember(person);
             
-            _repository.Update(client);
-
-            await _repository.UnitOfWork.SaveChangesAsync(cancellationToken);
+           
         }
+        
+        _repository.Update(client);
+
+        await _repository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
         return new GeneratePlaceholdersCommandResult()
         {
-            Urls = Array.Empty<string>()//TODO: Refactor entity.Persons.Where(p => p.IsActive == false).Select(p => $"ext/v1/tenants/{entity.Id}/members/{p.Id}").ToArray()
+            Urls = subscription.Persons
+                .Where(p => p.IsActive == false && p.Cards.Count == 0)
+                .Select(p => $"ext/v1/tenants/{client.Id}/members/{p.Id}")
+                .ToArray()
         };
     }
 }

@@ -235,7 +235,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
 
         var result = new GetMemberWithUidGrpcResult();
 
-        if (response.Member == null)
+        if (!response.Member .Any())
         {
             result.Members.AddRange(Array.Empty<MemberGrpcResult>());
             return result;
@@ -279,11 +279,6 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
     
 
     #region Transform
-    
-    private static SocialMediaObject? GetSocialMedia(MembersResult member)
-    {
-        return JsonSerializer.Deserialize<SocialMediaObject>(member.SocialMedia);
-    }
     
 
     private static string NameBuilder(string firstname, string lastname, string middleName, string nameSuffix)
@@ -355,17 +350,17 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             MiddleName = c.MiddleName,
             NameSuffix = c.NameSuffix,
             ClientId = c.ClientId.ToString(),
-            SubscriptionId = c.Subscription,
+            SubscriptionId = c.SubscriptionId.ToString(),
             CardLevel = 0,
             FullName = NameBuilder(c),
             Email = c.Email,
-            Facebook = GetSocialMedia(c)?.Facebook ?? "N/A",
-            MemberId = c.Id.ToString(),
-            Instagram = GetSocialMedia(c)?.Instagram ?? "N/A",
+            Facebook = c.Facebook ?? "N/A",
+            MemberId = c.MemberId.ToString(),
+            Instagram = c.Instagram ?? "N/A",
             Occupation = c.Occupation,
-            Pinterest =  GetSocialMedia(c)?.Pinterest ?? "N/A",
-            Twitter =  GetSocialMedia(c)?.Twitter ?? "N/A",
-            LinkedIn =  GetSocialMedia(c)?.LinkedIn ?? "N/A",
+            Pinterest =  c.Pinterest ?? "N/A",
+            Twitter =  c.Twitter ?? "N/A",
+            LinkedIn =  c.LinkedIn ?? "N/A",
             CardKey = c.CardKey,
             PhoneNumber = c.PhoneNumber,
         };
