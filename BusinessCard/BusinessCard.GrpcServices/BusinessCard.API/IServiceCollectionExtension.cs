@@ -12,7 +12,12 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DevServerConnection");
+        var option = OperatingSystem.IsWindows() ? "WinDefaultConnection" : "DevServerConnection";
+        if (OperatingSystem.IsMacOS())
+        {
+            option = "DefaultConnection";
+        }
+        var connectionString = configuration.GetConnectionString(option);
 
         if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
         
@@ -27,6 +32,11 @@ public static class ServiceCollectionExtension
                         });
                 } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
             );
+        
+        services.AddSingleton<IDbConnectionFactory>(i =>
+        {
+            return new DbConnectionFactory(connectionString);
+        });
         return services;
     }
     

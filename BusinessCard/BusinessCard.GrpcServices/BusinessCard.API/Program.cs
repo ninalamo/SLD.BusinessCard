@@ -47,6 +47,7 @@ builder.Services.AddScoped(typeof(ICurrentUser), typeof(CurrentUser));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 //register queries and repositories
+builder.Services.AddScoped<IClientQueries,ClientQueries>();
 builder.Services.AddScoped(typeof(IClientsRepository), typeof(ClientsRepository));
 
 builder.Services.AddScoped<IClientQueries,ClientQueries>();
@@ -82,7 +83,6 @@ await using var scope = app.Services.CreateAsyncScope();
 
 app.MapGrpcService<ClientsService>();
 app.MapGrpcService<KardsService>();
-app.MapGrpcService<BusinessCard.API.Services.SubscriptionService>();
 
 app.UseCors(b=> b.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
