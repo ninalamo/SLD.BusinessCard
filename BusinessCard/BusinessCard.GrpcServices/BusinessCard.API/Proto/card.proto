@@ -13,6 +13,7 @@ service KardGrpc {
 message ExportCardsGrpcCommand {
     string clientId = 1;
     int32 count = 2;
+    string subscriptionId = 3;
 }
 
 message ExportCardsGrpcCommandResult {

@@ -18,7 +18,7 @@ service ClientGrpc {
     rpc EditMemberGrpc(EditMemberGrpcCommand) returns (MemberGrpcCommandResult){}
     rpc GetPaginatedMembersGrpc(GetPaginatedMembersGrpcQuery)returns(GetPaginatedMembersGrpcQueryResult){}
     rpc GetMemberByIdAndUidGrpc(GetMemberByIdAndUidGrpcQuery) returns (GetMemberWithUidGrpcResult){}
-    rpc GetMemberByUidGrpc(GetMemberByUidGrpcQuery) returns (GetMemberWithUidGrpcResult){}
+   
 }
 
 message AddClientGrpcCommand {
@@ -145,10 +145,6 @@ message GetMemberByIdAndUidGrpcQuery {
     string memberId = 3;
 }
 
-message GetMemberByUidGrpcQuery {
-    string uid = 1;
-    string clientId = 2;
-}
 
 message GetPaginatedMembersGrpcQueryResult {
     int32 pageSize = 1;

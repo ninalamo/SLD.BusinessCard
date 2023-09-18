@@ -21,7 +21,8 @@ internal class KardsService : KardGrpc.KardGrpcBase
     
     public override async Task<ExportCardsGrpcCommandResult> ExportCardsGrpc(ExportCardsGrpcCommand request, ServerCallContext context)
     {
-        var response = await _mediator.Send(new ExportCardsCommand(request.ClientId.ToGuid(), request.Count));
+        var response = await _mediator.Send(
+            new GeneratePlaceholdersCommand(request.ClientId.ToGuid(), request.Count, request.SubscriptionId.ToGuid()));
     
         var result = new ExportCardsGrpcCommandResult();
         result.Urls.AddRange(response.Urls);

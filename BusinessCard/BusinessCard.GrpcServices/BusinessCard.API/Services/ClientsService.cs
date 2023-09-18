@@ -12,7 +12,6 @@ using BusinessCard.Application.Application.Common.Models;
 using BusinessCard.Application.Application.Queries.GetClientById;
 using BusinessCard.Application.Application.Queries.GetClients;
 using BusinessCard.Application.Application.Queries.GetMemberByIdAndUid;
-using BusinessCard.Application.Application.Queries.GetMemberByUid;
 using BusinessCard.Application.Application.Queries.GetMembers;
 using BusinessCard.Application.Extensions;
 using BusinessCard.Domain.Exceptions;
@@ -277,56 +276,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
         return result;
     }
 
-    /// <summary>
-    /// Get member using uid and client id only. This is when cards are pre-saved
-    /// </summary>
-    /// <param name="request"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
-    public override async Task<GetMemberWithUidGrpcResult> GetMemberByUidGrpc(GetMemberByUidGrpcQuery request, ServerCallContext context)
-    {
-        var response = await _mediator.Send(new GetMemberByUidQuery(request.ClientId.ToGuid(), request.Uid));
-
-
-        var result = new GetMemberWithUidGrpcResult();
-       
-        if (response.Member == null)
-        {
-            result.Members.AddRange(Array.Empty<MemberGrpcResult>());
-            return result;
-        }
-        
-        // result.Members.AddRange(new [] {
-        //     new MemberGrpcResult()
-        //     {
-        //         Address = response.Member.Address,
-        //         ClientId = response.Member.ClientId.ToString(),
-        //         Subscription = response.Member.Subscription,
-        //         SubscriptionLevel = response.Member.SubscriptionLevel,
-        //         FullName = NameBuilder(response.Member.FirstName, response.Member.LastName, response.Member.MiddleName,
-        //             response.Member.NameSuffix),
-        //         FirstName = response.Member.FirstName,
-        //         LastName = response.Member.LastName,
-        //         MiddleName = response.Member.MiddleName,
-        //         NameSuffix = response.Member.NameSuffix,
-        //         Email = response.Member.Email,
-        //         Facebook = response.Member.Facebook,
-        //         Id = response.Member.Id.ToString(),
-        //         Instagram = response.Member.Instagram,
-        //         Occupation = response.Member.Occupation,
-        //         Pinterest = response.Member.Pinterest,
-        //         Twitter = response.Member.Twitter,
-        //         LinkedIn = response.Member.LinkedIn,
-        //         CardKey = response.Member.CardKey,
-        //         PhoneNumber = response.Member.PhoneNumber,
-        //         Identity = response.Member.IdentityUserId,
-        //         Company = response.Member.Company,
-        //
-        //     }
-        // });
-
-        return result;
-    }
+    
 
     #region Transform
     
