@@ -7,7 +7,7 @@ namespace BusinessCard.Application.Application.Commands.AddMemberWithIdentityKey
 public class AddMemberWithIdentityKeyCommand : IRequest<Guid>
 {
     public AddMemberWithIdentityKeyCommand(Guid clientId, string firstName, string lastName, string middleName, string nameSuffix, string phoneNumber, string email, string address, string occupation, 
-        string identityId, string cardKey, Guid subscriptionId, SocialMediaObject socialMedia)
+        string identityId, string cardKey, Guid subscriptionId, SocialMediaObject socialMedia, Guid memberId)
     {
         ClientId = clientId;
         SubscriptionId = subscriptionId;
@@ -21,10 +21,11 @@ public class AddMemberWithIdentityKeyCommand : IRequest<Guid>
         Occupation = occupation;
         IdentityId = identityId;
         CardKey = cardKey;
-
+        MemberId = memberId;
         SocialMedia = socialMedia;
 
     }
+    public Guid MemberId { get; }
     public Guid SubscriptionId { get; }
     public Guid ClientId { get; }
     public string IdentityId { get; }

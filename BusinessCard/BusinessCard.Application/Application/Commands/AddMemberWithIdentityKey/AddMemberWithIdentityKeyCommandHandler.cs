@@ -19,9 +19,21 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
     public async Task<Guid> Handle(AddMemberWithIdentityKeyCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation($"Starting {nameof(AddMemberWithIdentityKeyCommandHandler)}-{DateTimeOffset.Now}");
+
+        if (string.IsNullOrEmpty(request.IdentityId))
+            throw new ValidationException("IdentityUserId not found.", new[]
+            {
+                new ValidationFailure("IdentityUserId", "IdentityUserId not found.")
+            });
         
         _logger.LogInformation($"Fetching {nameof(Client)}-{DateTimeOffset.Now}");
         var client = await _repository.GetWithPropertiesByIdAsync(request.ClientId);
+
+        if (client == null)
+            throw new ValidationException("Client not found.", new[]
+            {
+                new ValidationFailure("ClientId", "ClientId not found.")
+            });
         
         _logger.LogInformation($"Fetching {nameof(Subscription)}-{DateTimeOffset.Now}");
         var subscription = client.Subscriptions.FirstOrDefault(i => i.Id == request.SubscriptionId);
@@ -36,17 +48,22 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
         subscription.AdditionalValidation(request.PhoneNumber, request.Email);
 
         _logger.LogInformation($"Adding {nameof(Person)}-{DateTimeOffset.Now}");
-        var person = new Person(
+        var person = subscription.Persons.FirstOrDefault(i => i.Id == request.MemberId);
+
+        person.SetName(
             request.FirstName,
             request.LastName,
-            request.MiddleName, 
-            request.NameSuffix,
+            request.MiddleName,
+            request.NameSuffix);
+        person.SetContactDetails(
             request.PhoneNumber,
             request.Email,
-            request.Address,
-            request.Occupation);
+            request.Address);
+
+        person.Occupation = request.Occupation;
         
-        person.SetSocialMedia(request.SocialMedia.Facebook,
+        person.SetSocialMedia(
+            request.SocialMedia.Facebook,
             request.SocialMedia.Instagram,
             request.SocialMedia.Twitter,
             request.SocialMedia.Pinterest,
@@ -62,7 +79,7 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
         person.AddCard(request.CardKey, subscription.CardExpiryInMonths);
         
         _logger.LogInformation($"Update {nameof(Client)}-{DateTimeOffset.Now}");
-        subscription.AddMember(person);
+        
         _repository.Update(client);
 
         _logger.LogInformation($"Saving changes... {DateTimeOffset.Now}");

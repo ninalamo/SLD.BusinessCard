@@ -363,6 +363,7 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
             LinkedIn =  c.LinkedIn ?? "N/A",
             CardKey = c.CardKey,
             PhoneNumber = c.PhoneNumber,
+            
         };
     }
     
@@ -380,18 +381,18 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
     private static AddMemberWithIdentityKeyCommand ToAddMemberWithIdentityKeyCommand(AddMemberWithIdentityGrpcCommand request)
     {
         return new AddMemberWithIdentityKeyCommand(
-            request.ClientId.ToGuid(), 
-            request.FirstName, 
+            request.ClientId.ToGuid(),
+            request.FirstName,
             request.LastName,
             request.MiddleName,
             request.NameSuffix,
-            request.PhoneNumber, 
-            request.Email, 
+            request.PhoneNumber,
+            request.Email,
             request.Address,
             request.Occupation,
             request.Identity,
-            request.CardKey, 
-            request.SubscriptionId.ToGuid(), 
+            request.CardKey,
+            request.SubscriptionId.ToGuid(),
             new SocialMediaObject
             {
                 Facebook = request.Facebook,
@@ -399,7 +400,8 @@ public class ClientsService : ClientGrpc.ClientGrpcBase
                 LinkedIn = request.LinkedIn,
                 Pinterest = request.Pinterest,
                 Twitter = request.Twitter
-            });
+            },
+            request.MemberId.ToGuid());
     }
     
     

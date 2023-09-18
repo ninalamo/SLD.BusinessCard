@@ -74,6 +74,7 @@ message AddMemberWithIdentityGrpcCommand {
     string identity = 15;
     string cardKey = 16;
     string subscriptionId = 17;
+    string memberId = 18;
 }
 
 message EditMemberGrpcCommand {
