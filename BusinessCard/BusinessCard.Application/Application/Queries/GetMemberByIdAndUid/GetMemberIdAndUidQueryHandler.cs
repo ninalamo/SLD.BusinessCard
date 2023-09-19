@@ -69,7 +69,9 @@ public class GetMemberIdAndUidQueryHandler : IRequestHandler<GetMemberByIdAndUid
                 PhoneNumber = person.PhoneNumber,
                 LinkedIn = person.SocialMediaAccounts?.LinkedIn,
                 IdentityUserId = person.IdentityUserId,
-                Company = client.Name
+                Company = client.Name,
+                SubscriptionId = subscription.Id,
+                CardLevel = subscription.Level,
         };
 
         return new GetMemberByIdAndUidQueryResult()
