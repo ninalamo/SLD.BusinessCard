@@ -38,6 +38,11 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
         _logger.LogInformation($"Fetching {nameof(Subscription)}-{DateTimeOffset.Now}");
         var subscription = client.Subscriptions.FirstOrDefault(i => i.Id == request.SubscriptionId);
 
+        if (client.Subscriptions.Any())
+        {
+            subscription = client.Subscriptions.OrderBy(i => i.Level).FirstOrDefault();
+        }
+
         if (subscription == null)
             throw new ValidationException("Subscription not found.", new[]
             {
