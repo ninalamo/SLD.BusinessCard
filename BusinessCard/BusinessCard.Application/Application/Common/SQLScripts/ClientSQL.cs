@@ -3,20 +3,19 @@ namespace BusinessCard.Application.Application.Common.SQLScripts;
 internal static class ClientSQL
 {
     public const string SelectClients = 
-		@"SELECT
+		@"SELECT DISTINCT
 			C.[Id]
     		,C.[Name]
     		,C.[Industry]   
   			,C.[IsActive]
 			,(SELECT COUNT(*) FROM [kardb].[dbo].[subscription] S WHERE S.ClientId = C.[Id]) [Subscriptions]
   		FROM 
-  			[kardb].[dbo].[client] C
-  			LEFT JOIN [kardb].[dbo].[subscription] S ON S.[ClientId] = C.[Id]
+  			[kardb].[dbo].[client] C  			
   		WHERE
   			C.[IsActive] = 1 ";
     
     public const string SelectClientById = 
-	    @"SELECT
+	    @"SELECT DISTINCT
 			C.[Id]
     		,C.[Name]
     		,C.[Industry]   
