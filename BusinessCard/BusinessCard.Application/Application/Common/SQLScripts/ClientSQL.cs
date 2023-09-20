@@ -3,7 +3,7 @@ namespace BusinessCard.Application.Application.Common.SQLScripts;
 internal static class ClientSQL
 {
     public const string SelectClients = 
-		@"SELECT
+		@"SELECT DISTINCT
 			C.[Id]
     		,C.[Name]
     		,C.[Industry]   
@@ -16,7 +16,7 @@ internal static class ClientSQL
   			C.[IsActive] = 1 ";
     
     public const string SelectClientById = 
-	    @"SELECT
+	    @"SELECT DISTINCT
 			C.[Id]
     		,C.[Name]
     		,C.[Industry]   
