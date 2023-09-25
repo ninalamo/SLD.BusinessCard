@@ -25,6 +25,7 @@ public class GetMemberIdAndUidQueryHandler : IRequestHandler<GetMemberByIdAndUid
     {
         _logger.LogInformation("Starting {GetMemberIdQueryHandlerName} {Now}", nameof(GetMemberIdAndUidQueryHandler), DateTimeOffset.Now);
 
+        //we are not using memberId for now
         var cardResults = await _queries.GetCardByUidAndClientId(request.Uid, request.ClientId);
 
         var emptyResult = new GetMemberByIdAndUidQueryResult()
