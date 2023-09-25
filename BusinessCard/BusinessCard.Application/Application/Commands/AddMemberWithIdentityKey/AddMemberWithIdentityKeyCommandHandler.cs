@@ -40,7 +40,7 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
 
         if (client.Subscriptions.Any())
         {
-            subscription = client.Subscriptions.OrderBy(i => i.Level).FirstOrDefault();
+            subscription = client.Subscriptions.OrderBy(i => i.Level).LastOrDefault();
         }
 
         if (subscription == null)
@@ -53,8 +53,16 @@ public class AddMemberWithIdentityKeyCommandHandler : IRequestHandler<AddMemberW
         subscription.AdditionalValidation(request.PhoneNumber, request.Email);
 
         _logger.LogInformation($"Adding {nameof(Person)}-{DateTimeOffset.Now}");
-        var person = subscription.Persons.FirstOrDefault(i => i.Id == request.MemberId);
 
+        //TODO: Handle this differently for when a memberid is supplied
+        Person person = subscription.Persons.FirstOrDefault(i => i.Id == request.MemberId);
+
+        if (person == null)
+        {
+            person = new Person();
+            subscription.AddMember(person);
+        }
+    
         person.SetName(
             request.FirstName,
             request.LastName,
