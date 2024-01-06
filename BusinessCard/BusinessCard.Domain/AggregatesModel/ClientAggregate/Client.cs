@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-
-namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
+﻿namespace BusinessCard.Domain.AggregatesModel.ClientAggregate;
 
 public class Client : Entity, IAggregateRoot
 {

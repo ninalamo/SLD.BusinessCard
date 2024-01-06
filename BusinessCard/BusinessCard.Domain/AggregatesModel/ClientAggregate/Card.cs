@@ -1,7 +1,4 @@
-﻿using BusinessCard.Domain.Exceptions;
-using FluentValidation;
-
-namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
+﻿namespace BusinessCard.Domain.AggregatesModel.ClientAggregate
 {
     public sealed class Card : Entity
     {
